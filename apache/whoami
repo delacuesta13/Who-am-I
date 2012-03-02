@@ -1,0 +1,23 @@
+# Este fichero permite que Apache atienda las peticiones que vienen con 
+# URL 'whoami', y las resuelva ejecutando el código respectivo en
+# Python, usando Django.
+
+<VirtualHost *:80>
+    ServerName whoami
+    DocumentRoot /var/django/projects/whoami
+
+    ErrorLog /var/django/projects/whoami/logs/apache_error.log
+    # CustomLog /var/django/projects/whoami/logs/apache_access.log combined
+
+    <Directory /var/django/projects/whoami>
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    WSGIScriptAlias / /var/django/projects/whoami/apache/django.wsgi
+
+    LogLevel warn
+
+    Alias /static/ /var/django/projects/whoami/static/
+    Alias /media/ /var/django/projects/whoami/media/
+</VirtualHost>
