@@ -1,0 +1,77 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edit upload{% endblock %}
+
+{% block header %}
+<div class="span12">
+<h1>Edit Media</h1>
+<p>Edit data from the file uploaded.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="row">
+	<div class="span2">
+		<ul class="thumbnails">
+			<li class="span2">
+				<img src="{{ MEDIA_URL }}{{ upload.path }}" class="thumbnail" alt="{{ upload.title }}">
+			</li>
+		</ul>
+	</div>
+	<!-- /three -->
+	<div class="span6">
+		<ul class="unstyled">
+			<li><strong>File name:</strong> {{ img.name_notpath }}</li>
+			<li><strong>File type:</strong> {{ upload.extension_file }}</li>
+			<li><strong>File size:</strong> {{ img.size|filesizeformat }}</li>
+			<li><strong>Upload date:</strong> {{ upload.upload_date|date:"M d, Y" }}</li>
+			<li><strong>Dimensions:</strong> {{ img.width}} x {{ img.height }}</li>
+		</ul>
+	</div>
+	<!-- /five -->
+</section>
+<section class="row">
+	<article class="span8">
+		<form class="form-vertical" action="{% url admin.views.media_edit upload.id %}" method="post">
+			{% if success_edit %}
+			<div class="alert alert-success" data-dismiss="alert">
+				<a class="close">×</a>
+				<strong>Success!</strong> Data from file has been saved.
+			</div>
+			{% endif %}
+			{% if warning_edit %}
+			<div class="alert" data-dismiss="alert">
+				<a class="close">×</a>
+				<strong>Warning!</strong> Please, correct the next errors.
+			</div>
+			{% endif %}
+			{% csrf_token %}
+			<div class="control-group {% if error_name %}error{% endif %}">
+				<label class="control-label">Name</label>
+				<div class="controls">
+					<input type="text" name="name" class="span5" required="required"
+					value="{% if request.POST.name or request.POST.name|length == 0 %}{{ request.POST.name }}{% else %}{{ upload.title }}{% endif %}">
+					{% if error_name %}<span class="help-inline">Please, enter a name for the file.</span>{% endif %}
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Description</label>
+				<div class="controls">
+					<textarea name="description" rows="5" class="span5 auto-height">{{ upload.description }}</textarea>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">File URL</label>
+				<div class="controls">
+					<input type="url" readonly="readonly" value="{{ MEDIA_URL }}{{ upload.path }}" class="span5">
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">Update</button>
+			</div>
+		</form>
+	</article>
+</section>
+{% endblock %}
+
+{% block width_footer %}span12{% endblock %}

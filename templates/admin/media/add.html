@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+
+{% block title %}New upload{% endblock %}
+
+{% block header %}
+<div class="span12">
+<h1>New Upload</h1>
+<p>Upload files such as images and use them like media in your page.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="row">
+	<article class="span8">
+		<form class="form-vertical" action="{% url admin.views.media_add %}" method="post" enctype="multipart/form-data">
+			{% if warning_form %}
+			<div class="alert" data-dismiss="alert">
+				<a class="close">×</a>
+				<strong>Warning!</strong> Please, correct the next errors.
+			</div>
+			{% endif %}
+			{% csrf_token %}
+			<div class="control-group {% if error_upfile %}error{% endif %}">
+				<label class="control-label">File</label>
+				<div class="controls">
+					<input type="file" name="file" accept="image/*" class="span5" style="height: auto">
+					{% if error_upfile %}<span class="help-inline">{{ msg_error_upfile|safe }}</span>{% endif %}
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">Upload</button>
+			</div>
+		</form>
+	</article>
+</section>
+{% endblock %}
+
+{% block width_footer %}span12{% endblock %}
