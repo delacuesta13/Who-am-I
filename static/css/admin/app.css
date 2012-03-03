@@ -1,0 +1,124 @@
+.navbar-fixed-top .brand{
+	color: #000;
+	font-weight: bold;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
+}
+
+.auto-height{
+	height: auto !important;
+}
+
+footer#footer div{
+	border-top: 1px solid #e5e5e5;
+	margin-top: 45px;
+	padding: 35px 0 36px;
+}
+
+img.center{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+span.text-search{
+	color: #999 !important;
+}
+
+th.col_active{
+	
+}
+
+th.col_active a span.icon_on{
+	display: inline;
+} th.col_active a span.icon_off{
+	display: none;
+}
+
+th.col_active a:hover span.icon_on{
+	display: none;
+} th.col_active a:hover span.icon_off{
+	display: inline;
+}
+
+th.col_inactive a{
+	font-weight: normal;
+}
+
+th.col_inactive a span.icon_off{
+	display: none;
+} th.col_inactive a:hover span.icon_off{
+	display:inline;
+}
+
+/*
+ * Page Log In 
+ */
+
+body.login{
+	padding-top: 0px;
+}
+
+@media (min-width: 1024px) {
+	body.login h1.title_login{
+		padding-top: 18px;
+	}
+}
+
+body.login h1.title_login{
+	padding-bottom: 10px;
+}
+
+/*
+ * Page Media list
+ */
+
+table#media-list thead th.checkbox, table#media-list tbody td.checkbox{
+	width: 13px;
+	padding: 8px 12px;
+}
+
+table#media-list thead th.checkbox input, table#media-list tbody td.checkbox input{
+	margin-left: 0 !important;
+}
+
+table#media-list thead th.image, table#media-list tbody td.image{
+	width: 80px;
+}
+
+table#media-list thead th.file, 
+table#media-list tbody td.file{
+	border-left: 0px;
+}
+
+table#media-list thead th.date{
+	width: 140px;
+}
+
+@media (max-width: 319px) {
+	table#media-list thead th.image, table#media-list tbody td.image{
+		display: none;
+	}
+}
+
+/*
+ * Page Category list
+ */
+
+table#categories-list thead th.checkbox, table#categories-list tbody td.checkbox{
+	width: 13px;
+	padding: 8px 12px;
+}
+
+table#categories-list thead th.checkbox input, table#categories-list tbody td.checkbox input{
+	margin-left: 0 !important;
+}
+
+table#categories-list thead th.type_category, table#categories-list tbody td.type_category{
+	width: 140px;
+}
+
+@media (max-width: 479px) {
+	table#categories-list thead th.slug, table#categories-list tbody td.slug{
+		display: none;
+	}
+}
