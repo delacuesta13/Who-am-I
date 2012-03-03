@@ -9,6 +9,8 @@ TEMPLATE_DEBUG = DEBUG
 # Main URL for the project
 BASE_URL = 'http://whoami'
 
+AUTH_PROFILE_MODULE = 'itsme.UserProfile'
+
 ADMINS = (
      ('Jhon', 'hello@adrianceron.com'),
 )
