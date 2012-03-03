@@ -7,7 +7,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Main URL for the project
-BASE_URL = 'http://whoisme'
+BASE_URL = 'http://whoami'
 
 ADMINS = (
      ('Jhon', 'hello@adrianceron.com'),
