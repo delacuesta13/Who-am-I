@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>{% block full_title %}{% block title %}{% endblock %} - {% if user.first_name|length > 0 %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}{% endblock %} </title>
+	<meta name="author" content="Jhon Adrián Cerón">
+	{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+	
+	<!-- Set the viewport width to device width for mobile -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	
+	<!-- stylesheets -->
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+	<style type="text/css">
+	/* fix */
+	body {
+		padding-top: 60px;
+	}
+    </style>
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/admin/app.css" />
+	{% block extrastyle %}{% endblock %}
+	
+	<script>
+	function get_static_url() { return "{{ STATIC_URL }}"; }
+	var static_url = get_static_url();	
+	function get_media_url() { return "{{ MEDIA_URL }}"; }
+	var media_url = get_media_url();			
+	</script>
+	
+</head>
+<body class="{% block class_body %}{% endblock %}">
+
+{% comment %}
+nav_active
+it sets the current item navigation. 
+{% endcomment %}
+
+	<!-- navbar -->
+	<nav class="navbar navbar-fixed-top" id="navbarTop">
+	{% block navbar %}
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="{% url admin.views.index %}">
+				{% block brand %}
+					{% if user.first_name|length != 0 %}
+					{{ user.first_name }}
+					{% else %}
+					{{ user.username }}
+					{% endif %}
+				{% endblock %}
+				</a>
+				<div class="nav-collapse">
+				{% block navigation %}
+					<ul class="nav">
+					{% block navleft %}
+						<!-- home -->
+						<li {% if not nav_active or nav_active|lower == "home" %}class="active"{% endif %}>
+							<a href="{% url admin.views.index %}">Home</a>
+						</li>
+						<!-- posts -->
+						<li
+						{% if nav_active and nav_active|lower == "posts" or nav_active|lower == "categories" or nav_active|lower == "blog" %}
+						class="dropdown active"
+						{% else %}
+						class="dropdown"
+						{% endif %}
+						>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								Posts
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li {% if nav_active|lower == "posts" %}class="active"{% endif %}>
+									<a href="#">All Posts</a>
+								</li>
+								<li {% if nav_active|lower == "categories" %}class="active"{% endif %}>
+									<a href="{% url admin.views.category %}">Categories</a>
+								</li>
+								<li  {% if nav_active|lower == "blog" %}class="active"{% endif %}>
+									<a href="#">Settings Blog</a>
+								</li>
+							</ul>
+						</li>
+						<!-- media -->						
+						<li {% if nav_active and nav_active|lower == "media" %}class="active"{% endif %}>
+							<a href="{% url admin.views.media %}">Media</a>
+						</li>
+						{% comment %}
+						<!-- <li {% if nav_active and nav_active|lower == "comments" %}class="active"{% endif %}>
+							<a href="#">Comments</a>
+						</li>  -->
+						{% endcomment %}
+						<!-- work -->
+						<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
+							<a href="#">Work</a>
+						</li>
+						<li class="divider-vertical"></li>
+						<!-- messages -->
+						<li {% if nav_active and nav_active|lower == "messages" %}class="active"{% endif %}>
+							<a href="#">Messages</a>
+						</li>
+					{% endblock %}
+					</ul>
+					<ul class="nav pull-right">
+					{% block navright %}
+						<li>
+							<a href="#">Visit Site</a>
+						</li>
+						<li class="divider-vertical"></li>
+						<li class="dropdown {% if nav_active and nav_active|lower == "profile" %}active{% endif %}">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								admin
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li {% if nav_active and nav_active|lower == "profile" %}class="active"{% endif %}>
+									<a href="{% url admin.views.profile %}">Profile</a>
+								</li>
+								<li>
+									<a href="{% url admin.views.logout %}">Log out</a>
+								</li>
+							</ul>
+						</li>
+					{% endblock %}
+					</ul>
+				{% endblock %}
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+	</nav>
+	<!-- /navbar -->
+	
+	<!-- container -->
+	<div class="container">
+	{% block container %}
+		<header class="row" id="header">
+		{% block header %}
+		{% endblock %}
+		</header>
+		{% block content %}{% endblock %}
+		<footer class="row" id="footer">
+		{% block footer %}
+			<div class="{% block width_footer %}span12{% endblock %}">
+				<p class="pull-right"><a href="#navbarTop" class="scrollTop">Top</a></p>
+				<p>Copyright &copy; 2012 Jhon Adrián Cerón Guzmán.</p>
+			</div>
+		{% endblock %}
+		</footer>
+	{% endblock %}
+	</div>
+	<!-- /container -->
+	
+	<!-- Included JS Files -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+	<script src="{{ STATIC_URL }}js/admin/app.js"></script>
+	{% block extrajs %}{% endblock %}
+	
+	<!--[if lt IE 7 ]>
+		<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+		<script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+	<![endif]--> 
+	
+</body>
+</html>	
