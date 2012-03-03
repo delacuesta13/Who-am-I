@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+
+{% block full_title %}Log In{% endblock %}
+
+{% block class_body %}login{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block header %}
+<div class="span6 offset3">
+	<h1 class="title_login">Log In</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="row">
+	<article class="span6 offset3">
+		<form class="form vertical" action="{% url admin.views.login %}" method="post">
+			{% if error_login %}
+			<div class="alert alert-error">
+				<a href="#" class="close" data-dismiss="alert">x</a>
+				{{ error_message }}
+			</div>
+			{% endif %}
+			{% csrf_token %}
+			<div class="control-group {% if error_login %}error{% endif %}">
+				<label class="control-label" for="username">Username</label>
+				<div class="controls">
+					<input type="text" name="username" id="username" class="span5" autocomplete="off" required="required"
+					{% if request.POST.username %}value="{{ request.POST.username }}"{% endif %}>
+				</div>
+			</div>
+			<div class="control-group {% if error_login %}error{% endif %}">
+				<label class="control-label" for="password">Password</label>
+				<div class="controls">
+					<input type="password" name="password" id="password" class="span5" required="required">
+				</div>
+			</div>
+			<button type="submit" class="btn">Log In</button>
+		</form>
+	</article>
+</section>
+{% endblock %}
+
+{% block width_footer %}span6 offset3{% endblock %}
