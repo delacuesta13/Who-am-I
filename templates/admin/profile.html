@@ -1,0 +1,211 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block header %}
+<div class="span12">
+<h1>Edit Profile</h1>
+<p>Edit your data of account and change your password.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<section class="span12">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li {% if not active_tab %}class="active"{% endif %}>
+					<a href="#infoTab" data-toggle="tab">Info</a>
+				</li>
+				<li {% if active_tab and active_tab == "profile" %}class="active"{% endif %}>
+					<a href="#profileTab" data-toggle="tab">Profile</a>
+				</li>
+				<li {% if active_tab and active_tab == "password" %}class="active"{% endif %}>
+					<a href="#passwordTab" data-toggle="tab" id="toPasswd">Password</a>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div class="tab-pane {% if not active_tab %}active{% endif %}" id="infoTab">
+				<form class="form-vertical" action="{% url admin.views.profile_info_edit %}" method="post">
+					{% if success_info %}
+					<div class="row">
+						<div class="span8">
+							<div class="alert alert-success" data-dismiss="alert">
+								<a class="close">×</a>
+								<strong>Success!</strong> Your data has been saved.
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% if warning_info %}
+					<div class="row">
+						<div class="span8">
+							<div class="alert" data-dismiss="alert">
+								<a class="close">×</a>
+								<strong>Warning!</strong> Please, correct the next errors.
+							</div>
+						</div>
+					</div>	
+					{% endif %}
+					{% csrf_token %}
+					<div class="control-group {% if error_fname %}error{% endif %}">
+						<label class="control-label">First name</label>
+						<div class="controls">
+							<input type="text" name="first_name" class="span5"
+							value="{% if request.POST.first_name %}{{ request.POST.first_name }}{% else %}{{ user.first_name }}{% endif %}">
+							{% if error_fname %}<span class="help-inline">Please, only characters and spaces.</span>{% endif %}
+						</div>
+					</div>
+					<div class="control-group {% if error_lname %}error{% endif %}">
+						<label class="control-label">Last name</label>
+						<div class="controls">
+							<input type="text" name="last_name" class="span5"
+							value="{% if request.POST.last_name %}{{ request.POST.last_name }}{% else %}{{ user.last_name }}{% endif %}">
+							{% if error_lname %}<span class="help-inline">Please, only characters and spaces.</span>{% endif %}
+						</div>
+					</div>
+					<div class="control-group {% if error_email %}error{% endif %}">
+						<label class="control-label">Email</label>
+						<div class="controls">
+							<input type="email" name="email" class="span5"
+							value="{% if request.POST.email %}{{ request.POST.email }}{% else %}{{ user.email }}{% endif %}">
+							{% if error_email %}<span class="help-inline">Please, enter a valid email address.</span>{% endif %}
+						</div>
+					</div>
+					<div class="control-group {% if error_phone %}error{% endif %}">
+						<label class="control-label">Phone</label>
+						<div class="controls">
+							<input type="text" name="phone" class="span5"
+							value="{% if request.POST.phone %}{{ request.POST.phone }}{% else %}{{ user.get_profile.phone }}{% endif %}">
+							{% if error_phone %}<span class="help-inline">Please, enter a correct phone number.</span>{% endif %}
+						</div>
+					</div>
+					<div class="control-group {% if error_location %}error{% endif %}">
+						<label class="control-label">Location</label>
+						<div class="controls">
+							<input type="text" name="location" class="span5"
+							value="{% if request.POST.location %}{{ request.POST.location }}{% else %}{{ user.get_profile.location }}{% endif %}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="span8">
+							<div class="form-actions">
+								<button type="submit" class="btn btn-primary">Save</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="tab-pane {% if active_tab and active_tab == "profile" %}active{% endif %}" id="profileTab">
+				<form class="form-vertical" action="{% url admin.views.profile_edit %}" method="post">
+					{% if success_profile %}
+					<div class="row">
+						<div class="span8">
+							<div class="alert alert-success" data-dismiss="alert">
+								<a class="close">×</a>
+								<strong>Success!</strong> Your profile has been saved.
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% csrf_token %}
+					<div class="control-group">
+						<label class="control-label">Profession</label>
+						<div class="controls">
+							<input type="text" name="profession" class="span5"
+							value="{% if request.POST.profession %}{{ request.POST.profession }}{% else %}{{ user.get_profile.profession }}{% endif %}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">About</label>
+						<div class="controls">
+							<textarea name="about" rows="5" class="span5 auto-height"
+							{% if not user.get_profile.about %}placeholder="A quick overview about you."{% endif %}>{{ user.get_profile.about }}</textarea>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Resume</label>
+						<div class="controls">
+							<textarea class="span7 tinymce auto-height" name="resume" rows="10">{{ user.get_profile.resume }}</textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span8">
+							<div class="form-actions">
+								<button type="submit" class="btn btn-primary">Save</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="tab-pane {% if active_tab and active_tab == "password" %}active{% endif %}" id="passwordTab">
+				<form class="form-vertical" action="{% url admin.views.profile_password_edit %}" method="post">
+					{% if success_pass %}
+					<div class="row">
+						<div class="span8">
+							<div class="alert alert-success" data-dismiss="alert">
+								<a class="close">×</a>
+								<strong>Success!</strong> Your password has been changed.
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% if warning_pass %}
+					<div class="row">
+						<div class="span8">
+							<div class="alert" data-dismiss="alert">
+								<a class="close">×</a>
+								<strong>Warning!</strong> Please, correct the next errors.
+							</div>
+						</div>
+					</div>
+					{% endif %}
+					{% csrf_token %}
+					<div class="control-group {% if error_opass %}error{% endif %}">
+						<label class="control-label">Current password</label>
+						<div class="controls">
+							<input type="password" name="old_pass" class="span5" required="required">
+							{% if error_opass %}<span class="help-inline">Your current password is incorrect.</span>{% endif %}
+						</div>
+					</div>
+					<div class="control-group {% if error_npass %}error{% endif %}">
+						<label class="control-label">New password</label>
+						<div class="controls">
+							<input type="password" name="new_pass" class="span5" required="required">
+							{% if error_npass %}<span class="help-inline">Please, enter a password.</span>{% endif %}
+						</div>
+					</div>
+					<div class="control-group {% if error_cpass %}error{% endif %}">
+						<label class="control-label">Confirm password</label>
+						<div class="controls">
+							<input type="password" name="confirm_pass" class="span5" required="required">
+							{% if error_cpass %}<span class="help-inline">New password and its confirm didn't match.</span>{% endif %}
+						</div>
+					</div>
+					<div class="row">
+						<div class="span8">
+							<div class="form-actions">
+								<button type="submit" class="btn btn-primary">Save</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</div>
+{% endblock %}
+
+{% block width_footer %}span12{% endblock %}
+
+{% block extrajs %}
+<script>
+var small_phone = window.matchMedia( "(max-width: 319px)" );
+if(small_phone.matches){
+	$("a#toPasswd").html('Passwd');
+}
+</script>
+<script src="{{ STATIC_URL }}js/tinymce/jquery.tinymce.js"></script>
+<script src="{{ STATIC_URL }}js/admin/tinymce.admin.js"></script>
+{% endblock %}
