@@ -1,0 +1,187 @@
+{% load useful_extras %}
+
+{% if categories_list.paginator.count %}
+<span class="text-search">
+	Showing {{ categories_list.object_list|length }} of {{ categories_list.paginator.count }} items
+</span>
+{% endif %} 
+<form method="post" action="#" id="delete">
+<table class="table table-striped table-bordered" id="categories-list">
+	<thead>
+		<tr>
+			<th class="checkbox">
+				<input type="checkbox" class="toggle">
+			</th>
+			{% for key, val in cols_query.items %}
+				{% if key == order_by %}
+				<th class="{{ key }} col_active">
+					{% if order == 'asc' %}
+					<a href="#" onclick="loadAjax(1, '{{ search }}', '{{ key }}', 'desc'); return false;">
+						{{ val }}
+						<span class="icon_on"><i class="icon-chevron-up"></i></span>
+						<span class="icon_off"><i class="icon-chevron-down"></i></span>
+					</a>
+					{% else %}
+					<a href="#" onclick="loadAjax(1, '{{ search }}', '{{ key }}', 'asc'); return false;">
+						{{ val }}
+						<span class="icon_on"><i class="icon-chevron-down"></i></span>
+						<span class="icon_off"><i class="icon-chevron-up"></i></span>
+					</a>
+					{% endif %}
+				</th>
+				{% else %}
+				<th class="{{ key }} col_inactive">
+					<a href="#" onclick="loadAjax(1, '{{ search }}', '{{ key }}', 'asc'); return false;">
+						{{ val }}
+						<span class="icon_off"><i class="icon-chevron-up"></i></span>
+					</a>
+				</th>
+				{% endif %}
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for c in categories_list.object_list %}
+		<tr>
+			<td class="checkbox">
+				<input type="checkbox" name="id[]" id="id" value="{{ c.id }}" class="checkbox">
+			</td>
+			<td>
+				<a href="{% url admin.views.category_edit c.id %}">
+					{{ c.name|safe }}
+				</a>
+			</td>
+			<td>
+				{{ categories_types|get_val_from_dictionary:c.type_category }}
+			</td>
+			<td class="slug">
+				{{ c.slug }}
+			</td>
+		</tr>
+		{% empty %}
+		<tr>
+			<td colspan="4" style="text-align: center;">There is no records to show.</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="span10">
+		<button class="btn btn-danger">
+			<i class="icon-trash icon-white"></i>
+			Delete
+		</button>
+		{% if categories_list.has_other_pages %}
+		<div class="pagination" style="margin:0; float:right">
+			<ul>
+				{% if categories_list.has_previous %}
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ categories_list.previous_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						&larr;
+					</a>
+				</li>
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ categories_list.previous_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						{{ categories_list.previous_page_number }}
+					</a>
+				</li>
+				{% endif %}
+				<li class="active"><a href="#">{{ categories_list.number }}</a></li>
+				{% if categories_list.has_next %}
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ categories_list.next_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						{{ categories_list.next_page_number }}
+					</a>
+				</li>
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ categories_list.next_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						&rarr;
+					</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+		{% endif %}
+	</div>
+</div>
+</form>
+
+<div id="mymodal" class="modal hide">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>Categories</h3>
+	</div>
+	<div class="modal-body">
+	<p></p>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-primary">Save changes</a>
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	
+	$('#myModal').modal({
+		keyboard: true,
+		backdrop: true
+	});
+	
+	// active and unactive checkboxes
+	$("table :checkbox.toggle").each(function(i, toggle) {
+		$(toggle).change(function(e) {
+			$(toggle).parents("table:first").find(":checkbox:not(.toggle)").each(function(j, checkbox) {
+				checkbox.checked = !checkbox.checked;
+			});
+		});
+	});
+	
+	$("form#delete").submit(function(){
+		
+		// it was not checked item
+		if ($("form#delete tbody input:checkbox:checked").length == 0) {
+			$('#mymodal .modal-body').html('<p>Please, select at least a row for delete.</p>');
+			$('#mymodal .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Close</a>');
+			$('#mymodal').modal('show');
+		} else {
+			var id_checked = new Array();
+			// get checked checkboxes
+			$("form#delete tbody input:checkbox:checked").each(function(){
+				id_checked.push($(this).val());
+			});
+			$('#mymodal .modal-body').html('<p>Are you sure that want to delete the selected rows?</p>');
+			var buttons_confirm = '<a href="#" class="btn" id="confirmDelete"><i class="icon-ok"></i> Accept</a>' +
+								  '<a href="#" class="btn" data-dismiss="modal"><i class="icon-ban-circle"></i> Cancel</a>';
+			$('#mymodal .modal-footer').html(buttons_confirm);
+			$('#mymodal').modal('show');
+			// confirmed for delete
+			$('#confirmDelete').click(function(){
+				$('#mymodal').modal('hide');
+				$.ajax({
+					url: '{% url admin.views.category_delete %}',
+					type: "POST",
+					data: {'id[]': id_checked, 'csrfmiddlewaretoken': '{{csrf_token}}'},
+					beforeSend: function() {
+						$('#msg_rowsDeleted #loaderDelete').toggle();
+					},
+					success: function( data ) {
+						$('#msg_rowsDeleted #loaderDelete').toggle();
+						$('#msg_rowsDeleted #alertDelete #msgDelete').html(data);
+						$('#msg_rowsDeleted #alertDelete').fadeIn('slow');
+						loadAjax(1, '{{ search }}');
+					}
+				});
+				return false;
+			});
+		}
+		
+		return false;
+	});
+	
+});

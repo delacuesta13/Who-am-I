@@ -1,0 +1,181 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+{% if mode and mode|lower == "edit" %}Edit category{% else %}New category{% endif %}
+{% endblock %}
+
+{% block header %}
+<div class="span12">
+{% if mode and mode|lower == "edit" %}
+<h1>Edit Category</h1>
+<p>Be careful when edit category slug, because it could harm to content indexation.</p>
+{% else %}
+<h1>New Category</h1>
+<p>Add a new category and use it for related blog posts or works.</p>
+{% endif %}
+</div>
+{% endblock %} 
+
+{% block content %}
+<section class="row">
+	<article class="span8">
+		<ul class="breadcrumb">
+		{% if mode and mode|lower == "edit" %}
+		<li>
+			<a href="{% url admin.views.category %}">Categories</a> <span class="divider">/</span>
+		</li>
+		<li class="active">
+			<a href="{% url admin.views.category_edit category.id %}">{{ category.name }}</a>
+		</li>
+		{% else %}
+		<li>
+			<a href="{% url admin.views.category %}">Categories</a> <span class="divider">/</span>
+		</li>
+		<li class="active">
+			<a href="{% url admin.views.category_add %}">Add</a>
+		</li>
+		{% endif %}
+		</ul>
+		<form class="form-vertical"
+		{% if mode and mode|lower == "edit" %}
+		action="{% url admin.views.category_edit category.id %}"
+		{% else %}
+		action="{% url admin.views.category_add %}"
+		{% endif %}
+		 method="post">
+		 	{% if success_form %}
+		 	<div class="alert alert-success" data-dismiss="alert">
+				<a class="close">×</a>
+				<strong>Success!</strong> The data has been saved.
+			</div>
+		 	{% else %}
+		 		{% if warning_form %}
+		 		<div class="alert" data-dismiss="alert">
+					<a class="close">×</a>
+					<strong>Warning!</strong> Please, correct the next errors.
+				</div>
+		 		{% endif %}
+		 	{% endif %}
+			{% csrf_token %}
+			<div class="control-group {% if error_name %}error{% endif %}">
+				<label class="control-label">Name</label>
+				<div class="controls">
+					<input type="text" name="name"
+					{% if request.POST.name or request.POST.name|length == 0 %}
+					value="{{ request.POST.name }}"
+					{% else %}
+						{% if mode|lower == "edit" and category.name %}
+						value="{{ category.name }}"
+						{% else %}
+						placeholder="Category name"
+						{% endif %}
+					{% endif %}
+					class="span5">
+					{% if error_name %}<span class="help-inline">{{ error_name_msg }}</span>{% endif %}
+				</div>
+			</div>
+			<div class="control-group {% if error_type %}error{% endif %}">
+				<label class="control-label">Type</label>
+				<div class="controls">
+					<select name="type" class="span3">
+						<option>Select a category type</option>
+						{% for val, str in types_categories.items %}
+							{% if request.POST.type and request.POST.type == val %}
+							<option value="{{ val }}" selected="selected">{{ str }}</option>
+							{% else %}
+								{% if mode|lower == "edit" and category.type_category == val %}
+								<option value="{{ val }}" selected="selected">{{ str }}</option>
+								{% else %}
+								<option value="{{ val }}">{{ str }}</option>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					</select>
+					{% if error_type %}<span class="help-inline">{{ error_type_msg }}</span>{% endif %}
+				</div>
+			</div>
+			<div class="control-group {% if error_slug %}error{% endif %}">
+				<label class="control-label">
+					Slug
+					<a href="#" rel="popover" class="btn btn-small" data-original-title="What's a slug?"
+					data-content="A slug is the part of a URL which identifies a page using human-readable keywords.
+					 It contains only letters, numbers, underscores or hyphens.">
+					 	<i class="icon-info-sign"></i>Info
+					</a>
+				</label>
+				<div class="controls">
+					<input type="text" name="slug"
+					{% if request.POST.slug or request.POST.slug|length == 0 %}
+					value="{{ request.POST.slug }}"
+					{% else %}
+						{% if mode|lower == "edit" and category.slug %}
+						value="{{ category.slug }}"
+						{% else %}
+						placeholder="URL slug"
+						{% endif %}
+					{% endif %} 
+					class="span5">
+					{% if error_slug %}<span class="help-inline">{{ error_slug_msg }}</span>{% endif %}
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Description</label>
+				<div class="controls">
+					{% if request.POST.description or request.POST.description|length == 0 %}
+					<textarea rows="5" name="description" class="span5 auto-height">{{ request.POST.description }}</textarea>
+					{% else %}
+						{% if mode|lower == "edit" and category.description %}
+						<textarea rows="5" name="description" class="span5 auto-height">{{ category.description }}</textarea>
+						{% else %}
+						<textarea rows="5" name="description" class="span5 auto-height"
+						placeholder="A description about the category."></textarea>
+						{% endif %}
+					{% endif %} 
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">Save</button>
+			</div>
+		</form>
+	</article>
+</section>
+{% endblock %}
+
+{% block width_footer %}span12{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function () {
+	$('a[rel=popover]').hover(function(){
+		$('a[rel=popover]').popover('show');
+	});
+	$('a[rel=popover]').click(function(){return false;});
+	{% if mode and mode|lower == "edit" %}
+	$("input[name=name]").focusout(function(){
+		var help_slug = confirm("Would you like a suggestion for the slug field according to the category name entered?");
+		if (help_slug) {
+			$.ajax({
+				url: '{% url admin.views.category_get_slug %}',
+				type: "GET",
+				data: {str: $("input[name=name]").val()},
+				success: function( data ) {
+					$("input[name=slug]").val(data);
+				}
+			});	
+		}
+	});
+	{% else %}
+	$("input[name=name]").keyup(function(){
+		$.ajax({
+			url: '{% url admin.views.category_get_slug %}',
+			type: "GET",
+			data: {str: $("input[name=name]").val()},
+			success: function( data ) {
+				$("input[name=slug]").val(data);
+			}
+		});
+	});
+	{% endif %}
+});
+</script>
+{% endblock %}
