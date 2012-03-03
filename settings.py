@@ -71,7 +71,7 @@ STATIC_URL = '%s/static/' % BASE_URL
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '%s/static/admin/' % BASE_URL
+ADMIN_MEDIA_PREFIX = '%s/static/django-admin/' % BASE_URL
 
 # Additional locations of static files
 STATICFILES_DIRS = (
