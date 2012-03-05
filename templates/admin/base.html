@@ -88,7 +88,7 @@ it sets the current item navigation.
 							</a>
 							<ul class="dropdown-menu">
 								<li {% if nav_active|lower == "posts" %}class="active"{% endif %}>
-									<a href="#">All Posts</a>
+									<a href="{% url admin.views.post %}">All Posts</a>
 								</li>
 								<li {% if nav_active|lower == "categories" %}class="active"{% endif %}>
 									<a href="{% url admin.views.category %}">Categories</a>
