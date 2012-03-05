@@ -94,7 +94,7 @@ it sets the current item navigation.
 									<a href="{% url admin.views.category %}">Categories</a>
 								</li>
 								<li  {% if nav_active|lower == "blog" %}class="active"{% endif %}>
-									<a href="#">Settings Blog</a>
+									<a href="{% url admin.views.blog_edit_settings %}">Settings Blog</a>
 								</li>
 							</ul>
 						</li>
