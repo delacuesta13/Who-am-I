@@ -1,4 +1,5 @@
 import os
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 # Absolute path to the project directory
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -98,6 +99,10 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'admin.context_processors.base_site_url',
 )
 
 MIDDLEWARE_CLASSES = (
