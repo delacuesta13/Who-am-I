@@ -16,7 +16,7 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.template.defaultfilters import slugify, filesizeformat
-from itsme.models import UserProfile, Upload, Category
+from itsme.models import UserProfile, Upload, Category, Blog
 
 """
 Important: 
@@ -28,6 +28,41 @@ def index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('admin.views.login'))
     return render_to_response('admin/index.html', context_instance=RequestContext(request))
+
+"""
+Blog
+"""
+
+def blog_get_or_create(user):
+    try:
+        blog = Blog.objects.get(user__id=user.id)
+    except ObjectDoesNotExist:
+        blog = Blog(user=user)
+        blog.save()
+    return blog
+
+def blog_edit_settings(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('admin.views.login'))
+    
+    blog = blog_get_or_create(request.user)
+    
+    success_form = False
+    
+    if (request.method == 'POST' and 'site_title' in request.POST
+        and 'tagline' in request.POST):
+        blog.site_title = request.POST['site_title']
+        blog.tagline = request.POST['tagline']
+        blog.save()
+        success_form = True
+    
+    return render_to_response('admin/blog/settings.html',
+                              {
+                               'nav_active': 'blog',
+                               'blog': blog,
+                               'success_form': success_form,
+                               },
+                              context_instance=RequestContext(request))
 
 """
 Categories
