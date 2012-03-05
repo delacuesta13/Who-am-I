@@ -19,18 +19,22 @@ $(document).ready(function () {
 		// width is less than 768px
 		itemNav_1 = "formatselect,bold,italic,strikethrough,|,justifyleft,justifycenter,justifyright,|,";
 		itemNav_1 += "bullist,numlist,|,blockquote,|,forecolor,|,link,unlink,|,image,|,removeformat";
+		$('textarea.tinymce').attr("rows","12");
 	} else if(small_tablet.matches){
 		// width is less than 480px
 		itemNav_1 = "formatselect,bold,italic,strikethrough,|,justifyleft,justifycenter,justifyright,|,";
 		itemNav_1 += "bullist,numlist,|,blockquote,|,link,unlink,|,image,|,removeformat";
+		$('textarea.tinymce').attr("rows","10");
 	} else if(iphone.matches){
 		// width is less than 320px
 		itemNav_1 = "bold,italic,strikethrough,|,justifyleft,justifycenter,justifyright,|,";
 		itemNav_1 += "bullist,numlist,|,link,unlink,|,removeformat";
+		$('textarea.tinymce').attr("rows","8");
 	} else{
 		// width is less than 240px  
 		itemNav_1 = "bold,italic,strikethrough,|,justifycenter,|,";
 		itemNav_1 += "bullist,numlist,|,removeformat";
+		$('textarea.tinymce').attr("rows","6");
 	}
 
 	$('textarea.tinymce').tinymce({
