@@ -23,4 +23,6 @@ urlpatterns = patterns('admin.views',
     url(r'^categories/add/$', 'category_add'),
     url(r'^categories/edit/(?P<category_id>\d+)/$', 'category_edit'),
     url(r'^categories/delete/$', 'category_delete'),
+    # blog
+    url(r'^blog/settings/$', 'blog_edit_settings'),
 )
