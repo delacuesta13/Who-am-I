@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Blog settings{% endblock %}
+
+{% block header %}
+<div class="span12">
+<h1>Blog settings</h1>
+<p>Edit blog settings and customize site info.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="row">
+	<article class="span8">
+		<ul class="breadcrumb">
+			<li>
+				<a href="{% url admin.views.blog_edit_settings %}">Blog</a> <span class="divider">/</span>
+			</li>
+			<li class="active">
+				Settings
+			</li>
+		</ul>
+		<form class="form-vertical" action="{% url admin.views.blog_edit_settings %}" method="post">
+			{% if success_form %}
+			<div class="alert alert-success" data-dismiss="alert">
+				<a class="close">×</a>
+				<strong>Success!</strong> The data has been saved.
+			</div>
+			{% endif %}
+			{% csrf_token %}
+			<div class="control-group">
+				<label class="control-label">Site title</label>
+				<div class="controls">
+					<input type="text" name="site_title" value="{{ blog.site_title }}" class="span5">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Tagline</label>
+				<div class="controls">
+					<input type="text" name="tagline" value="{{ blog.tagline }}" class="span5">
+					<span class="help-inline">Describe quickly this site.</span>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary">Save</button>
+		</form>
+	</article>
+</section>
+{% endblock %}
