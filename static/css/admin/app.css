@@ -24,9 +24,18 @@ span.text-search{
 	color: #999 !important;
 }
 
-th.col_active{
-	
+/*
+ * Accordion
+ */
+ 
+#no-collapse.accordion .accordion-heading{
+	padding: 8px 15px;
+	font-weight: bold;
 }
+
+/*
+ * Table 
+ */
 
 th.col_active a span.icon_on{
 	display: inline;
