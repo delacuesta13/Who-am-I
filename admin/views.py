@@ -43,7 +43,90 @@ def post(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('admin.views.login'))
     
-    return HttpResponseRedirect(reverse('admin.views.post_edit'))
+    return render_to_response('admin/post/index.html',
+                              {
+                               'nav_active': 'post',
+                               },
+                              context_instance=RequestContext(request))
+
+def post_list(request):
+    """This view only loads if receive ajax request"""
+    if request.is_ajax() and request.user.is_authenticated():
+        
+        posts = Post.objects.filter(blog__user__id=request.user.id).order_by('-date', 'title')        
+        search, filter_by_search = '', False
+        # 'order by' it orders the query by a specific attribute from model (column in db)
+        order_by, order_by_att = '-date', False
+        # 'order' it gives order (as ascendent and descendent) depending on the attribute
+        order = ['asc', 'desc']
+        page = 1
+        
+        # data received via get method
+        if request.method == 'GET':
+            # page
+            if 'page' in request.GET:
+                page = request.GET['page']
+            # filter by search
+            if ('search' in request.GET and
+                len(request.GET['search']) > 0):
+                search, filter_by_search = str(request.GET['search']), True
+            # order by attribute
+            if ('order_by' in request.GET and
+                request.GET['order_by'].lower() in ('date', 'title')):
+                order_by, order_by_att = request.GET['order_by'], True
+                if 'order' in request.GET and request.GET['order'].lower() in order:
+                    order = request.GET['order'].lower()
+                    if order == 'desc':
+                        order_by = '-' + order_by
+                else:
+                    order = order[0]
+            # set the custom query
+            posts = Post.objects.filter(blog__user__id=request.user.id,
+                                        title__icontains=search).order_by(order_by,
+                                                                          'title' if re.search(r'date$', order_by) else '-date')
+            if not order_by_att:
+                order = order[0]
+        else:
+            # no data received
+            order = order[0]
+            
+        # remove hyphen if is ordering downward
+        order_by = re.sub(r'^(-)(.+)$', r'\2', order_by)
+        
+        paginator = Paginator(posts, 10)
+        
+        # (num) page must be a integer
+        try:
+            page = int(page)
+        except ValueError:
+            page = 1
+        
+        # if query does not find records depending on (number) page, return records of last page 
+        try:
+            rs_list = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+            rs_list = paginator.page(paginator.num_pages)
+            
+        # create a copy for highlight on search 
+        object_list = list(rs_list.object_list)
+           
+        # highlight the search
+        if filter_by_search:
+            for i in xrange(len(object_list)):
+                object_list[i].name = re.sub(r'(?i)(' + search + ')', r'<b>\1</b>', object_list[i].name)
+                
+        return render_to_response('admin/post/list.html',
+                                  {
+                                   'posts_list': rs_list,
+                                   'page': page,
+                                   'search': search,
+                                   'order_by': order_by,
+                                   'order': order,
+                                   },
+                                  context_instance=RequestContext(request))
+                                                         
+    else:
+        return HttpResponse("Oops! It's not possible respond your request :(")
 
 def post_edit(request, post_id = 0):
     if not request.user.is_authenticated():
