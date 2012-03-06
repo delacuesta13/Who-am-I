@@ -2,6 +2,7 @@
 
 import os
 import re
+from datetime import datetime
 from time import strftime
 from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -16,7 +17,7 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.template.defaultfilters import slugify, filesizeformat
-from itsme.models import UserProfile, Upload, Category, Blog
+from itsme.models import UserProfile, Upload, Category, Blog, Post, CategoryRelationships
 
 """
 Important: 
@@ -28,6 +29,142 @@ def index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('admin.views.login'))
     return render_to_response('admin/index.html', context_instance=RequestContext(request))
+
+def extra_get_months():
+    months = ['January', 'February', 'March', 'April', 'May', 'June',
+              'July', 'August', 'September', 'October', 'December']
+    return months
+
+"""
+Post
+"""
+
+def post(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('admin.views.login'))
+    
+    return HttpResponseRedirect(reverse('admin.views.post_edit'))
+
+def post_edit(request, post_id = 0):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('admin.views.login'))
+    
+    mode = 'new'
+    post = None
+    
+    if re.search(r'/posts/edit/[0-9]+/$', request.path):
+        try:
+            post = Post.objects.get(id=post_id)
+        except ObjectDoesNotExist:
+            raise Http404
+        else:
+            mode = 'edit'
+            
+    success_form = False
+    warning_form = False
+    error_title = False
+    error_title_msg = ''         
+    error_slug = False
+    error_slug_msg = ''   
+    
+    post_categories = []      
+            
+    # check if data received via post
+    if (request.method == 'POST' and 'title' in request.POST
+        and 'slug' in request.POST and 'content' in request.POST):
+        # title
+        title = request.POST['title']
+        if not re.match(r'^.+$', title):
+            error_title, error_title_msg = True, 'Please, enter a post title.'
+            warning_form = True
+        # slug
+        slug = request.POST['slug']
+        if re.match(r'^.+$', slug):
+            try:
+                validate_slug(slug)
+            except ValidationError:
+                    error_slug, error_slug_msg = True, 'Please, enter a valid post slug.'
+                    warning_form = True
+            else:
+                if mode == 'new':
+                    if Post.objects.filter(slug__iexact=slug).count() != 0:
+                        error_slug, error_slug_msg = True, 'Already exists a post with same slug.'
+                        warning_form = True
+                else:
+                    if Post.objects.exclude(id=post.id).filter(slug__iexact=slug).count() != 0:
+                        error_slug, error_slug_msg = True, 'Already exists a post with same slug.'
+                        warning_form = True
+        else:
+            error_slug, error_slug_msg = True, 'Please, enter a valid post slug.'
+            warning_form = True
+        # continue if there are not errors
+        if not warning_form:
+            # create object Post
+            if mode == 'new':
+                post = Post(blog=blog_get_or_create(request.user),
+                            content=request.POST['content'],
+                            title=title, slug=slug)
+            else:
+                # mode edit
+                post.title = title
+                post.slug = slug
+                post.content = request.POST['content']
+            # date
+            try:
+                post.date = datetime(int(request.POST['year_date']), 
+                                     int(request.POST['month_date']),
+                                     int(request.POST['day_date']),
+                                     int(request.POST['hour_date']),
+                                     int(request.POST['minute_date']))
+            except:
+                post.date = datetime.now()
+            # status
+            if 'save' in request.POST:
+                post.status = 'draft'
+            elif 'publish' in request.POST:
+                if post.date > datetime.now():
+                    post.status = 'future'
+                else:
+                    post.status = 'publish'
+            # save post
+            post.save()
+            """ categories
+            1. remove relationships between categories and the post
+            2. save new relationship relationships
+            """
+            post.categories.clear()
+            for c in request.POST.getlist('categories[]'):
+                post_categories.append(c)
+                # save relationship
+                category = Category.objects.get(id=c)
+                associate = CategoryRelationships(category=category,
+                                                  post=post)
+                associate.save()
+            # redirect id a new objet post has been created
+            if mode == 'new':
+                return redirect('admin.views.post_edit', post.id)
+            else:
+                success_form = True
+        
+    return render_to_response('admin/post/edit.html',
+                              {
+                               'mode': mode,
+                               'post': post,
+                               'post_categories': post_categories,
+                               'categories': Category.objects.
+                               filter(type_category__exact='blog').order_by('name'),
+                               'request': request,
+                               'success_form': success_form,
+                               'warning_form': warning_form,
+                               'error_title': error_title,
+                               'error_title_msg': error_title_msg,
+                               'error_slug': error_slug,
+                               'error_slug_msg': error_slug_msg,
+                               'current_date': datetime.now(),
+                               'months': extra_get_months(),
+                               'nav_active': 'post',
+                               },
+                              context_instance=RequestContext(request))
 
 """
 Blog
