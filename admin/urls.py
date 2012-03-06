@@ -27,6 +27,7 @@ urlpatterns = patterns('admin.views',
     url(r'^blog/settings/$', 'blog_edit_settings'),
     # post
     url(r'^posts/$', 'post'),
+    url(r'^posts/list/$', 'post_list'),
     url(r'^posts/add/$', 'post_edit'),
     url(r'^posts/edit/(?P<post_id>\d+)/$', 'post_edit'),
 )
