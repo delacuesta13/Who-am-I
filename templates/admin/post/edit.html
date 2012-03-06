@@ -90,7 +90,14 @@
 				</div><!-- /title -->
 		 		<!-- slug -->
 		 		<div class="control-group {% if error_slug %}error{% endif %}">
-		 			<label class="control-label">Slug</label>
+		 			<label class="control-label">
+		 				Slug
+		 				<a href="#" rel="popover" data-original-title="What's a slug?"
+						data-content="A slug is the part of a URL which identifies a page using human-readable keywords.
+					 	It contains only letters, numbers, underscores or hyphens.">
+					 		(?)
+						</a>
+		 			</label>
 					<div class="controls">
 						<input type="text" name="slug"
 						{% if request.POST.slug or request.POST.slug|length == 0 %}
@@ -248,6 +255,12 @@
 <script src="{{ STATIC_URL }}js/admin/tinymce.admin.js"></script>
 <script>
 $(document).ready(function(){
+	// popover slug
+	$('a[rel=popover]').hover(function(){
+		$('a[rel=popover]').popover('show');
+	});
+	$('a[rel=popover]').click(function(){return false;});
+	// toggle edit post date
 	$("a#toggle_edit_date").click(function(){
 		$("li#edit_date").toggle();
 		return false;
