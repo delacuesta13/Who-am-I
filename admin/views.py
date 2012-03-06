@@ -136,10 +136,14 @@ def post_edit(request, post_id = 0):
             for c in request.POST.getlist('categories[]'):
                 post_categories.append(c)
                 # save relationship
-                category = Category.objects.get(id=c)
-                associate = CategoryRelationships(category=category,
-                                                  post=post)
-                associate.save()
+                try:
+                    category = Category.objects.get(id=c)
+                except ObjectDoesNotExist:
+                    pass
+                else:
+                    associate = CategoryRelationships(category=category,
+                                                      post=post)
+                    associate.save()
             # redirect id a new objet post has been created
             if mode == 'new':
                 return redirect('admin.views.post_edit', post.id)
