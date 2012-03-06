@@ -1,0 +1,283 @@
+{% extends "admin/base.html" %}
+
+{# {% if mode and mode|lower == "edit" %}{% else %}{% endif %} #}
+
+{% block title %}
+{% if mode and mode|lower == "edit"%}Edit post{% else %}New post{% endif %}
+{% endblock %}
+
+{% block header %}
+<div class="span12">
+{% if mode and mode|lower == "edit" %}
+<h1>Edit post</h1>
+<p>Be careful when edit post slug, because it could harm to content indexation</p>
+{% else %}
+<h1>New post</h1>
+<p>Create a post and publish it, save it or schedule it.</p>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="row">
+	<article class="span12">
+		<!-- form -->
+		<form method="post" 
+		{% if mode and mode|lower == "edit" %}
+		action="{% url admin.views.post_edit post.id %}"
+		{% else %}
+		action="{% url admin.views.post_edit %}"
+		{% endif %}
+		class="form-vertical">
+		<!-- row -->
+		<div class="row">
+			<!-- span8 -->
+			<div class="span8">
+				<!-- breadcrumb -->
+				<ul class="breadcrumb">
+					<li>
+						<a href="{% url admin.views.post %}">Posts</a> <span class="divider">/</span>
+					</li>
+					{% if mode and mode|lower == "edit" %}
+					<li class="active">
+						<a href="{% url admin.views.post_edit post.id %}">
+							{% if post.title|length > 0 %}{{ post.title }}{% else %}Edit{% endif %}
+						</a>
+					</li>
+					{% else %}
+					<li class="active">
+						<a href="{% url admin.views.post_edit %}">Add</a>
+					</li>
+					{% endif %}
+				</ul><!-- /breadcrumb -->
+				<!-- alert -->
+				{% if success_form %}
+		 		<div class="alert alert-success" data-dismiss="alert">
+					<a class="close">×</a>
+					<strong>Success!</strong> The data has been saved.
+				</div>
+		 		{% else %}
+		 			{% if warning_form %}
+		 			<div class="alert" data-dismiss="alert">
+						<a class="close">×</a>
+						<strong>Warning!</strong> Please, correct the next errors.
+					</div>
+		 			{% endif %}
+		 		{% endif %}
+		 		<!-- /alert -->
+		 		{% csrf_token %}
+		 		<!-- title -->
+		 		<div class="control-group {% if error_title %}error{% endif %}">
+		 			<label class="control-label">Title</label>
+					<div class="controls">
+						<input type="text" name="title"
+						{% if request.POST.title or request.POST.title|length == 0 %}
+						value="{{ request.POST.title }}"
+						{% else %}
+							{% if mode and mode|lower == "edit" %}
+								{% if post.title|length > 0 %}
+								value="{{ post.title }}"
+								{% else %}
+								placeholder="Enter title here"
+								{% endif %}
+							{% else %}
+							placeholder="Enter title here"
+							{% endif %}
+						{% endif %}
+						class="span8">
+						{% if error_title %}<span class="help-inline">{{ error_title_msg }}</span>{% endif %}
+					</div>
+				</div><!-- /title -->
+		 		<!-- slug -->
+		 		<div class="control-group {% if error_slug %}error{% endif %}">
+		 			<label class="control-label">Slug</label>
+					<div class="controls">
+						<input type="text" name="slug"
+						{% if request.POST.slug or request.POST.slug|length == 0 %}
+						value="{{ request.POST.slug }}"
+						{% else %}
+							{% if mode and mode|lower == "edit" %}
+								{% if post.slug|length > 0 %}
+								value="{{ post.slug }}"
+								{% else %}
+								placeholder="Enter slug here"
+								{% endif %}
+							{% else %}
+							placeholder="Enter slug here"
+							{% endif %}
+						{% endif %}
+						class="span8">
+						{% if error_slug %}<span class="help-inline">{{ error_slug_msg }}</span>{% endif %}
+					</div>
+				</div><!-- /slug -->
+				<!-- content -->
+				<div class="control-group">
+					<div class="controls">
+						<textarea class="span8 tinymce auto-height" name="content" rows="18">
+						{% if request.POST.content or request.POST.content|length == 0 %}
+					 		{{ request.POST.content }}
+						{% else %}
+							{% if mode and mode|lower == "edit" %}
+								{{ post.content }}
+							{% endif %}
+						{% endif %}
+						</textarea>
+					</div>
+				</div><!-- /content -->
+			</div><!-- /span8 -->
+			<div class="span4">
+				<!-- publish -->
+				<div class="accordion">
+            		<div class="accordion-group">
+              			<div class="accordion-heading">
+                  			<a class="accordion-toggle" data-toggle="collapse" href="#collapsePublish">
+								Publish
+							</a>
+              			</div>
+              			<div id="collapsePublish" class="accordion-body collapse in">
+                			<div class="accordion-inner">
+                				<ul class="unstyled">
+                					<li>
+                						Status:
+                						<strong>{% if mode and mode|lower == "edit" %}{{ post.get_status }}{% else %}None{% endif %}</strong> 
+                					</li>
+                					<li>
+                						<i class="icon-calendar"></i>
+                						{% if post.get_status %}
+                							{% if post.get_status == 'Draft' %}
+                							Publish on:
+                							{% else %}
+                								{% if post.get_status == 'Published' %}
+                								Published on:
+                								{% else %}
+                								Schudeled for:
+                								{% endif %}
+                							{% endif %}
+                						{% else %}
+                						Publish:
+                						{% endif %}
+                						<strong>
+                							{% if mode and mode|lower == "edit" %}
+                							{{ post.date|date:"M d, Y @ H:i" }}
+                							{% else %}
+                							inmediately
+                							{% endif %}
+                						</strong>
+                						<a href="#" id="toggle_edit_date">Edit</a>
+                					</li>
+                					<li style="display:none" id="edit_date">
+                						<select name="month_date" style="width:auto">
+                							{% for m in months %}
+                							<option value="{{ forloop.counter|stringformat:"02d" }}"
+                							{% if mode and mode|lower == "edit" and post.date %}
+                								{% if forloop.counter|stringformat:"02d" == post.date|date:"m" %}selected="selected"{% endif %}
+                							{% else %}
+                								{% if forloop.counter|stringformat:"02d" == current_date|date:"m" %}selected="selected"{% endif %}
+                							{% endif %}
+                							>{{ forloop.counter|stringformat:"02d" }}-{{ m|slice:":3" }}</option>
+                							{% endfor %}
+                						</select>
+                						{% if mode and mode|lower == "edit" and post.date %}
+                							<input type="text" name="day_date" style="width:17px" value="{{ post.date|date:'d' }}">,
+                							<input type="text" name="year_date" style="width:34px" value="{{ post.date|date:'Y' }}">
+                							@
+                							<input type="text" name="hour_date" style="width:17px" value="{{ post.date|date:'H' }}"> : 
+                							<input type="text" name="minute_date" style="width:17px" value="{{ post.date|date:'i' }}"> 
+                						{% else %}
+                							<input type="text" name="day_date" style="width:17px" value="{{ current_date|date:'d' }}">,
+                							<input type="text" name="year_date" style="width:34px" value="{{ current_date|date:'Y' }}">	
+                							@
+                							<input type="text" name="hour_date" style="width:17px" value="{{ current_date|date:'H' }}"> : 
+                							<input type="text" name="minute_date" style="width:17px" value="{{ current_date|date:'i' }}"> 
+                						{% endif %}
+                					</li>
+                					<li>
+                						<input type="submit" name="publish" value="Publish" class="btn btn-primary">
+                						<input type="submit" name="save" value="Save Draft" class="btn">
+                					</li>
+                				</ul>
+                			</div>
+              			</div>
+            		</div>
+				</div><!-- /publish -->
+				<!-- categories -->
+				<div class="accordion">
+            		<div class="accordion-group">
+              			<div class="accordion-heading">
+                  			<a class="accordion-toggle" data-toggle="collapse" href="#collapseCategories">
+								Categories
+							</a>
+              			</div>
+              			<div id="collapseCategories" class="accordion-body collapse in">
+                			<div class="accordion-inner" style="overflow: auto; height: 72px;">
+                				<ul class="unstyled">
+									{% for category in categories %}
+									<li>
+										<input type="checkbox" name="categories[]" value="{{ category.id }}"
+										{% for c in post_categories %}
+											{% if c|stringformat:"s" == category.id|stringformat:"s" %}
+												checked="checked"
+											{% endif %}
+										{% empty %}
+											{% for categ_rlat in post.categories.all %}
+												{% if categ_rlat.id|stringformat:"s" == category.id|stringformat:"s" %}
+													checked="checked"
+												{% endif %}
+											{% endfor %}
+										{% endfor %}
+										> {{ category.name }}
+									</li>                					
+									{% empty %}
+									<li>No categories to associate with post :(</li>                					
+									{% endfor %}                					
+                  				</ul>
+                			</div>
+              			</div>
+            		</div>
+				</div><!-- /categories -->
+			</div><!-- /span4 -->
+		</div><!-- /row -->
+		</form><!-- /form -->
+	</article>
+	<article class="span8">
+</section>
+{% endblock %}
+
+{% block extrajs %}
+<script src="{{ STATIC_URL }}js/tinymce/jquery.tinymce.js"></script>
+<script src="{{ STATIC_URL }}js/admin/tinymce.admin.js"></script>
+<script>
+$(document).ready(function(){
+	$("a#toggle_edit_date").click(function(){
+		$("li#edit_date").toggle();
+		return false;
+	});
+	{% if mode and mode|lower == "edit" %}
+	$("input[name=title]").focusout(function(){
+		var help_slug = confirm("Would you like a suggestion for the slug field according to the post title entered?");
+		if (help_slug) {
+			$.ajax({
+				url: '{% url admin.views.category_get_slug %}',
+				type: "GET",
+				data: {str: $("input[name=title]").val()},
+				success: function( data ) {
+					$("input[name=slug]").val(data);
+				}
+			});	
+		}
+	});
+	{% else %}
+	$("input[name=title]").keyup(function(){
+		$.ajax({
+			url: '{% url admin.views.category_get_slug %}',
+			type: "GET",
+			data: {str: $("input[name=title]").val()},
+			success: function( data ) {
+				$("input[name=slug]").val(data);
+			}
+		});
+	});
+	{% endif %}
+});
+</script>
+{% endblock %}
