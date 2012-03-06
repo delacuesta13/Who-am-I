@@ -25,4 +25,8 @@ urlpatterns = patterns('admin.views',
     url(r'^categories/delete/$', 'category_delete'),
     # blog
     url(r'^blog/settings/$', 'blog_edit_settings'),
+    # post
+    url(r'^posts/$', 'post'),
+    url(r'^posts/add/$', 'post_edit'),
+    url(r'^posts/edit/(?P<post_id>\d+)/$', 'post_edit'),
 )
