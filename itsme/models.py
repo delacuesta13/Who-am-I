@@ -52,6 +52,16 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
     
+    def get_status(self):
+        status = self.status.lower()
+        if status == 'draft': 
+            status = status.capitalize()
+        elif status == 'publish':
+            status = 'Published'
+        elif status == 'future': 
+            status = 'Schudeled'   
+        return status
+        
 class Comment(models.Model):
     post = models.ForeignKey(Post)
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
