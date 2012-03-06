@@ -1,0 +1,78 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Posts{% endblock %}
+
+{% block header %}
+<div class="span12">
+<h1>
+	Posts
+	<small>
+		<a href="{% url admin.views.post_edit %}" class="btn"><i class="icon-plus"></i>Add new</a>
+	</small>
+</h1>
+<p></p>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="row">
+	<div class="span12">
+		<form>
+			<div class="control-group">
+				<div class="controls">
+					<div class="input-prepend">
+						<span class="add-on">
+							<i class="icon-search"></i>
+						</span>
+						<input type="search" name="search" id="search" class="span4" placeholder="Search by post title">
+					</div>
+				</div>
+			</div>
+		</form>
+		<div id="msg_rowsDeleted">
+			<div id="loaderDelete" style="display: none;">
+				<img src="{{ STATIC_URL }}img/ajax-loader-horizontal.gif" alt="Loading" class="center">
+			</div>
+			<div class="alert alert-success" id="alertDelete" style="display: none;">
+				<a class="close" data-dismiss="alert" href="#">×</a>
+				<div id="msgDelete"></div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="row">
+	<article class="span12" id="queryAjax">
+	</article>
+</section>
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+function loadAjax(page, search, order_by, order){
+	$(function() {
+		$.ajax({
+			url: '{% url admin.views.post_list %}',
+			type: "GET",
+			data: {page: page, search: search,
+				   order_by: order_by, order: order},
+			beforeSend: function() {
+				$("#queryAjax").html('<img src="{{ STATIC_URL }}img/ajax-loader.gif" alt="Loading" class="center">');
+			},
+			success: function( data ) {
+				$("#queryAjax").html(data);
+			}
+		});
+	});
+}
+
+$(document).ready(function () {
+	loadAjax(1, '', '', '');
+	$("form").submit(function() {
+		return false;
+	});
+	$("#search").keyup(function(){
+		loadAjax(1, $("#search").val(), 'title', 'asc');
+	});
+});
+</script>
+{% endblock %}
