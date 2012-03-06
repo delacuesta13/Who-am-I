@@ -1,0 +1,6 @@
+{% if posts_list.paginator.count %}
+<span class="text-search">
+	Showing {{ posts_list.object_list|length }} of {{ posts_list.paginator.count }} items
+</span>
+{% endif %} 
+
