@@ -4,7 +4,8 @@
 :: Shared Styles
 :: Page Log in
 :: Page Media list
-:: Page Category list
+:: Page Categories list
+:: Page Posts list
 :: Media queries
 */
 
@@ -101,7 +102,7 @@
 	}
 
 /* -----------------------------------------
-   :: Page Category list
+   :: Page Categories list
    ----------------------------------------- */
    	table#categories-list thead th.checkbox, table#categories-list tbody td.checkbox{
    		padding: 8px 12px;
@@ -117,6 +118,31 @@
 	}
 
 /* -----------------------------------------
+   :: Page Posts list
+   ----------------------------------------- */
+
+	table#posts-list thead th.checkbox, table#posts-list tbody td.checkbox{
+   		padding: 8px 12px;
+   		width: 13px;   		
+	}
+
+	table#posts-list thead th.checkbox input, table#posts-list tbody td.checkbox input{
+		margin-left: 0 !important;
+	}
+	
+	table#posts-list thead th.title, table#posts-list tbody td.title{
+		width: 740px;
+	}
+	
+	table#posts-list thead th.date, table#posts-list tbody td.date{
+		width: 140px;
+	}
+	
+	table#posts-list thead th.categories, table#posts-list tbody td.categories{
+		width: 200px;
+	}
+
+/* -----------------------------------------
    :: Media queries
    ----------------------------------------- */
    
@@ -127,7 +153,8 @@
 	}
 
 	@media (max-width: 479px) {
-		table#categories-list thead th.slug, table#categories-list tbody td.slug{
+		table#categories-list thead th.slug, table#categories-list tbody td.slug,
+		table#posts-list thead th.categories, table#posts-list tbody td.categories{
 			display: none;
 		}
 	}
