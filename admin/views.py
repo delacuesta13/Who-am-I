@@ -53,10 +53,22 @@ def post_list(request):
     """This view only loads if receive ajax request"""
     if request.is_ajax() and request.user.is_authenticated():
         
-        posts = Post.objects.filter(blog__user__id=request.user.id).order_by('-date', 'title')        
+        # This will be used on posts list template. 
+        # Like keys are unorganized in dictionaries,
+        # use a list and add items depending on the
+        # order to be shown.
+        post_attr = [
+                     {'attr': 'title', 'order_by': True, 'str': 'Title'},
+                     {'attr': 'categories', 'order_by': False, 'str': 'Categories'},
+                     {'attr': 'date', 'order_by': True, 'str': 'Date'},
+                    ]
+        # get attributes that allow order query
+        order_attr = [attr['attr'] for attr in post_attr if attr['order_by']]
+        
+        posts = Post.objects.filter(blog__user__id=request.user.id).order_by(*order_attr)        
         search, filter_by_search = '', False
         # 'order by' it orders the query by a specific attribute from model (column in db)
-        order_by, order_by_att = '-date', False
+        order_by, order_by_att = '', False
         # 'order' it gives order (as ascendent and descendent) depending on the attribute
         order = ['asc', 'desc']
         page = 1
@@ -72,8 +84,18 @@ def post_list(request):
                 search, filter_by_search = str(request.GET['search']), True
             # order by attribute
             if ('order_by' in request.GET and
-                request.GET['order_by'].lower() in ('date', 'title')):
+                request.GET['order_by'].lower() in order_attr):
                 order_by, order_by_att = request.GET['order_by'], True
+                # get a copy of order_attr
+                temp = order_attr[:]
+                # remove from copy the order_by item
+                temp.remove(order_by)
+                # create a new list
+                order_attr = list()
+                # add in new list order_by
+                order_attr.append(order_by)
+                # add in new list, old list without order_by item 
+                order_attr += temp
                 if 'order' in request.GET and request.GET['order'].lower() in order:
                     order = request.GET['order'].lower()
                     if order == 'desc':
@@ -82,13 +104,12 @@ def post_list(request):
                     order = order[0]
             # set the custom query
             posts = Post.objects.filter(blog__user__id=request.user.id,
-                                        title__icontains=search).order_by(order_by,
-                                                                          'title' if re.search(r'date$', order_by) else '-date')
+                                        title__icontains=search).order_by(*order_attr)
             if not order_by_att:
-                order = order[0]
+                order_by, order = order_attr[0], order[0]
         else:
             # no data received
-            order = order[0]
+            order_by, order = order_attr[0], order[0]
             
         # remove hyphen if is ordering downward
         order_by = re.sub(r'^(-)(.+)$', r'\2', order_by)
@@ -117,6 +138,7 @@ def post_list(request):
                 
         return render_to_response('admin/post/list.html',
                                   {
+                                   'post_attr': post_attr,
                                    'posts_list': rs_list,
                                    'page': page,
                                    'search': search,
