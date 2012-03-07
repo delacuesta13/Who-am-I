@@ -1,124 +1,139 @@
-.navbar-fixed-top .brand{
-	color: #000;
-	font-weight: bold;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
-}
+/* -------------------------------------------------- 
+    Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Page Log in
+:: Page Media list
+:: Page Category list
+:: Media queries
+*/
 
-.auto-height{
-	height: auto !important;
-}
+/* -----------------------------------------
+   :: Shared Styles
+   ----------------------------------------- */
 
-footer#footer div{
-	border-top: 1px solid #e5e5e5;
-	margin-top: 45px;
-	padding: 35px 0 36px;
-}
+	.navbar-fixed-top .brand{
+		color: #000;
+		font-weight: bold;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
+	}
 
-img.center{
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
+	.auto-height{
+		height: auto !important;
+	}
 
-span.text-search{
-	color: #999 !important;
-}
+	footer#footer div{
+		border-top: 1px solid #e5e5e5;
+		margin-top: 45px;
+		padding: 35px 0 36px;
+	}
 
-/*
- * Table 
- */
+	img.center{
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
 
-th.col_active a span.icon_on{
-	display: inline;
-} th.col_active a span.icon_off{
-	display: none;
-}
+	span.text-search{
+		color: #999 !important;
+	}
 
-th.col_active a:hover span.icon_on{
-	display: none;
-} th.col_active a:hover span.icon_off{
-	display: inline;
-}
+	/* Table */
 
-th.col_inactive a{
-	font-weight: normal;
-}
+	th.col_active a span.icon_on{
+		display: inline;
+	} th.col_active a span.icon_off{
+		display: none;
+	}
 
-th.col_inactive a span.icon_off{
-	display: none;
-} th.col_inactive a:hover span.icon_off{
-	display:inline;
-}
+	th.col_active a:hover span.icon_on{
+		display: none;
+	} th.col_active a:hover span.icon_off{
+		display: inline;
+	}
 
-/*
- * Page Log In 
- */
+	th.col_inactive a{
+		font-weight: normal;
+	}
 
-body.login{
-	padding-top: 0px;
-}
+	th.col_inactive a span.icon_off{
+		display: none;
+	} th.col_inactive a:hover span.icon_off{
+		display:inline;
+	}
 
-@media (min-width: 1024px) {
+/* -----------------------------------------
+   :: Page Log in
+   ----------------------------------------- */
+
+	body.login{
+		padding-top: 0px;
+	}
+
 	body.login h1.title_login{
-		padding-top: 18px;
+		padding-bottom: 10px;
 	}
-}
 
-body.login h1.title_login{
-	padding-bottom: 10px;
-}
+/* -----------------------------------------
+   :: Page Media list
+   ----------------------------------------- */
 
-/*
- * Page Media list
- */
+	table#media-list thead th.checkbox, table#media-list tbody td.checkbox{
+		padding: 8px 12px;
+		width: 13px;		
+	}
 
-table#media-list thead th.checkbox, table#media-list tbody td.checkbox{
-	width: 13px;
-	padding: 8px 12px;
-}
+	table#media-list thead th.checkbox input, table#media-list tbody td.checkbox input{
+		margin-left: 0 !important;
+	}
 
-table#media-list thead th.checkbox input, table#media-list tbody td.checkbox input{
-	margin-left: 0 !important;
-}
-
-table#media-list thead th.image, table#media-list tbody td.image{
-	width: 80px;
-}
-
-table#media-list thead th.file, 
-table#media-list tbody td.file{
-	border-left: 0px;
-}
-
-table#media-list thead th.date{
-	width: 140px;
-}
-
-@media (max-width: 319px) {
 	table#media-list thead th.image, table#media-list tbody td.image{
-		display: none;
+		width: 80px;
 	}
-}
 
-/*
- * Page Category list
- */
-
-table#categories-list thead th.checkbox, table#categories-list tbody td.checkbox{
-	width: 13px;
-	padding: 8px 12px;
-}
-
-table#categories-list thead th.checkbox input, table#categories-list tbody td.checkbox input{
-	margin-left: 0 !important;
-}
-
-table#categories-list thead th.type_category, table#categories-list tbody td.type_category{
-	width: 140px;
-}
-
-@media (max-width: 479px) {
-	table#categories-list thead th.slug, table#categories-list tbody td.slug{
-		display: none;
+	table#media-list thead th.file, 
+	table#media-list tbody td.file{
+		border-left: 0px;
 	}
-}
+
+	table#media-list thead th.date{
+		width: 140px;
+	}
+
+/* -----------------------------------------
+   :: Page Category list
+   ----------------------------------------- */
+   	table#categories-list thead th.checkbox, table#categories-list tbody td.checkbox{
+   		padding: 8px 12px;
+   		width: 13px;   		
+	}
+
+	table#categories-list thead th.checkbox input, table#categories-list tbody td.checkbox input{
+		margin-left: 0 !important;
+	}
+
+	table#categories-list thead th.type_category, table#categories-list tbody td.type_category{
+		width: 140px;
+	}
+
+/* -----------------------------------------
+   :: Media queries
+   ----------------------------------------- */
+   
+	@media (max-width: 319px) {
+		table#media-list thead th.image, table#media-list tbody td.image{
+			display: none;
+		}
+	}
+
+	@media (max-width: 479px) {
+		table#categories-list thead th.slug, table#categories-list tbody td.slug{
+			display: none;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		body.login h1.title_login{
+			padding-top: 18px;
+		}
+	}
