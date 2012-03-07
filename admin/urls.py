@@ -30,4 +30,5 @@ urlpatterns = patterns('admin.views',
     url(r'^posts/list/$', 'post_list'),
     url(r'^posts/add/$', 'post_edit'),
     url(r'^posts/edit/(?P<post_id>\d+)/$', 'post_edit'),
+    url(r'^posts/delete/$', 'post_delete'),
 )
