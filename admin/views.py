@@ -134,7 +134,7 @@ def post_list(request):
         # highlight the search
         if filter_by_search:
             for i in xrange(len(object_list)):
-                object_list[i].name = re.sub(r'(?i)(' + search + ')', r'<b>\1</b>', object_list[i].name)
+                object_list[i].title = re.sub(r'(?i)(' + search + ')', r'<b>\1</b>', object_list[i].title)
                 
         return render_to_response('admin/post/list.html',
                                   {
@@ -274,6 +274,23 @@ def post_edit(request, post_id = 0):
                                'nav_active': 'post',
                                },
                               context_instance=RequestContext(request))
+
+def post_delete(request):
+    if (request.user.is_authenticated() and request.is_ajax()
+        and request.method == 'POST'):
+        # save in a list the received ids
+        id_list = request.POST.getlist('id[]')
+        count_success = 0
+        for id_post in id_list:
+            try:
+                count_success += 1
+                post = Post.objects.get(pk=id_post)
+                post.delete()
+            except ObjectDoesNotExist:
+                count_success -= 1
+        return HttpResponse('<strong>Success!</strong> %d of %d rows selected have been deleted.' % (count_success, len(id_list)))
+    else:
+        return HttpResponse("Oops! It's not possible respond your request :(")
 
 """
 Blog
