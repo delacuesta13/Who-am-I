@@ -35,7 +35,7 @@ class Category(models.Model):
 class Post(models.Model):
     blog = models.ForeignKey(Blog)
     categories = models.ManyToManyField(Category, through='CategoryRelationships')
-    date = models.DateTimeField(auto_now=False, auto_now_add=True)
+    date = models.DateTimeField(auto_now=False, auto_now_add=False)
     title = models.TextField(blank=True)
     slug = models.SlugField(unique=True, blank=True)
     content = models.TextField(blank=True)
@@ -81,6 +81,8 @@ class Project(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
     site_url = models.URLField(blank=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, auto_now=True, auto_now_add=False)
     
     def __unicode_(self):
         return self.name
