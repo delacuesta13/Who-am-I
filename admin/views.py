@@ -90,18 +90,18 @@ def post_list(request):
                 temp = order_attr[:]
                 # remove from copy the order_by item
                 temp.remove(order_by)
-                # create a new list
-                order_attr = list()
-                # add in new list order_by
-                order_attr.append(order_by)
-                # add in new list, old list without order_by item 
-                order_attr += temp
                 if 'order' in request.GET and request.GET['order'].lower() in order:
                     order = request.GET['order'].lower()
                     if order == 'desc':
                         order_by = '-' + order_by
                 else:
                     order = order[0]
+                # create a new list
+                order_attr = list()
+                # add in new list order_by
+                order_attr.append(order_by)
+                # add in new list, old list without order_by item 
+                order_attr += temp
             # set the custom query
             posts = Post.objects.filter(blog__user__id=request.user.id,
                                         title__icontains=search).order_by(*order_attr)
