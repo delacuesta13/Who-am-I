@@ -20,4 +20,8 @@
 
     Alias /static/ /var/django/projects/whoami/static/
     Alias /media/ /var/django/projects/whoami/media/
+    
+    # AliasMatch to icons project
+    # http://systemadmin.es/2011/03/dominio-de-contenido-estatico-con-apache-co$
+    AliasMatch ^(.*)\.(jpg|ico|png)$ /var/django/projects/whoami/static/img/icons/$1.$2
 </VirtualHost>
