@@ -55,7 +55,7 @@ def project_edit(request, project_id = 0):
     mode = 'new'
     project = None
     
-    if re.search(r'/project/edit/[0-9]+/$', request.path):
+    if re.search(r'/work/edit/[0-9]+/$', request.path):
         try:
             project = Project.objects.get(id=project_id)
         except ObjectDoesNotExist:
