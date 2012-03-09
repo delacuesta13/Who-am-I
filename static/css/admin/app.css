@@ -5,7 +5,7 @@
 :: Page Log in
 :: Page Media list
 :: Page Categories list
-:: Page Posts list
+:: Page Posts list and Projects list
 :: Media queries
 */
 
@@ -118,28 +118,33 @@
 	}
 
 /* -----------------------------------------
-   :: Page Posts list
+   :: Page Posts list and Projects list
    ----------------------------------------- */
 
-	table#posts-list thead th.checkbox, table#posts-list tbody td.checkbox{
+	table#posts-list thead th.checkbox, table#posts-list tbody td.checkbox,
+	table#projects-list thead th.checkbox, table#projects-list tbody td.checkbox{
    		padding: 8px 12px;
    		width: 13px;   		
 	}
 
-	table#posts-list thead th.checkbox input, table#posts-list tbody td.checkbox input{
+	table#posts-list thead th.checkbox input, table#posts-list tbody td.checkbox input,
+	table#projects-list thead th.checkbox input, table#projects-list tbody td.checkbox input{
 		margin-left: 0 !important;
 	}
 	
-	table#posts-list thead th.title, table#posts-list tbody td.title{
-		width: 740px;
+	table#posts-list thead th.title, table#posts-list tbody td.title,
+	table#projects-list thead th.name, table#projects-list tbody td.name{
+		width: 640px;
 	}
 	
-	table#posts-list thead th.date, table#posts-list tbody td.date{
-		width: 140px;
+	table#posts-list thead th.date, table#posts-list tbody td.date,
+	table#projects-list thead th.created_at, table#projects-list tbody td.created_at{
+		width: 160px;
 	}
 	
-	table#posts-list thead th.categories, table#posts-list tbody td.categories{
-		width: 200px;
+	table#posts-list thead th.categories, table#posts-list tbody td.categories,
+	table#projects-list thead th.categories, table#projects-list tbody td.categories{
+		width: 280px;
 	}
 
 /* -----------------------------------------
@@ -154,7 +159,8 @@
 
 	@media (max-width: 479px) {
 		table#categories-list thead th.slug, table#categories-list tbody td.slug,
-		table#posts-list thead th.categories, table#posts-list tbody td.categories{
+		table#posts-list thead th.categories, table#posts-list tbody td.categories,
+		table#projects-list thead th.categories, table#projects-list tbody td.categories{
 			display: none;
 		}
 	}
