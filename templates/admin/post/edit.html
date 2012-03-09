@@ -68,7 +68,10 @@
 		 		{% csrf_token %}
 		 		<!-- title -->
 		 		<div class="control-group {% if error_title %}error{% endif %}">
-		 			<label class="control-label">Title</label>
+		 			<label class="control-label">
+		 				Title
+		 				<a href="#" style="font-size: 12px;" id="suggestSlug">(suggest slug field)</a>
+		 			</label>
 					<div class="controls">
 						<input type="text" name="title"
 						{% if request.POST.title or request.POST.title|length == 0 %}
@@ -255,32 +258,13 @@
 <script src="{{ STATIC_URL }}js/admin/tinymce.admin.js"></script>
 <script>
 $(document).ready(function(){
-	// popover slug
+	// popover, about slug
 	$('a[rel=popover]').hover(function(){
 		$('a[rel=popover]').popover('show');
 	});
 	$('a[rel=popover]').click(function(){return false;});
-	// toggle edit post date
-	$("a#toggle_edit_date").click(function(){
-		$("li#edit_date").toggle();
-		return false;
-	});
-	{% if mode and mode|lower == "edit" %}
-	$("input[name=title]").focusout(function(){
-		var help_slug = confirm("Would you like a suggestion for the slug field according to the post title entered?");
-		if (help_slug) {
-			$.ajax({
-				url: '{% url admin.views.category_get_slug %}',
-				type: "GET",
-				data: {str: $("input[name=title]").val()},
-				success: function( data ) {
-					$("input[name=slug]").val(data);
-				}
-			});	
-		}
-	});
-	{% else %}
-	$("input[name=title]").keyup(function(){
+	// suggest slug
+	$('a#suggestSlug').click(function(){
 		$.ajax({
 			url: '{% url admin.views.category_get_slug %}',
 			type: "GET",
@@ -289,8 +273,13 @@ $(document).ready(function(){
 				$("input[name=slug]").val(data);
 			}
 		});
+		return false;
 	});
-	{% endif %}
+	// toggle edit post date
+	$("a#toggle_edit_date").click(function(){
+		$("li#edit_date").toggle();
+		return false;
+	});
 });
 </script>
 {% endblock %}

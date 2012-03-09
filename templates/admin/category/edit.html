@@ -58,7 +58,10 @@
 		 	{% endif %}
 			{% csrf_token %}
 			<div class="control-group {% if error_name %}error{% endif %}">
-				<label class="control-label">Name</label>
+				<label class="control-label">
+					Name
+					<a href="#" style="font-size: 12px;" id="suggestSlug">(suggest slug field)</a>
+				</label>
 				<div class="controls">
 					<input type="text" name="name"
 					{% if request.POST.name or request.POST.name|length == 0 %}
@@ -144,26 +147,13 @@
 {% block extrajs %}
 <script type="text/javascript">
 $(document).ready(function () {
+	//popover, about slug
 	$('a[rel=popover]').hover(function(){
 		$('a[rel=popover]').popover('show');
 	});
 	$('a[rel=popover]').click(function(){return false;});
-	{% if mode and mode|lower == "edit" %}
-	$("input[name=name]").focusout(function(){
-		var help_slug = confirm("Would you like a suggestion for the slug field according to the category name entered?");
-		if (help_slug) {
-			$.ajax({
-				url: '{% url admin.views.category_get_slug %}',
-				type: "GET",
-				data: {str: $("input[name=name]").val()},
-				success: function( data ) {
-					$("input[name=slug]").val(data);
-				}
-			});	
-		}
-	});
-	{% else %}
-	$("input[name=name]").keyup(function(){
+	// suggest slug
+	$('a#suggestSlug').click(function(){
 		$.ajax({
 			url: '{% url admin.views.category_get_slug %}',
 			type: "GET",
@@ -172,8 +162,8 @@ $(document).ready(function () {
 				$("input[name=slug]").val(data);
 			}
 		});
+		return false;
 	});
-	{% endif %}
 });
 </script>
 {% endblock %}
