@@ -109,7 +109,7 @@ it sets the current item navigation.
 						{% endcomment %}
 						<!-- work -->
 						<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
-							<a href="#">Work</a>
+							<a href={% url admin.views.project %}>Work</a>
 						</li>
 						<li class="divider-vertical"></li>
 						<!-- messages -->
