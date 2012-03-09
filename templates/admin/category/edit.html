@@ -63,7 +63,7 @@
 					<a href="#" style="font-size: 12px;" id="suggestSlug">(suggest slug field)</a>
 				</label>
 				<div class="controls">
-					<input type="text" name="name"
+					<input type="text" name="name" required="required"
 					{% if request.POST.name or request.POST.name|length == 0 %}
 					value="{{ request.POST.name }}"
 					{% else %}

@@ -8,7 +8,7 @@
 <div class="span12">
 {% if mode and mode|lower == "edit" %}
 <h1>Edit post</h1>
-<p>Be careful when edit post slug, because it could harm to content indexation</p>
+<p>Be careful when edit post slug, because it could harm to content indexation.</p>
 {% else %}
 <h1>New post</h1>
 <p>Create a post and publish it, save it or schedule it.</p>
@@ -71,7 +71,7 @@
 		 				<a href="#" style="font-size: 12px;" id="suggestSlug">(suggest slug field)</a>
 		 			</label>
 					<div class="controls">
-						<input type="text" name="title"
+						<input type="text" name="title" required="required"
 						{% if request.POST.title or request.POST.title|length == 0 %}
 						value="{{ request.POST.title }}"
 						{% else %}
@@ -100,7 +100,7 @@
 						</a>
 		 			</label>
 					<div class="controls">
-						<input type="text" name="slug"
+						<input type="text" name="slug" required="required"
 						{% if request.POST.slug or request.POST.slug|length == 0 %}
 						value="{{ request.POST.slug }}"
 						{% else %}
