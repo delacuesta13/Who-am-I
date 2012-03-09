@@ -45,7 +45,7 @@ def post(request):
     
     return render_to_response('admin/post/index.html',
                               {
-                               'nav_active': 'post',
+                               'nav_active': 'posts',
                                },
                               context_instance=RequestContext(request))
 
@@ -271,7 +271,7 @@ def post_edit(request, post_id = 0):
                                'error_slug_msg': error_slug_msg,
                                'current_date': datetime.now(),
                                'months': extra_get_months(),
-                               'nav_active': 'post',
+                               'nav_active': 'posts',
                                },
                               context_instance=RequestContext(request))
 
