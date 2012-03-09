@@ -43,7 +43,11 @@ def project(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('admin.views.login'))
     
-    return HttpResponseRedirect(reverse('admin.views.project_edit'))
+    return render_to_response('admin/project/index.html',
+                              {
+                               'nav_active': 'work',
+                               },
+                              context_instance=RequestContext(request))
 
 def project_list(request):
     pass
