@@ -48,7 +48,7 @@ def project(request):
 def project_list(request):
     pass
     
-def project_edit(request, project_id):
+def project_edit(request, project_id = 0):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('admin.views.login'))
     
