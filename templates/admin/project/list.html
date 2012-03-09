@@ -1,0 +1,191 @@
+{% if projects_list.paginator.count %}
+<span class="text-search">
+	Showing {{ projects_list.object_list|length }} of {{ projects_list.paginator.count }} items
+</span>
+{% endif %}
+<form method="post" action="#" id="delete">
+<table class="table table-striped table-bordered" id="projects-list">
+	<thead>
+		<tr>
+			<th class="checkbox">
+				<input type="checkbox" class="toggle">
+			</th>
+			{% for attr in project_attr %}
+				{% if attr.order_by %}
+					{% if attr.attr == order_by %}
+					<th class="{{ attr.attr }} col_active">
+						{% if order == 'asc' %}
+						<a href="#" onclick="loadAjax(1, '{{ search }}', '{{ attr.attr }}', 'desc'); return false;">
+							{{ attr.str }}
+							<span class="icon_on"><i class="icon-chevron-up"></i></span>
+							<span class="icon_off"><i class="icon-chevron-down"></i></span>
+						</a>		
+						{% else %}
+						<a href="#" onclick="loadAjax(1, '{{ search }}', '{{ attr.attr }}', 'asc'); return false;">
+							{{ attr.str }}
+							<span class="icon_on"><i class="icon-chevron-down"></i></span>
+							<span class="icon_off"><i class="icon-chevron-up"></i></span>
+						</a>		
+						{% endif %}
+					</th>		
+					{% else %}
+					<th class="{{ attr.attr }} col_inactive">
+						<a href="#" onclick="loadAjax(1, '{{ search }}', '{{ attr.attr }}', 'asc'); return false;">
+							{{ attr.str }}
+							<span class="icon_off"><i class="icon-chevron-up"></i></span>
+						</a>		
+					</th>		
+					{% endif %}		
+				{% else %}
+				<th class="{{ attr.attr }}">
+					{{ attr.str }}
+				</th>		
+				{% endif %}		
+			{% endfor %}		
+		</tr>
+	</thead>
+	<tbody>
+		{% for project in projects_list.object_list %}
+		<tr>
+			<td class="checkbox">
+				<input type="checkbox" name="id[]" id="id" value="{{ project.id }}" class="checkbox">
+			</td>
+			<td class="name">
+				<a href="{% url admin.views.project_edit project.id %}">
+					{{ project.name|safe }}
+				</a>
+			</td>
+			<td  class="categories">
+				{{ project.categories.all|join:", "|default:"<strong>Uncategorized</strong>" }}
+			</td>
+			<td class="created_at">
+				{{ project.created_at|date:"Y/m/d" }}
+			</td>
+		</tr>
+		{% empty %}
+		<tr>
+			<td colspan="4" style="text-align: center;">There is no records to show.</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="span10">
+		<button class="btn btn-danger">
+			<i class="icon-trash icon-white"></i>
+			Delete
+		</button>
+		{% if projects_list.has_other_pages %}
+		<div class="pagination" style="margin:0; float:right">
+			<ul>
+				{% if projects_list.has_previous %}
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ projects_list.previous_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						&larr;
+					</a>
+				</li>
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ projects_list.previous_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						{{ projects_list.previous_page_number }}
+					</a>
+				</li>
+				{% endif %}
+				<li class="active"><a href="#">{{ projects_list.number }}</a></li>
+				{% if projects_list.has_next %}
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ projects_list.next_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						{{ projects_list.next_page_number }}
+					</a>
+				</li>
+				<li>
+					<a style="cursor: pointer"
+					onclick="loadAjax({{ projects_list.next_page_number }}, '{{ search }}', '{{ order_by }}', '{{ order }}'); return none;">
+						&rarr;
+					</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+		{% endif %}
+	</div>
+</div>
+</form>
+
+<div id="mymodal" class="modal hide">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>Projects</h3>
+	</div>
+	<div class="modal-body">
+	<p></p>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-primary">Save changes</a>
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	
+	$('#myModal').modal({
+		keyboard: true,
+		backdrop: true
+	});
+	
+	// active and unactive checkboxes
+	$("table :checkbox.toggle").each(function(i, toggle) {
+		$(toggle).change(function(e) {
+			$(toggle).parents("table:first").find(":checkbox:not(.toggle)").each(function(j, checkbox) {
+				checkbox.checked = !checkbox.checked;
+			});
+		});
+	});
+	
+	$("form#delete").submit(function(){
+		
+		// it was not checked item
+		if ($("form#delete tbody input:checkbox:checked").length == 0) {
+			$('#mymodal .modal-body').html('<p>Please, select at least a row for delete.</p>');
+			$('#mymodal .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Close</a>');
+			$('#mymodal').modal('show');
+		} else {
+			var id_checked = new Array();
+			// get checked checkboxes
+			$("form#delete tbody input:checkbox:checked").each(function(){
+				id_checked.push($(this).val());
+			});
+			$('#mymodal .modal-body').html('<p>Are you sure that want to delete the selected rows?</p>');
+			var buttons_confirm = '<a href="#" class="btn" id="confirmDelete"><i class="icon-ok"></i> Accept</a>' +
+								  '<a href="#" class="btn" data-dismiss="modal"><i class="icon-ban-circle"></i> Cancel</a>';
+			$('#mymodal .modal-footer').html(buttons_confirm);
+			$('#mymodal').modal('show');
+			// confirmed for delete
+			$('#confirmDelete').click(function(){
+				$('#mymodal').modal('hide');
+				$.ajax({
+					url: '{% url admin.views.project_delete %}',
+					type: "POST",
+					data: {'id[]': id_checked, 'csrfmiddlewaretoken': '{{csrf_token}}'},
+					beforeSend: function() {
+						$('#msg_rowsDeleted #loaderDelete').toggle();
+					},
+					success: function( data ) {
+						$('#msg_rowsDeleted #loaderDelete').toggle();
+						$('#msg_rowsDeleted #alertDelete #msgDelete').html(data);
+						$('#msg_rowsDeleted #alertDelete').fadeIn('slow');
+						loadAjax(1, '{{ search }}');
+					}
+				});
+				return false;
+			});
+		}
+		
+		return false;
+	});
+	
+});
