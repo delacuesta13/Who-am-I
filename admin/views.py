@@ -167,7 +167,21 @@ def project_edit(request, project_id = 0):
                               context_instance=RequestContext(request))
 
 def project_delete(request):
-    pass
+    if (request.user.is_authenticated() and request.is_ajax()
+        and request.method == 'POST'):
+        # save in a list the received ids
+        id_list = request.POST.getlist('id[]')
+        count_success = 0
+        for id_project in id_list:
+            try:
+                count_success += 1
+                project = Project.objects.get(pk=id_project)
+                project.delete()
+            except ObjectDoesNotExist:
+                count_success -= 1
+        return HttpResponse('<strong>Success!</strong> %d of %d rows selected have been deleted.' % (count_success, len(id_list)))
+    else:
+        return HttpResponse("Oops! It's not possible respond your request :(")
     
 """
 Post
