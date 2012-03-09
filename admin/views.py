@@ -50,7 +50,102 @@ def project(request):
                               context_instance=RequestContext(request))
 
 def project_list(request):
-    pass
+    """This view only loads if receive ajax request"""
+    if request.is_ajax() and request.user.is_authenticated():
+        
+        # This will be used on project list template. 
+        project_attr = [
+                     {'attr': 'name', 'order_by': True, 'str': 'Name'},
+                     {'attr': 'categories', 'order_by': False, 'str': 'Categories'},
+                     {'attr': 'created_at', 'order_by': True, 'str': 'Date'},
+                    ]
+        # get attributes that allow order query
+        order_attr = [attr['attr'] for attr in project_attr if attr['order_by']]
+        
+        projects = Project.objects.filter(user__id=request.user.id).order_by(*order_attr)        
+        search, filter_by_search = '', False
+        # 'order by' it orders the query by a specific attribute from model (column in db)
+        order_by, order_by_att = '', False
+        # 'order' it gives order (as ascendent and descendent) depending on the attribute
+        order = ['asc', 'desc']
+        page = 1
+        
+        # data received via get method
+        if request.method == 'GET':
+            # page
+            if 'page' in request.GET:
+                page = request.GET['page']
+            # filter by search
+            if ('search' in request.GET and
+                len(request.GET['search']) > 0):
+                search, filter_by_search = str(request.GET['search']), True
+            # order by attribute
+            if ('order_by' in request.GET and
+                request.GET['order_by'].lower() in order_attr):
+                order_by, order_by_att = request.GET['order_by'], True
+                # get a copy of order_attr
+                temp = order_attr[:]
+                # remove from copy the order_by item
+                temp.remove(order_by)
+                if 'order' in request.GET and request.GET['order'].lower() in order:
+                    order = request.GET['order'].lower()
+                    if order == 'desc':
+                        order_by = '-' + order_by
+                else:
+                    order = order[0]
+                # create a new list
+                order_attr = list()
+                # add in new list order_by
+                order_attr.append(order_by)
+                # add in new list, old list without order_by item 
+                order_attr += temp
+            # set the custom query
+            projects = Project.objects.filter(user__id=request.user.id,
+                                        name__icontains=search).order_by(*order_attr)
+            if not order_by_att:
+                order_by, order = order_attr[0], order[0]
+        else:
+            # no data received
+            order_by, order = order_attr[0], order[0]
+            
+        # remove hyphen if is ordering downward
+        order_by = re.sub(r'^(-)(.+)$', r'\2', order_by)
+        
+        paginator = Paginator(projects, 10)
+        
+        # (num) page must be a integer
+        try:
+            page = int(page)
+        except ValueError:
+            page = 1
+        
+        # if query does not find records depending on (number) page, return records of last page 
+        try:
+            rs_list = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+            rs_list = paginator.page(paginator.num_pages)
+            
+        # create a copy for highlight on search 
+        object_list = list(rs_list.object_list)
+           
+        # highlight the search
+        if filter_by_search:
+            for i in xrange(len(object_list)):
+                object_list[i].name = re.sub(r'(?i)(' + search + ')', r'<b>\1</b>', object_list[i].name)
+                
+        return render_to_response('admin/project/list.html',
+                                  {
+                                   'project_attr': project_attr,
+                                   'projects_list': rs_list,
+                                   'page': page,
+                                   'search': search,
+                                   'order_by': order_by,
+                                   'order': order,
+                                   },
+                                  context_instance=RequestContext(request))
+                                                         
+    else:
+        return HttpResponse("Oops! It's not possible respond your request :(")
     
 def project_edit(request, project_id = 0):
     if not request.user.is_authenticated():
