@@ -145,7 +145,7 @@ def project_edit(request, project_id = 0):
             else:
                 success_form = True
                 
-    return render_to_response('admin/work/edit.html',
+    return render_to_response('admin/project/edit.html',
                               {
                                'mode': mode,
                                'project': project,
