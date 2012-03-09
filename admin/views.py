@@ -12,12 +12,12 @@ from django.core.files.base import ContentFile
 from django.core.files.images import ImageFile
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
-from django.core.validators import validate_email, validate_slug
+from django.core.validators import validate_email, validate_slug, URLValidator
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.template.defaultfilters import slugify, filesizeformat
-from itsme.models import UserProfile, Upload, Category, Blog, Post, CategoryRelationships
+from itsme.models import UserProfile, Upload, Category, Blog, Post, CategoryRelationships, Project
 
 """
 Important: 
@@ -35,6 +35,136 @@ def extra_get_months():
               'July', 'August', 'September', 'October', 'December']
     return months
 
+"""
+Project
+"""
+
+def project(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('admin.views.login'))
+    
+    return HttpResponseRedirect(reverse('admin.views.project_edit'))
+
+def project_list(request):
+    pass
+    
+def project_edit(request, project_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('admin.views.login'))
+    
+    mode = 'new'
+    project = None
+    
+    if re.search(r'/project/edit/[0-9]+/$', request.path):
+        try:
+            project = Project.objects.get(id=project_id)
+        except ObjectDoesNotExist:
+            raise Http404
+        else:
+            mode = 'edit'
+    
+    success_form, warning_form = False, False
+    error_name, error_name_msg = False, ''
+    error_slug, error_slug_msg = False, ''
+    error_url, error_url_msg = False, ''
+    
+    project_categories = []
+    
+    # check if data received via post
+    if (request.method == 'POST' and 'name' in request.POST
+        and 'slug' in request.POST and 'description' in request.POST):
+        # name
+        name = request.POST['name']
+        if not re.match(r'^.+$', name):
+            error_name, error_name_msg = True, 'Please, enter a project name.'
+            warning_form = True
+        # slug
+        slug = request.POST['slug']
+        if re.match(r'^.+$', slug):
+            try:
+                validate_slug(slug)
+            except ValidationError:
+                error_slug, error_slug_msg = True, 'Please, enter a valid project slug.'
+                warning_form = True
+            else:
+                if mode == 'new':
+                    if Project.objects.filter(slug__iexact=slug).count() != 0:
+                        error_slug, error_slug_msg = True, 'Already exists a project with same slug.'
+                        warning_form = True
+                else:
+                    if Project.objects.exclude(id=project.id).filter(slug__iexact=slug).count() != 0:
+                        error_slug, error_slug_msg = True, 'Already exists a project with same slug.'
+                        warning_form = True
+        else:
+            error_slug, error_slug_msg = True, 'Please, enter a valid project slug.'
+            warning_form = True
+        # url
+        site_url = request.POST['site_url']
+        if re.match(r'^.+$', site_url):
+            validate_url = URLValidator(verify_exists=True)
+            try:
+                validate_url(site_url)
+            except ValidationError:
+                error_url, error_url_msg = True, 'Enter a valid URL and verify that this one exists.'
+                warning_form = True
+        # continue if there are not errors
+        if not warning_form:
+            # create project object
+            if mode == 'new':
+                project = Project(user=request.user,
+                                  name=name, slug=slug,
+                                  site_url=site_url,
+                                  description=request.POST['description'])
+            else:
+                # mode edit
+                project.name = name
+                project.slug = slug
+                project.site_url = site_url
+                project.description = request.POST['description']
+            # save project object
+            project.save()
+            """ categories
+            1. remove relationships between categories and the project
+            2. save new relationships
+            """
+            project.categories.clear()
+            for c in request.POST.getlist('categories[]'):
+                project_categories.append(c)
+                # save relationship
+                try:
+                    category = Category.objects.get(id=c)
+                except ObjectDoesNotExist:
+                    pass
+                else:
+                    associate = CategoryRelationships(category=category,
+                                                      project=project)
+                    associate.save()
+            # redirect if a new project object has been created
+            if mode == 'new':
+                return redirect('admin.views.project_edit', project.id)
+            else:
+                success_form = True
+                
+    return render_to_response('admin/work/edit.html',
+                              {
+                               'mode': mode,
+                               'project': project,
+                               'project_categories': project_categories,
+                               'categories': Category.objects.
+                               filter(type_category__exact='work').order_by('name'),
+                               'request': request,
+                               'success_form': success_form,
+                               'warning_form': warning_form,
+                               'error_name': error_name, 'error_name_msg': error_name_msg,
+                               'error_slug': error_slug, 'error_slug_msg': error_slug_msg,
+                               'error_url': error_url, 'error_url_msg': error_url_msg,
+                               'nav_active': 'work',
+                               },
+                              context_instance=RequestContext(request))
+
+def project_delete(request):
+    pass
+    
 """
 Post
 """
@@ -188,8 +318,8 @@ def post_edit(request, post_id = 0):
             try:
                 validate_slug(slug)
             except ValidationError:
-                    error_slug, error_slug_msg = True, 'Please, enter a valid post slug.'
-                    warning_form = True
+                error_slug, error_slug_msg = True, 'Please, enter a valid post slug.'
+                warning_form = True
             else:
                 if mode == 'new':
                     if Post.objects.filter(slug__iexact=slug).count() != 0:
@@ -235,7 +365,7 @@ def post_edit(request, post_id = 0):
             post.save()
             """ categories
             1. remove relationships between categories and the post
-            2. save new relationship relationships
+            2. save new relationships
             """
             post.categories.clear()
             for c in request.POST.getlist('categories[]'):
@@ -249,7 +379,7 @@ def post_edit(request, post_id = 0):
                     associate = CategoryRelationships(category=category,
                                                       post=post)
                     associate.save()
-            # redirect id a new objet post has been created
+            # redirect if a new post object has been created
             if mode == 'new':
                 return redirect('admin.views.post_edit', post.id)
             else:
