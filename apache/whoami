@@ -1,27 +1,49 @@
-# Este fichero permite que Apache atienda las peticiones que vienen con 
-# URL 'whoami', y las resuelva ejecutando el código respectivo en
-# Python, usando Django.
-
+# This would must be configuration of apache for project
 <VirtualHost *:80>
-    ServerName whoami
     DocumentRoot /var/django/projects/whoami
+    ServerName adrianceron.com
+
+    WSGIScriptAlias / /var/django/projects/whoami/apache/django.wsgi
 
     ErrorLog /var/django/projects/whoami/logs/apache_error.log
-    # CustomLog /var/django/projects/whoami/logs/apache_access.log combined
-
+    
     <Directory /var/django/projects/whoami>
         Order allow,deny
         Allow from all
     </Directory>
 
-    WSGIScriptAlias / /var/django/projects/whoami/apache/django.wsgi
-
     LogLevel warn
 
-    Alias /static/ /var/django/projects/whoami/static/
-    Alias /media/ /var/django/projects/whoami/media/
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^www.adrianceron.com$ [NC]
+    RewriteRule ^(.*)$ http://adrianceron.com/$1 [R=301,L]
     
-    # AliasMatch to icons project
-    # http://systemadmin.es/2011/03/dominio-de-contenido-estatico-con-apache-co$
-    AliasMatch ^(.*)\.(jpg|ico|png)$ /var/django/projects/whoami/static/img/icons/$1.$2
+    AliasMatch ^(.*)\.(.*)$     /var/django/projects/whoami/static/root/$1.$2
+    
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot /var/django/projects/whoami/static/
+    ServerName static.adrianceron.com
+
+    ErrorLog /var/django/projects/whoami/logs/apache_error.log
+
+    <Directory /var/django/projects/whoami/static>
+	Order deny,allow
+        Allow from all
+    </Directory>
+
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot /var/django/projects/whoami/media/
+    ServerName media.adrianceron.com
+
+    ErrorLog /var/django/projects/whoami/logs/apache_error.log
+
+    <Directory /var/django/projects/whoami/media>
+        Order deny,allow
+	Allow from all
+    </Directory>
+
 </VirtualHost>
