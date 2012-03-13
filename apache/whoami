@@ -49,3 +49,12 @@
     </Directory>
 
 </VirtualHost>
+
+<VirtualHost *:80>
+    ServerName urltophpmyadmin.adrianceron.com
+    Include /etc/apache2/conf.d/phpmyadmin.conf
+    
+    # phpmyadmin.conf
+    #ServerName urltophpmyadmin.adrianceron.com
+    #DocumentRoot /path/to/phpmyadmin
+</VirtualHost>
