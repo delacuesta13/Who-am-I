@@ -2,6 +2,8 @@
 <VirtualHost *:80>
     DocumentRoot /var/django/projects/whoami
     ServerName adrianceron.com
+    
+    ServerAdmin hello@adrianceron.com
 
     WSGIScriptAlias / /var/django/projects/whoami/apache/django.wsgi
 
