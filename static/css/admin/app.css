@@ -18,7 +18,15 @@
 		font-weight: bold;
 		text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
 	}
-
+	
+	.nav-list .divider{
+		height: 1px;
+		margin: 8px 1px;
+		overflow: hidden;
+		background-color: #E5E5E5;
+		border-bottom: 1px solid white;
+	}
+	
 	.auto-height{
 		height: auto !important;
 	}
