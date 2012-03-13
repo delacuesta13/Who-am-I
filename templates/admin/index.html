@@ -1,3 +1,97 @@
 {% extends "admin/base.html" %}
 
 {% block title %}Admin{% endblock %}
+
+{% block header %}
+<div class="span12">
+	<h1>
+		<span style="color: #666;">Hello,</span>
+		{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}!
+	</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="row" style="margin-top: 20px;">
+	<!-- span3 -->
+	<div class="span3">
+		<div class="well" style="padding: 8px 0;">
+			<ul class="nav nav-list">
+				<li class="nav-header">Menu</li>
+				<li class="active">
+    				<a href="{% url admin.views.index %}">
+    					<i class="icon-white icon-home"></i> Home
+    				</a>
+				</li>
+				<li>
+					<a href="{% url admin.views.profile %}">
+    					<i class="icon-user"></i> Profile
+    				</a>
+				</li>
+				<li class="nav-header">Blog</li>
+				<li>
+					<a href="{% url admin.views.category %}">
+    					<i class="icon-tags"></i> Categories
+    				</a>
+				</li>
+				<li>
+					<a href="{% url admin.views.blog_edit_settings %}">
+    					<i class="icon-cog"></i> Settings
+    				</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="{% url admin.views.logout %}">
+    					<i class="icon-off"></i> Log out
+    				</a>
+				</li>
+			</ul>
+		</div>
+	</div><!-- /span3 -->
+	<!-- span9 -->
+	<div class="span9">
+		<ul class="thumbnails" id="dashboard" style="margin: 0 auto;">
+			<li class="span2">
+				<a href="{% url admin.views.post %}">
+					<div class="thumbnail">
+						<img src="{{ STATIC_URL }}img/icons/posts.png" alt="Posts"">
+						<div class="caption">
+              				<h3>Posts</h3>
+						</div>
+					</div>
+				</a>
+			</li>
+			<li class="span2">
+				<a href="{% url admin.views.media %}">
+					<div class="thumbnail">
+						<img src="{{ STATIC_URL }}img/icons/media.png" alt="Media library">
+						<div class="caption">
+              				<h3>Media Library</h3>
+						</div>
+					</div>
+				</a>
+			</li>
+			<li class="span2">
+				<a href="{% url admin.views.project %}">
+					<div class="thumbnail">
+						<img src="{{ STATIC_URL }}img/icons/portfolio.png" alt="Portfolio">
+						<div class="caption">
+              				<h3>Work</h3>
+						</div>
+					</div>
+				</a>
+			</li>
+			<li class="span2">
+				<a href="#">
+					<div class="thumbnail">
+						<img src="{{ STATIC_URL }}img/icons/inbox.png" alt="Inbox">
+						<div class="caption">
+	              			<h3>Messages</h3>
+						</div>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div><!-- /span9 -->
+</section>
+{% endblock %}
