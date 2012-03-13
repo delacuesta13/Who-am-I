@@ -18,7 +18,7 @@
     RewriteCond %{HTTP_HOST} ^www.adrianceron.com$ [NC]
     RewriteRule ^(.*)$ http://adrianceron.com/$1 [R=301,L]
     
-    AliasMatch ^(.*)\.(.*)$     /var/django/projects/whoami/static/root/$1.$2
+    AliasMatch (?i)^(.*)\.(ico|jpg|png|txt|xml)$ /var/django/projects/whoami/static/root/$1.$2
     
 </VirtualHost>
 
