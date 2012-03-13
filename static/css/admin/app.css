@@ -134,7 +134,7 @@
 	
 	table#posts-list thead th.title, table#posts-list tbody td.title,
 	table#projects-list thead th.name, table#projects-list tbody td.name{
-		width: 640px;
+		width: 610px;
 	}
 	
 	table#posts-list thead th.date, table#posts-list tbody td.date,
@@ -144,7 +144,7 @@
 	
 	table#posts-list thead th.categories, table#posts-list tbody td.categories,
 	table#projects-list thead th.categories, table#projects-list tbody td.categories{
-		width: 280px;
+		width: 310px;
 	}
 
 /* -----------------------------------------
