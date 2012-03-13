@@ -3,6 +3,7 @@
 -----------------------------------------------------
 :: Shared Styles
 :: Page Log in
+:: Page Index
 :: Page Media list
 :: Page Categories list
 :: Page Posts list and Projects list
@@ -71,6 +72,22 @@
 		display:inline;
 	}
 
+/* -----------------------------------------
+   :: Page Index
+   ----------------------------------------- */
+   
+   ul#dashboard li h3{
+   		text-align: center;
+   }
+   
+   ul#dashboard li a:hover .thumbnail{
+   		border-color: #08c;
+   }
+   
+   ul#dashboard li a:hover{
+   		text-decoration: none;
+   }
+   
 /* -----------------------------------------
    :: Page Log in
    ----------------------------------------- */
