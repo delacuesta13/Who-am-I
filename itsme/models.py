@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    phone = models.CharField(max_length=60, blank=True)
-    location = models.CharField(max_length=80, blank=True)
+    phone = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True)
     profession = models.CharField(max_length=100, blank=True)
     about = models.TextField(blank=True) # quick overview
     resume = models.TextField(blank=True) # complete overview
@@ -12,8 +12,8 @@ class UserProfile(models.Model):
     
 class Blog(models.Model):
     user = models.ForeignKey(User, unique=True)
-    site_title = models.CharField(max_length=60, blank=True)
-    tagline = models.CharField(max_length=60, blank=True)
+    site_title = models.CharField(max_length=100, blank=True)
+    tagline = models.CharField(max_length=100, blank=True)
     
     def __unicode__(self):
         return self.site_title
@@ -96,9 +96,9 @@ class Message(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     ip = models.IPAddressField()
-    author = models.CharField(max_length=60)
+    author = models.CharField(max_length=100)
     email = models.EmailField()
-    subject = models.CharField(max_length=60)
+    subject = models.CharField(max_length=100)
     content = models.TextField()    
     is_readed = models.BooleanField(default=False)
 
@@ -107,5 +107,5 @@ class Upload(models.Model):
     path = models.TextField(blank=True)
     title = models.TextField(blank=True)
     upload_date = models.DateTimeField(null=True, auto_now=False, auto_now_add=True)
-    extension_file = models.CharField(max_length=60, blank=True)
+    extension_file = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
