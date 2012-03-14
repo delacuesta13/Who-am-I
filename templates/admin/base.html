@@ -10,7 +10,10 @@
 	
 	<title>{% block full_title %}{% block title %}{% endblock %} - {% if user.first_name|length > 0 %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}{% endblock %} </title>
 	<meta name="author" content="Jhon Adrián Cerón">
-	{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+	{% block blockbots %}
+	<meta name="robots" content="NONE,NOARCHIVE">
+	<meta name=“robots” content=“nofollow”>
+	{% endblock %}
 	
 	<!-- Set the viewport width to device width for mobile -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
