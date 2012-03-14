@@ -4,10 +4,7 @@
 
 {% block header %}
 <div class="span12">
-	<h1>
-		<span style="color: #666;">Hello,</span>
-		{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}!
-	</h1>
+	<h1>Dashboard</h1>
 </div>
 {% endblock %}
 
@@ -50,48 +47,6 @@
 	</div><!-- /span3 -->
 	<!-- span9 -->
 	<div class="span9">
-		<ul class="thumbnails" id="dashboard" style="margin: 0 auto;">
-			<li class="span2">
-				<a href="{% url admin.views.post %}">
-					<div class="thumbnail">
-						<img src="{{ STATIC_URL }}img/icons/posts.png" alt="Posts"">
-						<div class="caption">
-              				<h3>Posts</h3>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li class="span2">
-				<a href="{% url admin.views.media %}">
-					<div class="thumbnail">
-						<img src="{{ STATIC_URL }}img/icons/media.png" alt="Media library">
-						<div class="caption">
-              				<h3>Media Library</h3>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li class="span2">
-				<a href="{% url admin.views.project %}">
-					<div class="thumbnail">
-						<img src="{{ STATIC_URL }}img/icons/portfolio.png" alt="Portfolio">
-						<div class="caption">
-              				<h3>Work</h3>
-						</div>
-					</div>
-				</a>
-			</li>
-			<li class="span2">
-				<a href="#">
-					<div class="thumbnail">
-						<img src="{{ STATIC_URL }}img/icons/inbox.png" alt="Inbox">
-						<div class="caption">
-	              			<h3>Messages</h3>
-						</div>
-					</div>
-				</a>
-			</li>
-		</ul>
 	</div><!-- /span9 -->
 </section>
 {% endblock %}
