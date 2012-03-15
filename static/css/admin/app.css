@@ -138,6 +138,10 @@
 		margin-left: 0 !important;
 	}
 
+	table#categories-list thead th.name, table#categories-list tbody td.name{
+		width: 586px;
+	}
+	
 	table#categories-list thead th.type_category, table#categories-list tbody td.type_category{
 		width: 140px;
 	}
