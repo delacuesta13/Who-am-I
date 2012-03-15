@@ -1,0 +1,126 @@
+/* -------------------------------------------------- 
+    Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Media Queries
+*/
+
+/* -----------------------------------------
+   :: Shared Styles
+   ----------------------------------------- */
+   
+   body{
+   background: transparent; 
+   font-family: 'Open Sans', sans-serif;
+   }
+   
+   p{
+   	font-family: 'Open Sans', sans-serif;
+   }
+   
+   button,input,
+   select,textarea{
+   	font-family: inherit;
+   }
+   
+   /* Navigation Top */
+   
+   div#navTop{
+   	background: #222222;
+   	min-height: 7px;
+   }
+   
+   div#navTop .row{
+   	display: none;
+	padding-top: 9px;
+   }
+   
+   div#navTop select{
+   	float: right;
+   	height: auto;
+   	width: 60%;
+   }
+   
+   /* Header */
+   
+   header{
+   	padding: 25px 0 0;
+   }
+   		
+   /* Nav */
+   
+   header nav{
+   	padding-top: 40px;
+   }
+   
+   header nav ul{
+   	display: block;
+   	font-size: 1.3em;
+   	float: right;
+   	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	text-transform: uppercase;
+   }
+   
+   header nav ul li{
+	display: inline;
+	float: left;
+	margin-left: 8px;
+   }
+   
+   header nav ul li.active a{
+   	background: #222222;
+   	border-radius: 4px;
+   	color: #F3F3F3;
+   	padding: 5px 10px;
+   	text-decoration: none;
+   }
+   
+   header nav ul li.active a:hover{
+   	color: #F3F3F3;
+   	text-decoration: none;
+   }
+   
+   header nav ul li a{
+   	color: #666666;
+   	text-decoration: none;
+   }
+   
+   header nav ul li a:hover{
+   	color: #222222;
+   	text-decoration: none;
+   }
+   
+/* -----------------------------------------
+   :: Media Queries
+   ----------------------------------------- */
+   
+   /* Smaller than standard 960 (devices and browsers) */
+   @media only screen and (max-width: 979px) {}
+   
+   /* Tablet Portrait size to standard 960 (devices and browsers) */
+   @media only screen and (min-width: 768px) and (max-width: 979px) {
+   	header .logo img{ width: 77px; }
+   	header nav{ padding-top: 30px; }
+   	header nav ul{font-size: 1.2em;}
+   }
+   
+   /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+   @media only screen and (min-width: 480px) and (max-width: 767px) {
+   	div#navTop .row{ display: block; }
+   	header{ padding: 34px 0 0; }
+   	header .logo{ text-align: center; }
+   	header .logo img{ width: 88px; }
+   	header nav{ display: none !important; }
+   }
+   
+   /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+   @media only screen and (max-width: 479px) {
+   	div#navTop .row{ display: block; }
+   	header{ padding: 34px 0 0; }
+   	header .logo{ text-align: center; }
+   	header .logo img{ width: 88px; }
+   	header nav{ display: none !important; }
+   }
+   
