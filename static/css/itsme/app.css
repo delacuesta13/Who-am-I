@@ -79,7 +79,7 @@
    	background: #222222;
    	border-radius: 5px;
    	color: #F3F3F3;
-   	padding: 4px 12px;
+   	padding: 2px 12px;
    	text-decoration: none;
    }
    
@@ -108,7 +108,7 @@
    /* Tablet Portrait size to standard 960 (devices and browsers) */
    @media only screen and (min-width: 768px) and (max-width: 979px) {
    	header .logo img{ width: 77px; }
-   	header nav{ padding-top: 28px; }
+   	header nav{ padding-top: 29px; }
    	header nav ul{font-size: 1.1em;}
    }
    
