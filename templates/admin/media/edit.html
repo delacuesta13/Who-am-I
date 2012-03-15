@@ -11,7 +11,7 @@
 
 {% block content %}
 <section class="row">
-	<div class="span2">
+	<div class="span3">
 		<ul class="thumbnails">
 			<li class="span2">
 				<img src="{{ MEDIA_URL }}{{ upload.path }}" class="thumbnail" alt="{{ upload.title }}">
@@ -19,7 +19,7 @@
 		</ul>
 	</div>
 	<!-- /three -->
-	<div class="span6">
+	<div class="span5">
 		<ul class="unstyled">
 			<li><strong>File name:</strong> {{ img.name_notpath }}</li>
 			<li><strong>File type:</strong> {{ upload.extension_file }}</li>
