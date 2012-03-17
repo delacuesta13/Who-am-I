@@ -36,23 +36,24 @@
 	<div id="navTop">
 		<div class="container">
 			<div class="row">
-				<div class="span4 offset8" id="navTop-Mobile"></div>
+				<div class="span10" id="navTop-Mobile"></div>
 			</div>
 		</div>
 	</div>
 	
 	<div class="container">
+	{% block container %}
 		<header class="row">
 		{% block header %}
-			<div class="span4 logo">
+			<div class="span4 offset1 logo">
 				<a href="{{ BASE_URL }}">
-					<img src="{{ STATIC_URL }}img/logo.jpg">
+					<img src="{{ STATIC_URL }}img/logo.png">
 				</a>
 			</div><!-- span4 -->
-			<nav class="span8">
+			<nav class="span6">
 			{% block navigation %}
 				<ul class="unstyled">
-					<li {% if not nav_active or nav_active|lower == "home" %}class="active"{% endif %}>
+					<li class="first {% if not nav_active or nav_active|lower == "home" %}active{% endif %}">
 						<a href="{{ BASE_URL }}">Home</a>
 					</li>
 					<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
@@ -64,14 +65,16 @@
 					<li {% if nav_active and nav_active|lower == "about" %}class="active"{% endif %}>
 						<a href="#">About</a>
 					</li>
-					<li {% if nav_active and nav_active|lower == "contact" %}class="active"{% endif %}>
+					<li class="last {% if nav_active and nav_active|lower == "contact" %}active{% endif %}">
 						<a href="#">Contact</a>
 					</li>
 				</ul>
 			{% endblock %}
-			</nav><!-- span8 -->
+			</nav><!-- span6 -->
 		{% endblock %}
 		</header>
+		{% block content %}{% endblock %}
+	{% endblock %}
 	</div>
 
 	<!-- JavaScript at the bottom for fast page loading -->
