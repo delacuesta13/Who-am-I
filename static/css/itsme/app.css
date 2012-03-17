@@ -2,6 +2,7 @@
     Table of Contents
 -----------------------------------------------------
 :: Shared Styles
+:: Page Index
 :: Media Queries
 */
 
@@ -14,8 +15,13 @@
    font-family: 'Open Sans', sans-serif;
    }
    
+   h1, h2, h3,
+   h4, h5, h6{
+   	font-family: inherit;
+   }
+   
    p{
-   	font-family: 'Open Sans', sans-serif;
+   	font-family: inherit;
    }
    
    button,input,
@@ -56,12 +62,11 @@
    /* Header Nav */
    
    header nav{
-   	padding-top: 40px;
+   	padding-top: 34px;
    }
    
    header nav ul{
    	display: block;
-   	font-size: 1.2em;
    	float: right;
    	list-style: none;
 	margin: 0 auto;
@@ -72,30 +77,47 @@
    header nav ul li{
 	display: inline;
 	float: left;
-	margin-left: 20px;
-   }
+	margin-left: 15px;
+	font-weight: bold;
+   } header nav ul li.first{ margin-left: 0px; }
    
    header nav ul li.active a{
-   	background: #222222;
-   	border-radius: 5px;
-   	color: #F3F3F3;
-   	padding: 2px 12px;
+   	background: #FF7260;
+   	color: #FFFFFF;
+   	margin-right: -4px;
+   	padding: 1px 4px;
    	text-decoration: none;
    }
    
    header nav ul li.active a:hover{
-   	color: #F3F3F3;
+   	background: #FFFFFF;
+   	color: #FF7260;
    	text-decoration: none;
    }
    
    header nav ul li a{
-   	color: #666666;
+   	color: #222222;
    	text-decoration: none;
    }
    
    header nav ul li a:hover{
-   	color: #222222;
+   	background: #222222;
+   	color: #FFFFFF;
+   	margin-left: -4px;
+   	margin-right: -4px;
+   	padding: 1px 4px;
    	text-decoration: none;
+   }
+   
+/* -----------------------------------------
+   :: Page Index
+   ----------------------------------------- */
+   
+   section.heading h1{
+   	font-size: 5em;
+   	line-height: 1.2em;
+   	margin: 40px 0;
+   	text-transform: uppercase;
    }
    
 /* -----------------------------------------
@@ -136,5 +158,10 @@
    	header .logo{ text-align: center; }
    	header .logo img{ width: 88px; }
    	header nav{ display: none !important; }
+   	section.heading h1{
+   		font-size: 6em;
+   		margin: 20px 0;
+   		text-align:center;
+   	}
    }
    
