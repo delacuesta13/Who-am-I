@@ -123,8 +123,6 @@
    /* Tablet Portrait size to standard 960 (devices and browsers) */
    @media only screen and (min-width: 768px) and (max-width: 979px) {
    	header .logo img{ width: 77px; }
-   	header nav{ padding-top: 29px; }
-   	header nav ul{font-size: 1.1em;}
    }
    
    /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
@@ -136,7 +134,7 @@
    	div#navTop .row{ display: block; }
    	header{ padding: 34px 0 0; }
    	header .logo{ text-align: center; }
-   	header .logo img{ width: 88px; }
+   	header .logo img{ width: 66px; }
    	header nav{ display: none !important; }
    }
    
@@ -149,12 +147,7 @@
    	div#navTop .row{ display: block; }
    	header{ padding: 34px 0 0; }
    	header .logo{ text-align: center; }
-   	header .logo img{ width: 88px; }
+   	header .logo img{ width: 66px; }
    	header nav{ display: none !important; }
-   	section.heading h1{
-   		font-size: 6em;
-   		margin: 20px 0;
-   		text-align:center;
-   	}
    }
    
