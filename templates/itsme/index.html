@@ -3,3 +3,12 @@
 {% block page_title %}{{ blog.site_title|escape|default:"Jhon Adrián Cerón" }}{% endblock %}
 
 {% block page_description %}{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}{% endblock %}
+
+{% block content %}
+<header>
+	<h1 class="toUppercase">
+			My name is {{ user.get_full_name|escape|default:"Jhon Adrián Cerón" }}
+	</h1>
+	<p>{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}</p>
+</header>
+{% endblock %}
