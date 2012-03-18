@@ -43,7 +43,7 @@
 	
 	<div class="container">
 	{% block container %}
-		<header class="row">
+		<header class="row" id="header">
 		{% block header %}
 			<div class="span4 offset1 logo">
 				<a href="{{ BASE_URL }}">
@@ -73,7 +73,19 @@
 			</nav><!-- span6 -->
 		{% endblock %}
 		</header>
-		{% block content %}{% endblock %}
+		{% block main %}
+		<div id="main" class="row">
+			<section id="content" class="span7 offset1">
+			{% block content %}
+			{% endblock %}
+			</section>
+			<aside id="sidebar" class="span3">
+			{% block sidebar %}
+			{% include "itsme/follow_me.html" %}
+			{% endblock %}
+			</aside>
+		</div>
+		{% endblock %}
 	{% endblock %}
 	</div>
 
