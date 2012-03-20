@@ -4,6 +4,10 @@
 
 {% block page_description %}{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}{% endblock %}
 
+{% block sidebar %}
+{% include "itsme/social.html" %}
+{% endblock %}
+
 {% block content %}
 <header>
 	<h1 class="toUppercase">
@@ -11,4 +15,44 @@
 	</h1>
 	<p>{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}</p>
 </header>
+<article itemscope itemtype="http://schema.org/Article">
+	<header>
+		<h2 itemprop="name">
+			<a href="#" itemprop="url" class="alternative">Post title</a>
+		</h2>
+		<time datetime="{% now "Y-m-d" %}">{% now "N d, Y" %}</time>
+	</header>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque consectetur, 
+		justo sit amet eleifend eleifend, turpis mauris imperdiet tortor, in luctus 
+		mauris lacus fermentum diam.
+	</p>
+	<p class="read-more">
+		<a href="#">Continue reading &rarr;</a>
+	</p>
+</article>
+<article itemscope itemtype="http://schema.org/Article" class="last-article">
+	<header>
+		<h2 itemprop="name">
+			<a href="#" itemprop="url" class="alternative">Post title</a>
+		</h2>
+		<time datetime="{% now "Y-m-d" %}">{% now "N d, Y" %}</time>
+	</header>
+	<p>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque consectetur, 
+		justo sit amet eleifend eleifend, turpis mauris imperdiet tortor, in luctus 
+		mauris lacus fermentum diam.
+	</p>
+	<p class="read-more">
+		<a href="#">Continue reading &rarr;</a>
+	</p>
+</article>
+<ul class="pager post-nav">
+	<li class="previous">
+		<a href="#">&larr; Older posts</a>
+	</li>
+	<li class="next">
+		<a href="#">Newer posts &rarr;</a>
+	</li>
+</ul>
 {% endblock %}
