@@ -59,9 +59,11 @@
 					<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
 						<a href="#">Work</a>
 					</li>
+					{% comment %}
 					<li {% if nav_active and nav_active|lower == "blog" %}class="active"{% endif %}>
 						<a href="#">Blog</a>
 					</li>
+					{% endcomment %}
 					<li {% if nav_active and nav_active|lower == "about" %}class="active"{% endif %}>
 						<a href="#">About</a>
 					</li>
@@ -81,11 +83,18 @@
 			</section>
 			<aside id="sidebar" class="span3">
 			{% block sidebar %}
-			{% include "itsme/follow_me.html" %}
+			{% include "itsme/sidebar.html" %}
 			{% endblock %}
 			</aside>
 		</div>
 		{% endblock %}
+		<footer class="row" id="footer">
+		{% block footer %}
+			<div class="span10 offset1 content-footer">
+				Copyright &copy; {%  now  "Y" %} Jhon Adrián Cerón.
+			</div>
+		{% endblock %}
+		</footer>
 	{% endblock %}
 	</div>
 
