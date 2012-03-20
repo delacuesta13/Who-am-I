@@ -1,0 +1,5 @@
+<span class="toUppercase"><strong>About me</strong></span>
+<br>
+{{ user.get_profile.about|default:blog.tagline }}
+<br><br>
+{% include "itsme/social.html" %}
