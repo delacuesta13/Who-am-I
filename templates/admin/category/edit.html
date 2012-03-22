@@ -73,7 +73,7 @@
 						placeholder="Category name"
 						{% endif %}
 					{% endif %}
-					class="span5">
+					class="span7">
 					{% if error_name %}<span class="help-inline">{{ error_name_msg }}</span>{% endif %}
 				</div>
 			</div>
@@ -117,7 +117,7 @@
 						placeholder="URL slug"
 						{% endif %}
 					{% endif %} 
-					class="span5">
+					class="span7">
 					{% if error_slug %}<span class="help-inline">{{ error_slug_msg }}</span>{% endif %}
 				</div>
 			</div>
@@ -125,12 +125,12 @@
 				<label class="control-label">Description</label>
 				<div class="controls">
 					{% if request.POST.description or request.POST.description|length == 0 %}
-					<textarea rows="5" name="description" class="span5 auto-height">{{ request.POST.description }}</textarea>
+					<textarea rows="5" name="description" class="span7 auto-height">{{ request.POST.description }}</textarea>
 					{% else %}
 						{% if mode|lower == "edit" and category.description %}
-						<textarea rows="5" name="description" class="span5 auto-height">{{ category.description }}</textarea>
+						<textarea rows="5" name="description" class="span7 auto-height">{{ category.description }}</textarea>
 						{% else %}
-						<textarea rows="5" name="description" class="span5 auto-height"
+						<textarea rows="5" name="description" class="span7 auto-height"
 						placeholder="A description about the category."></textarea>
 						{% endif %}
 					{% endif %} 
