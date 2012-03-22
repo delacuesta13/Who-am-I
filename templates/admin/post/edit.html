@@ -121,7 +121,7 @@
 				<!-- content -->
 				<div class="control-group">
 					<div class="controls">
-						<textarea class="span8 tinymce auto-height" name="content" rows="18">
+						<textarea class="span8 markItUp auto-height" name="content" rows="18">
 						{% if request.POST.content or request.POST.content|length == 0 %}
 					 		{{ request.POST.content }}
 						{% else %}
@@ -252,8 +252,8 @@
 {% endblock %}
 
 {% block extrajs %}
-<script src="{{ STATIC_URL }}js/tinymce/jquery.tinymce.js"></script>
-<script src="{{ STATIC_URL }}js/admin/tinymce.admin.js"></script>
+<script src="{{ STATIC_URL }}js/markitup/jquery.markitup.js"></script>
+<script src="{{ STATIC_URL }}js/markitup/set.js"></script>
 <script>
 $(document).ready(function(){
 	// popover, about slug
@@ -280,4 +280,8 @@ $(document).ready(function(){
 	});
 });
 </script>
+{% endblock %}
+{% block extrastyle %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/markitup/skins/markitup/style.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/markitup/sets/default/style.css" />
 {% endblock %}
