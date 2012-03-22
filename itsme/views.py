@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render_to_response
 from itsme.models import Blog, Post, Project
 from admin.views import blog_get_or_create
 
-def index(request):
+def index(request, page=1):
     
     user = user_get_owner()
     blog = blog_get_or_create(user)
@@ -20,6 +20,13 @@ def index(request):
                                'blog': blog,
                                },
                               context_instance=RequestContext(request))
+
+"""
+Post
+"""
+
+def post_view(request, post_slug):
+    pass
 
 """
 get owner user of site
