@@ -52,7 +52,7 @@
 					<div class="control-group {% if error_fname %}error{% endif %}">
 						<label class="control-label">First name</label>
 						<div class="controls">
-							<input type="text" name="first_name" class="span5"
+							<input type="text" name="first_name" class="span7"
 							value="{% if request.POST.first_name %}{{ request.POST.first_name }}{% else %}{{ user.first_name }}{% endif %}">
 							{% if error_fname %}<span class="help-inline">Please, only characters and spaces.</span>{% endif %}
 						</div>
@@ -60,7 +60,7 @@
 					<div class="control-group {% if error_lname %}error{% endif %}">
 						<label class="control-label">Last name</label>
 						<div class="controls">
-							<input type="text" name="last_name" class="span5"
+							<input type="text" name="last_name" class="span7"
 							value="{% if request.POST.last_name %}{{ request.POST.last_name }}{% else %}{{ user.last_name }}{% endif %}">
 							{% if error_lname %}<span class="help-inline">Please, only characters and spaces.</span>{% endif %}
 						</div>
@@ -68,7 +68,7 @@
 					<div class="control-group {% if error_email %}error{% endif %}">
 						<label class="control-label">Email</label>
 						<div class="controls">
-							<input type="email" name="email" class="span5"
+							<input type="email" name="email" class="span7"
 							value="{% if request.POST.email %}{{ request.POST.email }}{% else %}{{ user.email }}{% endif %}">
 							{% if error_email %}<span class="help-inline">Please, enter a valid email address.</span>{% endif %}
 						</div>
@@ -76,7 +76,7 @@
 					<div class="control-group {% if error_phone %}error{% endif %}">
 						<label class="control-label">Phone</label>
 						<div class="controls">
-							<input type="text" name="phone" class="span5"
+							<input type="text" name="phone" class="span7"
 							value="{% if request.POST.phone %}{{ request.POST.phone }}{% else %}{{ user.get_profile.phone }}{% endif %}">
 							{% if error_phone %}<span class="help-inline">Please, enter a correct phone number.</span>{% endif %}
 						</div>
@@ -84,7 +84,7 @@
 					<div class="control-group {% if error_location %}error{% endif %}">
 						<label class="control-label">Location</label>
 						<div class="controls">
-							<input type="text" name="location" class="span5"
+							<input type="text" name="location" class="span7"
 							value="{% if request.POST.location %}{{ request.POST.location }}{% else %}{{ user.get_profile.location }}{% endif %}">
 						</div>
 					</div>
@@ -107,21 +107,21 @@
 					<div class="control-group">
 						<label class="control-label">Profession</label>
 						<div class="controls">
-							<input type="text" name="profession" class="span5"
+							<input type="text" name="profession" class="span7"
 							value="{% if request.POST.profession %}{{ request.POST.profession }}{% else %}{{ user.get_profile.profession }}{% endif %}">
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">About</label>
 						<div class="controls">
-							<textarea name="about" rows="5" class="span5 auto-height"
+							<textarea name="about" rows="5" class="span7 auto-height"
 							{% if not user.get_profile.about %}placeholder="A quick overview about you."{% endif %}>{{ user.get_profile.about }}</textarea>
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Resume</label>
 						<div class="controls">
-							<textarea class="span7 tinymce auto-height" name="resume" rows="14">{{ user.get_profile.resume }}</textarea>
+							<textarea class="span7 markItUp auto-height" name="resume" rows="14">{{ user.get_profile.resume }}</textarea>
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary">Save</button>
@@ -153,21 +153,21 @@
 					<div class="control-group {% if error_opass %}error{% endif %}">
 						<label class="control-label">Current password</label>
 						<div class="controls">
-							<input type="password" name="old_pass" class="span5" required="required">
+							<input type="password" name="old_pass" class="span7" required="required">
 							{% if error_opass %}<span class="help-inline">Your current password is incorrect.</span>{% endif %}
 						</div>
 					</div>
 					<div class="control-group {% if error_npass %}error{% endif %}">
 						<label class="control-label">New password</label>
 						<div class="controls">
-							<input type="password" name="new_pass" class="span5" required="required">
+							<input type="password" name="new_pass" class="span7" required="required">
 							{% if error_npass %}<span class="help-inline">Please, enter a password.</span>{% endif %}
 						</div>
 					</div>
 					<div class="control-group {% if error_cpass %}error{% endif %}">
 						<label class="control-label">Confirm password</label>
 						<div class="controls">
-							<input type="password" name="confirm_pass" class="span5" required="required">
+							<input type="password" name="confirm_pass" class="span7" required="required">
 							{% if error_cpass %}<span class="help-inline">New password and its confirm didn't match.</span>{% endif %}
 						</div>
 					</div>
@@ -188,6 +188,10 @@ if(small_phone.matches){
 	$("a#toPasswd").html('Passwd');
 }
 </script>
-<script src="{{ STATIC_URL }}js/tinymce/jquery.tinymce.js"></script>
-<script src="{{ STATIC_URL }}js/admin/tinymce.admin.js"></script>
+<script src="{{ STATIC_URL }}js/markitup/jquery.markitup.js"></script>
+<script src="{{ STATIC_URL }}js/markitup/set.js"></script>
+{% endblock %}
+{% block extrastyle %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/markitup/skins/markitup/style.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/markitup/sets/default/style.css" />
 {% endblock %}
