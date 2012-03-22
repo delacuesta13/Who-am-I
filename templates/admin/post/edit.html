@@ -121,15 +121,7 @@
 				<!-- content -->
 				<div class="control-group">
 					<div class="controls">
-						<textarea class="span8 markItUp auto-height" name="content" rows="18">
-						{% if request.POST.content or request.POST.content|length == 0 %}
-					 		{{ request.POST.content }}
-						{% else %}
-							{% if mode and mode|lower == "edit" %}
-								{{ post.content }}
-							{% endif %}
-						{% endif %}
-						</textarea>
+						<textarea class="span8 markItUp auto-height" name="content" rows="18">{% if request.POST.content or request.POST.content|length == 0 %}{{ request.POST.content }}{% else %}{% if mode and mode|lower == "edit" %}{{ post.content }}{% endif %}{% endif %}</textarea>
 					</div>
 				</div><!-- /content -->
 			</div><!-- /span8 -->

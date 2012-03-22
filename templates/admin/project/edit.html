@@ -143,15 +143,7 @@
 				<!-- description -->
 				<div class="control-group">
 					<div class="controls">
-						<textarea class="span8 markItUp auto-height" name="description" rows="18">
-						{% if request.POST.description or request.POST.description|length == 0 %}
-					 		{{ request.POST.description }}
-						{% else %}
-							{% if mode and mode|lower == "edit" %}
-								{{ project.description }}
-							{% endif %}
-						{% endif %}
-						</textarea>
+						<textarea class="span8 markItUp auto-height" name="description" rows="18">{% if request.POST.description or request.POST.description|length == 0 %}{{ request.POST.description }}{% else %}{% if mode and mode|lower == "edit" %}{{ project.description }}{% endif %}{% endif %}</textarea>
 					</div>
 				</div><!-- /description -->
 			</div><!-- /span8 -->
