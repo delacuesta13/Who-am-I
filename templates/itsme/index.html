@@ -15,12 +15,13 @@
 	</h1>
 	<p>{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}</p>
 </header>
-<article itemscope itemtype="http://schema.org/Article">
+{% for post in posts.object_list %}
+<article itemscope itemtype="http://schema.org/Article" class="article-index {% if forloop.last %}last-article{% endif %}">
 	<header>
 		<h2 itemprop="name">
-			<a href="#" itemprop="url" class="alternative">Post title</a>
+			<a href="{% url itsme.views.post_view post.slug %}" itemprop="url" class="alternative">{{ post.title }}</a>
 		</h2>
-		<time datetime="{% now "Y-m-d" %}">{% now "N d, Y" %}</time>
+		<time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"N d, Y" }}</time>
 	</header>
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque consectetur, 
@@ -28,31 +29,31 @@
 		mauris lacus fermentum diam.
 	</p>
 	<p class="read-more">
-		<a href="#">Continue reading &rarr;</a>
+		<a href="{% url itsme.views.post_view post.slug %}">Continue reading &rarr;</a>
 	</p>
 </article>
-<article itemscope itemtype="http://schema.org/Article" class="last-article">
+{% empty %}
+<article class="last-article">
 	<header>
-		<h2 itemprop="name">
-			<a href="#" itemprop="url" class="alternative">Post title</a>
-		</h2>
-		<time datetime="{% now "Y-m-d" %}">{% now "N d, Y" %}</time>
+		<h2>There aren't found articles.</h2>
 	</header>
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque consectetur, 
-		justo sit amet eleifend eleifend, turpis mauris imperdiet tortor, in luctus 
-		mauris lacus fermentum diam.
-	</p>
-	<p class="read-more">
-		<a href="#">Continue reading &rarr;</a>
+		Unfortunately, there aren't articles published. However, will soon have interesting posts for you.
 	</p>
 </article>
+{% endfor %}
+{% if posts.has_other_pages %}
 <ul class="pager post-nav">
+	{% if posts.has_previous %}
 	<li class="previous">
-		<a href="#">&larr; Older posts</a>
+		<a href="{% url itsme.views.index posts.previous_page_number %}">&larr; Older posts</a>
 	</li>
+	{% endif %}
+	{% if posts.has_next %}
 	<li class="next">
-		<a href="#">Newer posts &rarr;</a>
+		<a href="{% url itsme.views.index posts.next_page_number %}">Newer posts &rarr;</a>
 	</li>
+	{% endif %}
 </ul>
+{% endif %}
 {% endblock %}
