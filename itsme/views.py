@@ -1,7 +1,9 @@
 # -*- coding: iso-8859-1 -*-
 
+from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import User 
+from django.core.paginator import Paginator, InvalidPage, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.template import RequestContext
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -14,10 +16,30 @@ def index(request, page=1):
     user = user_get_owner()
     blog = blog_get_or_create(user)
     
+    current_date = datetime.now()
+    
+    # update notes if their status are 'future' and their date 
+    # is less than current date
+    Post.objects.filter(date__lte=current_date,
+                        status__iexact='future',
+                        blog__id=blog.id).update(status='publish')
+    
+    post_list = Post.objects.filter(blog__id=blog.id).order_by('-date', 'title')
+    
+    paginator = Paginator(post_list, 5)
+    
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except (EmptyPage, InvalidPage):
+        posts = paginator.page(paginator.num_pages)
+    
     return render_to_response('itsme/index.html',
                               {
                                'user': user,
                                'blog': blog,
+                               'posts': posts,
                                },
                               context_instance=RequestContext(request))
 
