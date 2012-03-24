@@ -1,6 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 
 from datetime import datetime
+import re
 from django.conf import settings
 from django.contrib.auth.models import User 
 from django.core.paginator import Paginator, InvalidPage, PageNotAnInteger, EmptyPage
@@ -13,6 +14,9 @@ from admin.views import blog_get_or_create
 
 def index(request, page=1):
     
+    if re.match('^/page/1/$', request.path):
+        return redirect('/', permanent=True)
+    
     user = user_get_owner()
     blog = blog_get_or_create(user)
     
@@ -24,7 +28,8 @@ def index(request, page=1):
                         status__iexact='future',
                         blog__id=blog.id).update(status='publish')
     
-    post_list = Post.objects.filter(blog__id=blog.id).order_by('-date', 'title')
+    post_list = Post.objects.filter(blog__id=blog.id,
+                                    status='publish').order_by('-date', 'title')
     
     paginator = Paginator(post_list, 5)
     
