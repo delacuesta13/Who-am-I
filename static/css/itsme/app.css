@@ -146,6 +146,10 @@
    	margin-bottom: 0;
    }
    
+   #sidebar p{
+   	font-size: .9375em;
+   }
+   
    /* Social */
    
    ul#social{
