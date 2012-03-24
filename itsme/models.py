@@ -21,7 +21,7 @@ class Blog(models.Model):
 class Category(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=100)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(max_length=100, blank=True)
     description = models.TextField(blank=True)
     type_category_choices = (
         ('work', 'Work'),
@@ -37,7 +37,7 @@ class Post(models.Model):
     categories = models.ManyToManyField(Category, through='CategoryRelationships')
     date = models.DateTimeField(auto_now=False, auto_now_add=False)
     title = models.TextField(blank=True)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     content = models.TextField(blank=True)
     status_choices = (
         ('publish', 'Publish'),  
@@ -66,9 +66,9 @@ class Comment(models.Model):
     post = models.ForeignKey(Post)
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     author = models.CharField(max_length=30)
-    email = models.EmailField()
+    email = models.EmailField(max_length=100)
     url = models.URLField(blank=True)
-    ip = models.IPAddressField()
+    ip = models.IPAddressField(max_length=100)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
     content = models.TextField()
     is_moderate = models.BooleanField(default=False)
@@ -78,7 +78,7 @@ class Project(models.Model):
     user = models.ForeignKey(User)
     categories = models.ManyToManyField(Category, through='CategoryRelationships')
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     description = models.TextField()
     site_url = models.URLField(blank=True)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -95,9 +95,9 @@ class CategoryRelationships(models.Model):
 class Message(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    ip = models.IPAddressField()
+    ip = models.IPAddressField(max_length=100)
     author = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(max_length=100)
     subject = models.CharField(max_length=100)
     content = models.TextField()    
     is_readed = models.BooleanField(default=False)
