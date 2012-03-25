@@ -32,7 +32,7 @@
 	
 	{% block blockbots %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 	<div id="navTop">
 		<div class="container">
 			<div class="row">
@@ -54,7 +54,7 @@
 			{% block navigation %}
 				<ul class="unstyled">
 					<li class="first {% if not nav_active or nav_active|lower == "home" %}active{% endif %}">
-						<a href="{{ BASE_URL }}">Home</a>
+						<a href="{{ BASE_URL }}">Blog</a>
 					</li>
 					<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
 						<a href="#">Work</a>
