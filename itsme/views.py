@@ -9,12 +9,13 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.template import RequestContext
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render_to_response
-from itsme.models import Blog, Post, Project
+from itsme.models import Post, Project
 from admin.views import blog_get_or_create
+from itsme.bbcodeparser import BBCodeParser
 
 def index(request, page=1):
     
-    if re.match('^/page/1/$', request.path):
+    if re.match(r'^/page/1/$', request.path):
         return redirect('/', permanent=True)
     
     user = user_get_owner()
@@ -52,8 +53,27 @@ def index(request, page=1):
 Post
 """
 
-def post_view(request, post_slug):
-    pass
+def post_view(request, slug):
+    
+    try:
+        post = Post.objects.get(slug__exact=slug,
+                                status__exact='publish')
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    user = user_get_owner()
+    blog = blog_get_or_create(user)
+    
+    content = BBCodeParser(post.content)
+    
+    return render_to_response('itsme/post_view.html',
+                              {
+                               'post': post,
+                               'user': user,
+                               'blog': blog,
+                               'content': content,
+                               },
+                              context_instance=RequestContext(request))
 
 """
 get owner user of site
