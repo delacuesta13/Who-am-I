@@ -4,6 +4,7 @@
 :: Shared Styles
 :: Media Queries
 :: Index Page 
+:: Article Page 
 */
 
 /* -----------------------------------------
@@ -149,64 +150,32 @@
    
    #sidebar p{
    	font-size: .9375em;
+   	margin-bottom: 12px;
    }
    
    /* Social */
    
-   ul#social{
+   #sidebar ul#social{
    	list-style: none;
    }
    
-   ul#social li{
+   #sidebar ul#social li{
    	display: inline;
    	margin-right: 4px;
    }
    
-   ul#social li a, ul#social li a:hover{
+   #sidebar ul#social li a, ul#social li a:hover{
    	text-decoration: none;
    }
    
-   ul#social li a img{
+   #sidebar ul#social li a img{
    	opacity : 1.0;
     filter: alpha(opacity=100);
    }
    
-   ul#social li a:hover img{
+   #sidebar ul#social li a:hover img{
    	opacity : 0.6;
     filter: alpha(opacity=60);
-   }
-   
-   /* Content */
-   
-   section article{
-   	margin-top: 2.5em;
-   }
-   
-   section article header{
-   	margin-bottom: 1.4em;
-   }
-   
-   section article{
-   	border-bottom: 1px solid #E2E2E2;
-   } section article.last-article{
-   	border-bottom: 0px;
-   }
-   
-   /* Navigation */
-   
-   ul.post-nav{
-   	margin-top: 5em;
-   }
-   
-   ul.post-nav a{
-   	border: 0px;
-   	border-radius: 0px;
-   	padding: 0px;
-   }
-   
-   ul.post-nav a:hover{
-   	background: #FFFFFF;
-   	text-decoration: underline;
    }
    
    /* Footer */
@@ -221,6 +190,26 @@
    	padding: 10px 0;
    }
    
+   /* Video Container */
+   .video-container {
+   	height: 0;
+   	margin: 30px 0;
+   	overflow: hidden;
+	padding-bottom: 56.25%;
+	padding-top: 30px;
+	position: relative;
+	}
+
+	.video-container iframe,  
+	.video-container object,  
+	.video-container embed {
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	}
+   
    /* Helpers */
    
    .toUppercase{
@@ -231,8 +220,57 @@
    :: Index Page
    ----------------------------------------- */
    
-   article.article-index header h2{
+   body.index section article{
+   	margin-top: 2.5em;
+   }
+   
+   body.index section article header{
+   	margin-bottom: 1.4em;
+   }
+   
+   body.index section article{
+   	border-bottom: 1px solid #E2E2E2;
+   } body.index section article.last-article{
+   	border-bottom: 0px;
+   }
+   
+   body.index article header h2{
    	margin-bottom: .4375em;
+   }
+   
+   /* Navigation */
+   
+   body.index ul.post-nav{
+   	margin-top: 5em;
+   }
+   
+   body.index ul.post-nav a{
+   	border: 0px;
+   	border-radius: 0px;
+   	padding: 0px;
+   }
+   
+   body.index ul.post-nav a:hover{
+   	background: #FFFFFF;
+   	text-decoration: underline;
+   }
+   
+/* -----------------------------------------
+   :: Article Page
+   ----------------------------------------- */
+   
+   body.article section header h1{
+   	margin-bottom: .4375em;
+   }
+   
+   body.article section article header{
+   	margin-bottom: 1.4em;
+   }
+   
+   body.article section article h2, body.article section article h3,
+   body.article section article h4, body.article section article h5,
+   body.article section article h6{
+   	margin: 1.2em 0 .4em;
    }
 
 /* -----------------------------------------
@@ -263,13 +301,11 @@
    	header#header nav{ display: none !important; }
    	#sidebar{
    		background: #F7F7F7;
-   		margin-left: -20px;
-   		margin-right: -20px;
-   		padding-left: 20px;
-   		padding-right: 20px;
+   		margin: 5.4em -20px 0 -20px;
+   		padding: 10px 20px;
    	}
    	#main{ margin-top: 25px; }
-   	footer#footer{ margin-top: 18px; }
+   	footer#footer{ margin-top: 20px; }
    	footer#footer .content-footer{
    		border-top: 0;
    		padding-top: 0;
@@ -288,11 +324,11 @@
    	header#header nav{ display: none !important; }
    	#sidebar{
    		background: #F7F7F7;
-   		margin: 0 -20px;
-   		padding: 8px 20px;
+   		margin: 5.4em -20px 0 -20px;
+   		padding: 10px 20px;
    	}
    	#main{ margin-top: 25px; }
-   	footer#footer{ margin-top: 18px; }
+   	footer#footer{ margin-top: 20px; }
    	footer#footer .content-footer{
    		border-top: 0;
    		padding-top: 0;
