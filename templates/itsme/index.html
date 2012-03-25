@@ -1,5 +1,7 @@
 {% extends "itsme/base.html" %}
 
+{% block body_class %}index{% endblock %}
+
 {% block page_title %}{{ blog.site_title|escape|default:"Jhon Adrián Cerón" }}{% endblock %}
 
 {% block page_description %}{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}{% endblock %}
@@ -16,7 +18,7 @@
 	<p>{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}</p>
 </header>
 {% for post in posts.object_list %}
-<article itemscope itemtype="http://schema.org/Article" class="article-index {% if forloop.last %}last-article{% endif %}">
+<article itemscope itemtype="http://schema.org/Article" class="{% if forloop.last %}last-article{% endif %}">
 	<header>
 		<h2 itemprop="name">
 			<a href="{% url itsme.views.post_view post.slug %}" itemprop="url" class="alternative">{{ post.title }}</a>
