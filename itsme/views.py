@@ -64,13 +64,16 @@ def post_view(request, slug):
     user = user_get_owner()
     blog = blog_get_or_create(user)
     
-    content = BBCodeParser(post.content)
+    post_content = BBCodeParser(post.content)
+    content = post_content.bbcode_to_html(post_content.escape_html())
+    
     
     return render_to_response('itsme/post_view.html',
                               {
                                'post': post,
                                'user': user,
                                'blog': blog,
+                               'post_content': post_content,
                                'content': content,
                                },
                               context_instance=RequestContext(request))
