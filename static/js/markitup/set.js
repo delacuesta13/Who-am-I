@@ -83,9 +83,9 @@ var mySettings = {
 		{name:'Link', key:'', openBlockWith:'[url=[![Enter an Url:!:http\://]!]]', closeBlockWith:'[/url]', placeHolder:'text to link', multiline:true },
 		{name:'Picture', key:'', replaceWith:'[img alt="A description should go here"][![Enter Url of image]!][/img]'},
 		{name:'YouTube', key:'', 
-		 replaceWith:'[youtube width=640 height=385][![Enter Video ID (If Url of video is: http://www.youtube.com/watch?v=mghhLqu31cQ, Video ID would be: mghhLqu31cQ)]!][/youtube]'},
+		 replaceWith:'[youtube width=600 height=361][![Enter Video ID (If Url of video is: http://www.youtube.com/watch?v=mghhLqu31cQ, Video ID would be: mghhLqu31cQ)]!][/youtube]'},
 		{name:'Vimeo', key:'', 
-         replaceWith:'[vimeo width=640 height=385][![Enter Video ID (If Url of video is: https://vimeo.com/36933978, Video ID would be: 36933978)]!][/vimeo]'
+         replaceWith:'[vimeo width=600 height=361][![Enter Video ID (If Url of video is: https://vimeo.com/36933978, Video ID would be: 36933978)]!][/vimeo]'
         },
 		{separator:'---------------' },
 		{name:'Clean', className:'clean', replaceWith:function(markitup) { return markitup.selection.replace(/\[(.*?)\]/g, "") } },
