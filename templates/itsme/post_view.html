@@ -11,7 +11,9 @@
 	<meta property="og:type" content="article" />
 	<meta property="og:image" content="" />
 	<meta property="og:url" content="{{ BASE_URL }}{% url itsme.views.post_view post.slug %}" />
-	<meta property="og:description" content="{{ content.get_all_paragraphs|first|safe|remove_bbcode }}" />
+	{% if post_content.get_all_paragraphs %}
+	<meta property="og:description" content="{{ post_content.get_all_paragraphs|first|remove_bbcode|escape }}" />
+	{% endif %}
 	<meta property="og:site_name" content="{{ blog.site_title }}" />
 {% endblock %}
 
@@ -21,13 +23,18 @@
 		<h1>{{ post.title }}</h1>
 		<time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"N d, Y" }}</time>
 	</header>
-	{{ content.bbcode_to_html|safe }}
+	{{ content|safe }}
 </article>
 {% endblock %}
 
+{% block extrastyle %}
+<link href="{{ STATIC_URL }}css/google-code-prettify.css" rel="stylesheet">
+{% endblock %}
 {% block extrajs %}
+<script src="{{ STATIC_URL }}js/google-code-prettify/prettify.js"></script>
 <script>
 $(document).ready(function() {
+	prettyPrint();
 	$("section article p").each(function() {
 		var el = $(this).html();
 		el = nl2br(el);
