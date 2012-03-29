@@ -9,7 +9,11 @@
 {% block blockbots %}
 	<meta property="og:title" content="{{ post.title }}" />
 	<meta property="og:type" content="article" />
-	<meta property="og:image" content="" />
+	{% if post_content.get_all_pictures %}
+	<meta property="og:image" content="{{ post_content.get_all_pictures|first }}" />
+	{% else %}
+	<meta property="og:image" content="{{ STATIC_URL }}img/logo.png" />
+	{% endif %}
 	<meta property="og:url" content="{{ BASE_URL }}{% url itsme.views.post_view post.slug %}" />
 	{% if post_content.get_all_paragraphs %}
 	<meta property="og:description" content="{{ post_content.get_all_paragraphs|first|remove_bbcode|escape }}" />
@@ -24,6 +28,34 @@
 		<time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"N d, Y" }}</time>
 	</header>
 	{{ content|safe }}
+	<footer>
+		<div class="row">
+			<div class="span5 categories">
+				<strong>Categories:</strong>
+				{{ post.categories.all|join:", "|default:"<em>Uncategorized</em>" }}
+			</div>
+			{% if previous_post or next_post %}
+			<div class="span2 post-nav">
+				<ul class="unstyled">
+				{% if previous_post %}
+					<li class="prev-post">
+						<a href="{% url itsme.views.post_view previous_post.slug %}" title="{{ previous_post.title|escape }}">
+							&larr; Older
+						</a>
+					</li>
+				{% endif %}
+				{% if next_post %}
+					<li class="next-post {% if previous_post %}exists-previous{% endif %}">
+						<a href="{% url itsme.views.post_view next_post.slug %}" title="{{ next_post.title|escape }}">
+							Newer &rarr;
+						</a>
+					</li>
+				{% endif %}
+				</ul>
+			</div>
+			{% endif %}
+		</div>
+	</footer>
 </article>
 {% endblock %}
 
