@@ -63,24 +63,45 @@ class BBCodeParser:
                            r'\1',
                            ],
                    },
+        'bulleted list': {
+                          'sub': [
+                                  r'\[list\](.*?)\[/list\]',
+                                  r'<ul>\1</ul>',
+                                  r'',
+                                  ],
+                          },
+        'numeric list': {
+                         'sub': [
+                                 r'\[list=(\d+?)\](.*?)\[/list\]',
+                                 r'<ol start="\1">\2</ol>',
+                                 r'',
+                                 ],
+                         },
+        'list item': {
+                      'sub': [
+                              r'\[\*\]\s*(.*?)$',
+                              r'\t<li>\1</li>',
+                              r'\1',
+                              ],
+                      },
         'quote': {
                   'sub': [
-                          r'\[quote=(.*)\](.*?)\[/quote\]',
+                          r'\[quote=(.+?)\](.*?)\[/quote\]',
                           r'<blockquote><p>\2</p><small>\1</small></blockquote>',
                           r'\2',
                           ],
                   },
-        'quote without autor': {
+        'quote without author': {
                   'sub': [
                           r'\[quote](.*?)\[/quote\]',
                           r'<blockquote><p>\1</p></blockquote>',
-                          r'\1',
+                          r'\2',
                           ],
                   },
         'code': {
                  'sub': [
                          r'\[code\](.*?)\[/code\]',
-                         r'<pre class="prettyprint linenums" style="margin-bottom: 9px;">\1</pre>',
+                         r'<pre class="prettyprint linenums">\1</pre>',
                          r'\1'
                          ],
                  },
@@ -91,12 +112,21 @@ class BBCodeParser:
                          r'\2',
                          ],
                  },
+        'picture': {
+                    'sub': [
+                            r'\[img\s+alt=(.*?)\](.*?)\[/img\]',
+                            r'<p><img src="\2" alt=\1></p>',
+                            r''
+                            ],
+                    'findall': r'\[img\s+alt=(.*?)\](.*?)\[/img\]',
+                    },
         'youtube': {
                     'sub': [
                             r'\[youtube\s+width=(\d*?)\s+height=(\d*?)\](.*?)\[/youtube\]',
                             r'<div class="video-wrapper">\n\t<div class="video-container">\n\t\t<iframe src="http://www.youtube.com/embed/\3" width="\1" height="\2" frameborder="0" allowFullScreen></iframe>\n\t</div>\n</div>',
                             r'',
                             ],
+                    'findall': r'\[youtube\s+width=\d*?\s+height=\d*?\](.*?)\[/youtube\]',
                     },
         'vimeo': {
                   'sub': [
@@ -104,6 +134,7 @@ class BBCodeParser:
                           r'<div class="video-wrapper">\n\t<div class="video-container">\n\t\t<iframe src="http://player.vimeo.com/video/\3?byline=0&amp;portrait=0" width="\1" height="\2" frameborder="0" allowFullScreen></iframe>\n\t</div>\n</div>',
                           r'',
                           ],
+                  'findall': r'\[vimeo\s+width=\d*?\s+height=\d*?\](.*?)\[/vimeo\]',
                   },        
     }
     
@@ -118,12 +149,21 @@ class BBCodeParser:
     def bbcode_to_html(self, s=''):
         s = s if len(s) > 0 else self.bbcode
         for value in self.bbcode_rules.itervalues():
-            re_bbcode = re.compile(value['sub'][0], re.MULTILINE|re.DOTALL|re.IGNORECASE) 
+            re_bbcode = re.compile(value['sub'][0], re.MULTILINE|re.DOTALL|re.IGNORECASE)
             s = re_bbcode.sub(value['sub'][1], s)
         return s
 
     def get_all_paragraphs(self):
         return re.findall(self.bbcode_rules['paragraph']['findall'], self.bbcode)
+    
+    def get_all_pictures(self):
+        return re.findall(self.bbcode_rules['picture']['findall'], self.bbcode)
+    
+    def get_all_youtube(self):
+        return re.findall(self.bbcode_rules['youtube']['findall'], self.bbcode)
+    
+    def get_all_vimeo(self):
+        return re.findall(self.bbcode_rules['vimeo']['findall'], self.bbcode)
     
     def remove_bbcode(self, s='', *tags):
         without_bbcode = s if len(s) > 0 else self.bbcode
