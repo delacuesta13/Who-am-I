@@ -1,5 +1,7 @@
 {% extends "itsme/base.html" %}
 
+{% load itsme_extras %}
+
 {% block body_class %}index{% endblock %}
 
 {% block page_title %}{{ blog.site_title|escape|default:"Jhon Adrián Cerón" }}{% endblock %}
@@ -25,11 +27,7 @@
 		</h2>
 		<time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"N d, Y" }}</time>
 	</header>
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque consectetur, 
-		justo sit amet eleifend eleifend, turpis mauris imperdiet tortor, in luctus 
-		mauris lacus fermentum diam.
-	</p>
+	{{ post.content|post_get_description|safe }}
 	<p class="read-more">
 		<a href="{% url itsme.views.post_view post.slug %}">Continue reading &rarr;</a>
 	</p>
