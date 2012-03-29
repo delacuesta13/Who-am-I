@@ -67,6 +67,16 @@ def post_view(request, slug):
     post_content = BBCodeParser(post.content)
     content = post_content.bbcode_to_html(post_content.escape_html())
     
+    previous_post = Post.objects.exclude(slug__exact=post.slug).filter(date__lte=post.date).order_by('-date', 'title').count()
+    if previous_post > 0:
+        previous_post = Post.objects.exclude(slug__exact=post.slug).filter(date__lte=post.date).order_by('-date', 'title')[0]
+    else:
+        previous_post = False
+    next_post = Post.objects.exclude(slug__exact=post.slug).filter(date__gte=post.date).order_by('date', 'title').count()
+    if next_post > 0:
+        next_post = Post.objects.exclude(slug__exact=post.slug).filter(date__gte=post.date).order_by('date', 'title')[0]
+    else:
+        next_post = False
     
     return render_to_response('itsme/post_view.html',
                               {
@@ -75,6 +85,8 @@ def post_view(request, slug):
                                'blog': blog,
                                'post_content': post_content,
                                'content': content,
+                               'previous_post': previous_post,
+                               'next_post': next_post,
                                },
                               context_instance=RequestContext(request))
 
