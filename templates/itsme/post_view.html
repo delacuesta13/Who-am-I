@@ -9,15 +9,9 @@
 {% block blockbots %}
 	<meta property="og:title" content="{{ post.title }}" />
 	<meta property="og:type" content="article" />
-	{% if post_content.get_all_pictures %}
-	<meta property="og:image" content="{{ post_content.get_all_pictures|first }}" />
-	{% else %}
-	<meta property="og:image" content="{{ STATIC_URL }}img/logo.png" />
-	{% endif %}
+	<meta property="og:image" content="{% if post_content.get_all_pictures %}{{ post_content.get_all_pictures|first|last }}{% else %}{{ STATIC_URL }}img/logo.png{% endif %}" />
 	<meta property="og:url" content="{{ BASE_URL }}{% url itsme.views.post_view post.slug %}" />
-	{% if post_content.get_all_paragraphs %}
-	<meta property="og:description" content="{{ post_content.get_all_paragraphs|first|remove_bbcode|escape }}" />
-	{% endif %}
+	{% if post_content.get_all_paragraphs %}<meta property="og:description" content="{{ post_content.get_all_paragraphs|first|remove_bbcode|escape }}" />{% endif %}
 	<meta property="og:site_name" content="{{ blog.site_title }}" />
 {% endblock %}
 
