@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>{% block page_title %}{% endblock %}</title>
+	
+	<meta name="robots" content="NONE,NOARCHIVE">
+	<meta name=“robots” content=“nofollow”>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/itsme/app.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+	{% block extrastyle %}{% endblock %}
+	
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+<body class="{% block body_class %}{% endblock %}">
+	<div id="navTop">
+		<div class="container">
+			<div class="row">
+				<div class="span4 offset7" id="navTop-Mobile"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+	{% block container %}
+		<header class="row" id="header">
+		{% block header %}
+			<div class="span4 offset1 logo">
+				<a href="{{ BASE_URL }}">
+					<img src="{{ STATIC_URL }}img/logo.png">
+				</a>
+			</div><!-- span4 -->
+			<nav class="span6">
+			{% block navigation %}
+				<ul class="unstyled">
+					<li class="first {% if not nav_active or nav_active|lower == "home" %}active{% endif %}">
+						<a href="{{ BASE_URL }}">Blog</a>
+					</li>
+					<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
+						<a href="#">Work</a>
+					</li>
+					{% comment %}
+					<li {% if nav_active and nav_active|lower == "blog" %}class="active"{% endif %}>
+						<a href="#">Blog</a>
+					</li>
+					{% endcomment %}
+					<li {% if nav_active and nav_active|lower == "about" %}class="active"{% endif %}>
+						<a href="#">About</a>
+					</li>
+					<li class="last {% if nav_active and nav_active|lower == "contact" %}active{% endif %}">
+						<a href="#">Contact</a>
+					</li>
+				</ul>
+			{% endblock %}
+			</nav><!-- span6 -->
+		{% endblock %}
+		</header>
+		{% block main %}
+		<div id="main" class="row">
+			<section id="content" class="span7 offset1">
+			{% block content %}
+			{% endblock %}
+			</section>
+			<aside id="sidebar" class="span3">
+			{% block sidebar %}
+			{% include "itsme/sidebar.html" %}
+			{% endblock %}
+			</aside>
+		</div>
+		{% endblock %}
+		<footer class="row" id="footer">
+		{% block footer %}
+			<div class="span10 offset1 content-footer">
+				Copyright &copy; {%  now  "Y" %} Jhon Adrián Cerón.
+			</div>
+		{% endblock %}
+		</footer>
+	{% endblock %}
+	</div>
+
+	<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/jquery-1.7.1.min.js"><\/script>')</script>
+	
+	<!-- Included JS Files -->
+	<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+	<script src="{{ STATIC_URL }}js/itsme/app.js"></script>	
+	{% block extrajs %}{% endblock %}
+	
+	<!--[if lt IE 7 ]>
+		<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+		<script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+	<![endif]--> 
+</body>
+</html>
