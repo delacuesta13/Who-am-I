@@ -103,6 +103,11 @@
 /* -----------------------------------------
    :: Page Media list
    ----------------------------------------- */
+   
+   body.media .thumbnails img{
+   	height: auto !important;
+   	max-width: 100%;
+   }
 
 	table#media-list thead th.checkbox, table#media-list tbody td.checkbox{
 		padding: 8px 12px;
