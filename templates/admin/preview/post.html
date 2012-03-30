@@ -10,12 +10,32 @@
 		<h1>{{ post.title }}</h1>
 		<time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"N d, Y" }}</time>
 	</header>
+	<p class="edit">
+		<a href="{% url admin.views.post_edit post.id %}">&larr; Continue editing</a>
+	</p>
 	{{ content|safe }}
+	<p class="edit">
+		<a href="{% url admin.views.post_edit post.id %}">&larr; Continue editing</a>
+	</p>
 </article>
 {% endblock %}
 
 {% block extrastyle %}
 <link href="{{ STATIC_URL }}css/google-code-prettify.css" rel="stylesheet">
+<style>
+p.edit a{
+	background: #0E7975;
+	color: #fff;
+	padding: 2px 10px;
+	text-decoration: none;
+}
+
+p.edit a:hover{
+	background: #fff;
+	color: #073c3a;
+	text-decoration: none;
+}
+</style>
 {% endblock %}
 {% block extrajs %}
 <script src="{{ STATIC_URL }}js/google-code-prettify/prettify.js"></script>
