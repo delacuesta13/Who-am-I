@@ -18,6 +18,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.template.defaultfilters import slugify, filesizeformat
 from itsme.models import UserProfile, Upload, Category, Blog, Post, CategoryRelationships, Project
+from itsme.bbcodeparser import BBCodeParser
 
 """
 Important: 
@@ -258,6 +259,25 @@ def project_edit(request, project_id = 0):
                                'error_slug': error_slug, 'error_slug_msg': error_slug_msg,
                                'error_url': error_url, 'error_url_msg': error_url_msg,
                                'nav_active': 'work',
+                               },
+                              context_instance=RequestContext(request))
+    
+def post_preview(request, post_id):
+    
+    if not request.user.is_authenticated():
+        return redirect('admin.views.login')
+    
+    post = get_object_or_404(Post, pk=post_id)
+    
+    content = BBCodeParser(post.content)
+    content = content.bbcode_to_html(content.escape_html())
+    
+    return render_to_response('admin/preview/post.html',
+                              {
+                               'post': post,
+                               'content': content,
+                               'blog': blog_get_or_create(request.user),
+                               'request': request,
                                },
                               context_instance=RequestContext(request))
 
