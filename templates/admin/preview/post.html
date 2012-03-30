@@ -1,0 +1,32 @@
+{% extends "admin/preview/base.html" %}
+
+{% block body_class %}article{% endblock %}
+
+{% block page_title %}{{ post.title|default:"No title" }}{% endblock %}
+
+{% block content %}
+<article>
+	<header>
+		<h1>{{ post.title }}</h1>
+		<time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"N d, Y" }}</time>
+	</header>
+	{{ content|safe }}
+</article>
+{% endblock %}
+
+{% block extrastyle %}
+<link href="{{ STATIC_URL }}css/google-code-prettify.css" rel="stylesheet">
+{% endblock %}
+{% block extrajs %}
+<script src="{{ STATIC_URL }}js/google-code-prettify/prettify.js"></script>
+<script>
+$(document).ready(function() {
+	prettyPrint();
+	$("section article p").each(function() {
+		var el = $(this).html();
+		el = nl2br(el);
+		$(this).html(el);
+	});
+});
+</script>
+{% endblock %}
