@@ -1,5 +1,7 @@
 {% extends "admin/base.html" %}
 
+{% block class_body %}media{% endblock %}
+
 {% block title %}Edit upload{% endblock %}
 
 {% block header %}
@@ -11,15 +13,15 @@
 
 {% block content %}
 <section class="row">
-	<div class="span3">
+	<div class="span4">
 		<ul class="thumbnails">
-			<li class="span2">
+			<li class="span4">
 				<img src="{{ MEDIA_URL }}{{ upload.path }}" class="thumbnail" alt="{{ upload.title }}">
 			</li>
 		</ul>
 	</div>
 	<!-- /three -->
-	<div class="span5">
+	<div class="span4">
 		<ul class="unstyled">
 			<li><strong>File name:</strong> {{ img.name_notpath }}</li>
 			<li><strong>File type:</strong> {{ upload.extension_file }}</li>
