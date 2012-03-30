@@ -114,11 +114,11 @@ class BBCodeParser:
                  },
         'picture': {
                     'sub': [
-                            r'\[img\s+alt=(.*?)\](.*?)\[/img\]',
-                            r'<p><img src="\2" alt=\1></p>',
+                            r'\[img\s+alt=(?:&quot;|")?(.*?)(?:&quot;|")?\](.*?)\[/img\]',
+                            r'<p><img src="\2" alt="\1"></p>',
                             r''
                             ],
-                    'findall': r'\[img\s+alt=(.*?)\](.*?)\[/img\]',
+                    'findall': r'\[img\s+alt=(?:&quot;|")?(.*?)(?:&quot;|")?\](.*?)\[/img\]',
                     },
         'youtube': {
                     'sub': [
