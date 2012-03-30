@@ -6,7 +6,7 @@ from django.utils import feedgenerator
 #from django.template.defaultfilters import force_escape
 from itsme.bbcodeparser import BBCodeParser
 from itsme.models import Post
-from itsme.views import user_get_owner
+from itsme.views import user_get_owner, post_set_to_publish
 from admin.views import blog_get_or_create
 
 class RSSFeed(Feed):
@@ -29,7 +29,8 @@ class RSSFeed(Feed):
         return 'Updates of articles about Internet, Software Development, free and open technologies and other things.'
     
     def items(self):
-        return Post.objects.order_by('-date', 'title')[:10]
+        post_set_to_publish()
+        return Post.objects.filter(status__iexact='publish').order_by('-date', 'title')[:10]
     
     def item_title(self, item):
         return item.title
