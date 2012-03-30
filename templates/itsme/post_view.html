@@ -6,6 +6,8 @@
 
 {% block page_title %}{{ post.title|escape }}{% endblock %}
 
+{% block page_description %}{{ post_content.get_all_paragraphs|first|remove_bbcode|escape }}{% endblock %}
+
 {% block blockbots %}
 	<meta property="og:title" content="{{ post.title }}" />
 	<meta property="og:type" content="article" />
