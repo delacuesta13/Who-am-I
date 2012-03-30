@@ -299,6 +299,7 @@
    body.article section article img{
    	height: auto !important;
    	max-width: 100%;
+   	padding: 5px 0;
    }
    
    body.article section article ol{
