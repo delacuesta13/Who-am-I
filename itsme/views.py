@@ -21,16 +21,10 @@ def index(request, page=1):
     user = user_get_owner()
     blog = blog_get_or_create(user)
     
-    current_date = datetime.now()
-    
-    # update notes if their status are 'future' and their date 
-    # is less than current date
-    Post.objects.filter(date__lte=current_date,
-                        status__iexact='future',
-                        blog__id=blog.id).update(status='publish')
+    post_set_to_publish()
     
     post_list = Post.objects.filter(blog__id=blog.id,
-                                    status='publish').order_by('-date', 'title')
+                                    status__iexact='publish').order_by('-date', 'title')
     
     paginator = Paginator(post_list, 5)
     
@@ -89,6 +83,17 @@ def post_view(request, slug):
                                'next_post': next_post,
                                },
                               context_instance=RequestContext(request))
+
+def post_set_to_publish():
+    """Set future articles as published articles, if their date is less or equal to current date."""
+    user = user_get_owner()
+    blog = blog_get_or_create(user)
+    
+    current_date = datetime.now()
+    
+    Post.objects.filter(date__lte=current_date,
+                        status__iexact='future',
+                        blog__id=blog.id).update(status='publish')
 
 """
 get owner user of site
