@@ -137,6 +137,11 @@
               			<div id="collapsePublish" class="accordion-body collapse in">
                 			<div class="accordion-inner">
                 				<ul class="unstyled">
+                					{% if mode and mode|lower == "edit" %}
+                					<li style="text-align: right">
+                						<a class="btn btn-info" href="{% url admin.views.post_preview post.id %}">Preview post</a>
+                					</li>
+                					{% endif %}
                 					<li>
                 						Status:
                 						<strong>{% if mode and mode|lower == "edit" %}{{ post.get_status }}{% else %}None{% endif %}</strong> 
