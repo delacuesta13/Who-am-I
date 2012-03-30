@@ -2,9 +2,10 @@
     Table of Contents
 -----------------------------------------------------
 :: Shared Styles
-:: Media Queries
 :: Index Page 
 :: Article Page 
+:: Media Queries
+:: Selections
 */
 
 /* -----------------------------------------
@@ -538,4 +539,31 @@
    	}
    	
    }
+
+/* -----------------------------------------
+   :: Selections
+   ----------------------------------------- */
    
+   /* Taked from: http://viljamis.com */
+   
+   ::-moz-selection {
+	background: rgb(80,80,80);
+	color: rgb(241, 241, 241);
+	text-shadow: none;
+   }
+
+   ::selection {
+	background: rgb(80,80,80);
+	color: rgb(241, 241, 241);
+	text-shadow: none;
+   }
+
+   img::selection {
+	background: transparent;
+   }
+
+   img::-moz-selection {
+	background: transparent;
+   }
+    
+          
