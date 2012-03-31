@@ -1,0 +1,60 @@
+{% extends "itsme/base.html" %}
+
+{% load itsme_extras %}
+
+{% block body_class %}work{% endblock %}
+
+{% block page_title %}Work{% endblock %}
+
+{% block page_description %}I develop software projects using Web technologies. For this, I implement free software and open source technologies.{% endblock %}
+
+{% block main %}
+<div class="row heading-trick">
+	<div class="span10 offset1 heading">
+		<hgroup>
+			<h1>Work</h1>
+			<h2>
+				I develop software projects using Web technologies.
+				For this, I implement free software and open source technologies.
+			</h2>
+		</hgroup>
+	</div>
+</div>
+{% for project in projects %}
+<section class="row project-item {% if forloop.last %}last{% endif %}">
+	<div class="span6 offset1 project-media">
+		{{ project.description|content_get_media|safe }}
+	</div>
+	<div class="span4 project-info">
+		<h2 class="project-name">{{ project.name }}</h2>
+		{{ project.description|content_get_info|safe }}
+	</div>
+</section>
+{% empty %}
+<section class="row project-item" style="margin-top: 0;">
+	<div class="span10 offset1 project-info" style="border: 0; padding: 0; margin-top: 0;">
+		<h2>There aren't found projects.</h2>
+		<p>
+			Unfortunately, there aren't projects to show.
+		</p>
+	</div>
+</section>
+{% endfor %}
+{% endblock %}
+
+{% block extrastyle %}
+<link href="{{ STATIC_URL }}css/google-code-prettify.css" rel="stylesheet">
+{% endblock %}
+{% block extrajs %}
+<script src="{{ STATIC_URL }}js/google-code-prettify/prettify.js"></script>
+<script>
+$(document).ready(function() {
+	prettyPrint();
+	$(".project-item .project-info p").each(function() {
+		var el = $(this).html();
+		el = nl2br(el);
+		$(this).html(el);
+	});
+});
+</script>
+{% endblock %}
