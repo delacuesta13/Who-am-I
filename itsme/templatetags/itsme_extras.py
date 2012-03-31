@@ -52,32 +52,4 @@ def content_get_info(s):
     content = bbcode_to_html.get_html_from_bbcode_tags(bbcode_to_html.escape_html(), 
                                                        True, 
                                                        *info_tags)
-    return content
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    return content    
