@@ -4,6 +4,7 @@
 :: Shared Styles
 :: Index Page 
 :: Article Page 
+:: Work Page 
 :: Media Queries
 :: Selections
 */
@@ -354,30 +355,104 @@
    	border-left: 1px solid #eee;
    }
    
+/* -----------------------------------------
+   :: Work Page
+   ----------------------------------------- */
+   
+   body.work .heading-trick{
+    margin-bottom: 30px;
+	margin-top: 34px;
+   }   
+   
+   body.work .heading h1{
+   	margin-bottom: 10px; 
+   }
+   
+   body.work .heading h1, 
+   body.work .heading h2{
+   	text-transform: uppercase;
+   }
+   
+   body.work .heading h2{
+   	font-size: 17px;
+   	font-style:normal;
+   	font-weight:normal;
+   }
+   
+   body.work .project-item{
+   	margin-bottom: 2.5em;
+   }
+   
+   body.work .project-item .project-info{
+   	border-top: 1px solid #333;
+   	margin-top: 5px;
+   	padding-top: 30px;
+   }
+   
+   body.work .project-item .project-info h2.project-name{
+   	text-transform: uppercase;
+   	margin: 0 0 20px;
+   }
+   
+   body.work .project-item .project-info h2{
+   	 margin: 20px 0;
+   }
+   
+   body.work .project-item .project-info h3,
+   body.work .project-item .project-info h4{
+   	margin: 15px 0;
+   }
+   
+   body.work .project-item .project-info pre{
+   	margin: 0 0 25px;
+   }
+   
+   body.work .project-item .project-info blockquote{
+   	margin: 20px 0;
+   }
+   
+   body.work .project-item .project-info ol{
+   	margin: 0 0 15px 25px;
+   }
+   
+   body.work .project-item .project-media img{
+   	height: auto !important;
+   	max-width: 100%;
+   	padding: 5px 0;
+   }
      
 /* -----------------------------------------
    :: Media Queries
    ----------------------------------------- */
    
-   @media only screen and (min-width: 980px) {
-   }
-   
-   /* Smaller than standard 960 (devices and browsers) */
-   @media only screen and (max-width: 979px) {
-   }
-   
-   /* Tablet Portrait size to standard 960 (devices and browsers) */
+   /* -----------------------------------------------------------
+      Tablet Portrait size to standard 960 (devices and browsers) */
+      
    @media only screen and (min-width: 768px) and (max-width: 979px) {
+   	
    	header#header .logo img{ width: 77px; }
+   	
+   	/* Work Page */
+   	
+   	body.work .heading h2{
+   		font-size: 16px;
+   	}
+   	
    }
    
-   /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+   /* ---------------------------------------------------------------
+      Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+      
    @media only screen and (min-width: 480px) and (max-width: 767px) {
+   	
    	div#navTop{ 
    		margin-left: -20px;
    		margin-right: -20px;
    	}
    	div#navTop .row{ display: block; }
+   	div#navTop select{
+	   	width: 40%;
+    }
    	header#header .logo{ text-align: center; }
    	header#header .logo img{ width: 66px; }
    	header#header nav{ display: none !important; }
@@ -391,45 +466,6 @@
    	footer#footer .content-footer{
    		border-top: 0;
    		padding-top: 0;
-   	}
-   	
-   	/* Article Page */
-       
-    body.article section article footer{
-    	margin: 50px -20px 50px;
-    }
-   	
-   	body.article section article footer .categories{
-   		border-bottom: 1px solid #eee;
-   		padding: 10px 20px;
-   	}
-   	
-   	body.article section article footer .post-nav{
-   		padding: 10px 20px;
-		text-align: left;
-   	}
-   	
-   	body.article section article footer .post-nav a{
-   		color: #666;
-   	}
-   	
-   	body.article section article footer .post-nav a:hover{
-   		background: transparent;
-   		color: #555;
-   		text-decoration: none;
-   	}
-   	
-   	body.article section article footer .post-nav .prev-post a{
-   		padding: 0 20px 0 0;
-   	}
-   	
-   	body.article section article footer .post-nav .next-post a{
-   		padding-bottom: 10px;
-   		padding-top: 10px;
-   	}
-   	
-   	body.article section article footer .post-nav .exists-previous a{
-   		padding: 10px 20px;
    	}
    	
    	/* Article Page */
@@ -471,12 +507,49 @@
    	
    	body.article section article footer .post-nav .exists-previous a{
    		padding: 10px 20px;
+   	}
+   	
+   	/* Work Page */
+   	
+   	body.work .heading-trick{
+		margin-top: 25px;
+    }  
+   	
+   	body.work .heading h1, body.work .heading h2{
+   		text-align: center;
+   	}
+   	
+   	body.work .heading h2{
+   		font-size: 15px;
+   	}
+   	
+    body.work .project-item .project-info{
+   		border-bottom: 1px solid #333;
+   		border-top: 0;
+   		margin-top: 0;
+   		padding-top: 10px;
+    }
+    
+    body.work .last .project-info{
+    	border-bottom: 0;
+    }
+    
+    body.work footer#footer{
+    	margin-top: 10px;
+    }
+    
+   	body.work footer#footer .content-footer{
+   		border-top: 1px solid #E2E2E2;
+   		padding-top: 10px;
    	}
    	
    }
    
-   /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+   /* -------------------------------------------------------------------- 
+      Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+   
    @media only screen and (max-width: 479px) {
+   	
    	div#navTop{ 
    		margin-left: -20px;
    		margin-right: -20px;
@@ -536,6 +609,40 @@
    	
    	body.article section article footer .post-nav .exists-previous a{
    		padding: 10px 20px;
+   	}
+   	
+   	/* Work Page */
+   	
+   	body.work .heading-trick{
+		margin-top: 25px;
+    }   
+   	
+   	body.work .heading h1, body.work .heading h2{
+   		text-align: center;
+   	}
+   	
+   	body.work .heading h2{
+   		font-size: 14px;
+   	}
+   	
+   	body.work .project-item .project-info{
+   		border-bottom: 1px solid #333;
+   		border-top: 0;
+   		margin-top: 0;
+   		padding-top: 10px;
+    }
+    
+    body.work .last .project-info{
+    	border-bottom: 0;
+    }
+    
+    body.work footer#footer{
+    	margin-top: 10px;
+    }
+    
+   	body.work footer#footer .content-footer{
+   		border-top: 1px solid #E2E2E2;
+   		padding-top: 10px;
    	}
    	
    }
