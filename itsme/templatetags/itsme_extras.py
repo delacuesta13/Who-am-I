@@ -35,3 +35,49 @@ def post_get_description(s):
     else:
         content_bbcode = '<p><em>There isn\'t description for this blog post.</em></p>'
     return content_bbcode
+
+@register.filter
+def content_get_media(s):
+    bbcode_to_html = BBCodeParser(s)
+    content = bbcode_to_html.get_html_from_bbcode_tags(bbcode_to_html.escape_html(), 
+                                                       True,
+                                                       *bbcode_to_html.get_media_tags())
+    return content
+
+@register.filter
+def content_get_info(s):
+    """Remove all media tags"""
+    bbcode_to_html = BBCodeParser(s)
+    info_tags = [tag for tag in bbcode_to_html.bbcode_rules.iterkeys() if tag not in bbcode_to_html.get_media_tags()]
+    content = bbcode_to_html.get_html_from_bbcode_tags(bbcode_to_html.escape_html(), 
+                                                       True, 
+                                                       *info_tags)
+    return content
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
