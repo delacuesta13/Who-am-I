@@ -119,6 +119,7 @@ class BBCodeParser:
                             r''
                             ],
                     'findall': r'\[img\s+alt=(?:&quot;|")?(.*?)(?:&quot;|")?\](.*?)\[/img\]',
+                    'media': True,
                     },
         'youtube': {
                     'sub': [
@@ -127,6 +128,7 @@ class BBCodeParser:
                             r'',
                             ],
                     'findall': r'\[youtube\s+width=\d*?\s+height=\d*?\](.*?)\[/youtube\]',
+                    'media': True,
                     },
         'vimeo': {
                   'sub': [
@@ -135,6 +137,7 @@ class BBCodeParser:
                           r'',
                           ],
                   'findall': r'\[vimeo\s+width=\d*?\s+height=\d*?\](.*?)\[/vimeo\]',
+                  'media': True,
                   },        
     }
     
@@ -176,4 +179,29 @@ class BBCodeParser:
             for value in self.bbcode_rules.itervalues():
                 re_bbcode = re.compile(value['sub'][0], re.MULTILINE|re.DOTALL|re.IGNORECASE)
                 without_bbcode = re_bbcode.sub(value['sub'][2], without_bbcode)
-        return without_bbcode 
+        return without_bbcode
+    
+    def get_html_from_bbcode_tags(self, s='', remove_other_tags=False, *tags):
+        """Return content of received tags.
+        
+        remove_other_tags, boolean
+        true, return html content of received bbcode tags and remove content of bbcode tags not specified
+        false, return html content of received bbcode tags, but not remove content of bbcode tags no specified
+        """
+        content = s if len(s) > 0 else self.bbcode
+        for tag in tags:
+            if tag in self.bbcode_rules:
+                re_bbcode = re.compile(self.bbcode_rules[tag]['sub'][0], 
+                                       re.MULTILINE|re.DOTALL|re.IGNORECASE)
+                content = re_bbcode.sub(self.bbcode_rules[tag]['sub'][1], 
+                                        content)
+        if remove_other_tags:
+            tags_not_specified = [tag for tag in self.bbcode_rules.iterkeys() if tag not in tags]
+            for tag in tags_not_specified:
+                re_bbcode = re.compile(self.bbcode_rules[tag]['sub'][0], 
+                                       re.MULTILINE|re.DOTALL|re.IGNORECASE)
+                content = re_bbcode.sub(r'', content)
+        return content     
+
+    def get_media_tags(self):
+        return [tag for (tag, value) in self.bbcode_rules.iteritems() if 'media' in value and value['media']]
