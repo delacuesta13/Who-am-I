@@ -9,9 +9,9 @@
 	
 	<title>{% block page_title %}{% endblock %}</title>
 	<meta name="description" content="{% block page_description %}{% endblock %}">
-	<meta name="author" content="{% block page_author %}Jhon Adrián Cerón{% endblock %}">
+	<meta name="author" content="{% block page_author %}Jhon Adri&aacute;n Cer&oacute;n{% endblock %}">
 	
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 	<meta name="GOOGLEBOT" content="NOODP">
 	<meta name="googlebot" content="noodp">
@@ -59,7 +59,7 @@
 						<a href="{{ BASE_URL }}">Blog</a>
 					</li>
 					<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
-						<a href="#">Work</a>
+						<a href="{% url itsme.views.work %}">Work</a>
 					</li>
 					{% comment %}
 					<li {% if nav_active and nav_active|lower == "blog" %}class="active"{% endif %}>
