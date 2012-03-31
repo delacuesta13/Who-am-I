@@ -6,5 +6,6 @@ urlpatterns = patterns('',
     url(r'^$', 'itsme.views.index'),
     url(r'^feed/$', RSSFeed()),
     url(r'^page/(?P<page>\d+)/$', 'itsme.views.index'),
-    url(r'^blog/(?P<slug>[\w-]+)/$', 'itsme.views.post_view')
+    url(r'^blog/(?P<slug>[\w-]+)/$', 'itsme.views.post_view'),
+    url(r'^work/$', 'itsme.views.work'),
 )
