@@ -28,6 +28,9 @@
 	<div class="span4 project-info">
 		<h2 class="project-name">{{ project.name }}</h2>
 		{{ project.description|content_get_info|safe }}
+		{% if project.site_url %}
+		<p><a href="{{ project.site_url }}">Visit site &rarr;</a></p>
+		{% endif %}
 	</div>
 </section>
 {% empty %}
