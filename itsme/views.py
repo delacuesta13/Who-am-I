@@ -96,6 +96,26 @@ def post_set_to_publish():
                         blog__id=blog.id).update(status='publish')
 
 """
+Work
+"""
+
+def work(request):
+    
+    user = user_get_owner()
+    blog = blog_get_or_create(user)
+    
+    projects = Project.objects.all().order_by('-created_at', 'name') 
+    
+    return render_to_response('itsme/work.html',
+                              {
+                               'user': user,
+                               'blog': blog,
+                               'projects': projects,
+                               'nav_active': 'work'
+                               },
+                              context_instance=RequestContext(request))
+
+"""
 get owner user of site
 """
 
