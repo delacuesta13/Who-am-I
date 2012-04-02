@@ -425,6 +425,15 @@
    :: Media Queries
    ----------------------------------------- */
    
+   @media only screen and (min-width: 980px) {
+   
+    /* Work Page */
+   
+   	body.work .heading h2{ width: 80%; }
+   
+   }
+   
+   
    /* -----------------------------------------------------------
       Tablet Portrait size to standard 960 (devices and browsers) */
       
@@ -436,6 +445,7 @@
    	
    	body.work .heading h2{
    		font-size: 16px;
+   		width: 90%;
    	}
    	
    }
