@@ -5,6 +5,7 @@
 :: Index Page 
 :: Article Page 
 :: Work Page 
+:: About Page 
 :: Media Queries
 :: Selections
 */
@@ -171,13 +172,9 @@
    	margin-right: 4px;
    }
    
-   #sidebar ul#social li a, ul#social li a:hover{
+   #sidebar ul#social li a, 
+   #sidebar ul#social li a:hover{
    	text-decoration: none;
-   }
-   
-   #sidebar ul#social li a img{
-   	opacity : 1.0;
-    filter: alpha(opacity=100);
    }
    
    #sidebar ul#social li a:hover img{
@@ -420,6 +417,89 @@
    	max-width: 100%;
    	padding: 5px 0;
    }
+   
+/* -----------------------------------------
+   :: About Page
+   ----------------------------------------- */
+   
+   body.about .heading-trick{
+    margin-bottom: 30px;
+	margin-top: 34px;
+   }   
+   
+   body.about .heading h1{
+   	margin-bottom: 10px; 
+   }
+   
+   body.about .heading h1, 
+   body.about .heading h2{
+   	text-transform: uppercase;
+   }
+   
+   body.about .heading h2{
+   	font-size: 17px;
+   	font-style:normal;
+   	font-weight:normal;
+   }
+   
+   body.about #content h2{
+   	margin: 30px 0 20px;
+   }
+   
+   body.about #content h3,
+   body.about #content h4{
+   	margin: 15px 0;
+   }
+   
+   body.about #content pre{
+   	margin: 0 0 25px;
+   }
+   
+   body.about #content blockquote{
+   	margin: 20px 0;
+   }
+   
+   body.about #content img{
+   	height: auto !important;
+   	max-width: 100%;
+   	padding: 5px 0;
+   }
+   
+   body.about #content ol{
+   	margin: 0 0 15px 25px;
+   }
+   
+   body.about #footer{
+   	margin-top: 5.4em;
+   	margin-bottom: 2em;
+   }
+   
+   body.about #footer .social-media{
+   	text-align: right;
+   }
+   
+   body.about #footer .social-media ul{
+   	margin-bottom: 0;
+   }
+   
+   body.about #footer .social-media ul#social{
+   	list-style: none;
+   }
+   
+   body.about #footer .social-media ul#social li{
+   	display: inline;
+   	margin-right: 0px;
+   }
+   
+   body.about #footer .social-media ul#social li a, 
+   body.about #footer .social-media ul#social li a:hover{
+   	text-decoration: none;
+   }
+   
+   body.about #footer .social-media ul#social li a:hover img{
+   	opacity : 0.6;
+    filter: alpha(opacity=60);
+   }
      
 /* -----------------------------------------
    :: Media Queries
@@ -430,6 +510,22 @@
     /* Work Page */
    
    	body.work .heading h2{ width: 80%; }
+   	
+   	/* About Page */
+   	
+   	body.about .heading h2{ width: 80%; }
+   	
+   	body.about #content{
+   		column-count: 2; 
+   		-moz-column-count: 2; 
+   		-o-column-count: 2; 
+   		-webkit-column-count: 2;
+   		/* gap */
+   		column-gap: 30px; 
+   		-moz-column-gap: 30px; 
+   		-o-column-gap: 30px; 
+   		-webkit-column-gap: 30px;
+    }
    
    }
    
@@ -447,6 +543,25 @@
    		font-size: 16px;
    		width: 90%;
    	}
+   	
+   	/* About Page */
+   	
+   	body.about .heading h2{
+   	    font-size: 16px;
+   		width: 90%;
+   	}
+   	
+   	body.about #content{
+   		column-count: 2; 
+   		-moz-column-count: 2; 
+   		-o-column-count: 2; 
+   		-webkit-column-count: 2;
+   		/* gap */
+   		column-gap: 30px; 
+   		-moz-column-gap: 30px; 
+   		-o-column-gap: 30px; 
+   		-webkit-column-gap: 30px;
+    }
    	
    }
    
@@ -553,6 +668,22 @@
    		padding-top: 10px;
    	}
    	
+   	/* About Page */
+   	
+   	body.about .heading-trick{
+		margin-top: 25px;
+    }  
+   	
+   	body.about .heading h1, body.about .heading h2{
+   		text-align: center;
+   	}
+   	
+   	body.about .heading h2{
+   		font-size: 15px;
+   	}
+   	
+   	body.about #footer{ margin-top: 1em; }
+   	
    }
    
    /* -------------------------------------------------------------------- 
@@ -654,6 +785,22 @@
    		border-top: 1px solid #E2E2E2;
    		padding-top: 10px;
    	}
+   	
+   	/* About Page */
+   	
+   	body.about .heading-trick{
+		margin-top: 25px;
+    }   
+   	
+   	body.about .heading h1, body.about .heading h2{
+   		text-align: center;
+   	}
+   	
+   	body.about .heading h2{
+   		font-size: 14px;
+   	}
+   	
+   	body.about #footer{ margin-top: 1em; }
    	
    }
 
