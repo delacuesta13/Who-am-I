@@ -1,0 +1,32 @@
+{% extends "itsme/base.html" %}
+
+{% load itsme_extras %}
+
+{% block body_class %}about{% endblock %}
+
+{% block page_title %}About{% endblock %}
+
+{% block page_description %}I&#39;m a Software Engineer from Colombia, specialized in Web Development. I&#39;m continually learning new technologies, mainly around Internet.{% endblock %}
+
+{% block main %}
+<div class="row heading-trick">
+	<div class="span10 offset1 heading">
+		<h1>About</h1>
+		<h2>
+			I'm a Software Engineer from Colombia, specialized in Web Development. 
+			I'm continually learning new technologies, mainly around Internet.
+		</h2>
+	</div>
+</div>
+<section class="row">
+	<article id="content" class="span10 offset1">
+		{{ resume|safe|default:"<p>Here must be information about me.</p>" }}
+	</article>
+</section>
+{% endblock %}
+{% block footer %}
+<div class="span10 offset1 social-media">
+	{% include "itsme/social.html" with show_title=False %}
+</div>
+{% endblock %}
+
