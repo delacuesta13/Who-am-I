@@ -70,7 +70,7 @@
 						<a href="{% url itsme.views.about %}">About</a>
 					</li>
 					<li class="last {% if nav_active and nav_active|lower == "contact" %}active{% endif %}">
-						<a href="#">Contact</a>
+						<a href="{% url itsme.views.contact %}">Contact</a>
 					</li>
 				</ul>
 			{% endblock %}
