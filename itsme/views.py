@@ -111,7 +111,28 @@ def work(request):
                                'user': user,
                                'blog': blog,
                                'projects': projects,
-                               'nav_active': 'work'
+                               'nav_active': 'work',
+                               },
+                              context_instance=RequestContext(request))
+
+"""
+About
+"""
+
+def about(request):
+    
+    user = user_get_owner()
+    blog = blog_get_or_create(user)
+    
+    resume = BBCodeParser(user.get_profile().resume)
+    resume = resume.bbcode_to_html(resume.escape_html())
+    
+    return render_to_response('itsme/about.html',
+                              {
+                               'user': user,
+                               'blog': blog,
+                               'resume': resume,
+                               'nav_active': 'about',
                                },
                               context_instance=RequestContext(request))
 
