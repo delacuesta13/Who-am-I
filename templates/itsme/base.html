@@ -67,7 +67,7 @@
 					</li>
 					{% endcomment %}
 					<li {% if nav_active and nav_active|lower == "about" %}class="active"{% endif %}>
-						<a href="#">About</a>
+						<a href="{% url itsme.views.about %}">About</a>
 					</li>
 					<li class="last {% if nav_active and nav_active|lower == "contact" %}active{% endif %}">
 						<a href="#">Contact</a>

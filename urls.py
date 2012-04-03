@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^page/(?P<page>\d+)/$', 'itsme.views.index'),
     url(r'^blog/(?P<slug>[\w-]+)/$', 'itsme.views.post_view'),
     url(r'^work/$', 'itsme.views.work'),
+    url(r'^about/$', 'itsme.views.about'),
 )
