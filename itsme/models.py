@@ -95,11 +95,11 @@ class CategoryRelationships(models.Model):
 class Message(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    ip = models.IPAddressField(max_length=100)
-    author = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    subject = models.CharField(max_length=100)
-    content = models.TextField()    
+    ip = models.IPAddressField(max_length=100, null=True, blank=True)
+    author = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(max_length=100, null=True, blank=True)
+    subject = models.CharField(max_length=100, null=True, blank=True)
+    content = models.TextField(null=True, blank=True)    
     is_readed = models.BooleanField(default=False)
 
 class Upload(models.Model):
