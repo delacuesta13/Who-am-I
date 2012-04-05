@@ -1,0 +1,116 @@
+{% extends "itsme/base.html" %}
+
+{% block page_title %}Contact{% endblock %}
+
+{% block page_description %}{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}{% endblock %}
+
+{% block body_class %}contact{% endblock %}
+
+{% block content %}
+<article>
+	<h1>Contact</h1>
+	{% if user.get_profile.available_for_work %}
+	<p class="available">
+		I'm Available For Freelance Works
+	</p>
+	{% else %}
+	<p class="unavailable">
+		I'm Not Available For Work In Projects
+	</p>
+	{% endif %}
+	<form class="form-vertical" method="post" action="{{ BASE_URL }}{% url itsme.views.contact %}">
+		{% if warning_form %}
+		<div class="alert alert-block">
+			<a class="close" data-dismiss="alert">×</a>
+  			<h4>Warning!</h4>
+  			Please, check and correct the below errors.
+		</div>
+		{% else %}
+			{% if success_form %}
+			<div class="alert alert-success alert-block">
+				<a class="close" data-dismiss="alert">×</a>
+  				<h4>Thank you!</h4>
+  				I will reply your message immediately i read it.
+			</div>
+			{% else %}
+				{% if error_form %}
+				<div class="alert alert-error alert-block">
+					<a class="close" data-dismiss="alert">×</a>
+					<h4>Something went wrong!</h4>
+					{{ error_form_msg }}
+				</div>
+				{% endif %}
+			{% endif %}
+		{% endif %}
+		{% csrf_token %}
+		<div class="control-group {% if warning_form and error_name %}error{% endif %}">
+			<label class="control-label" for="form-name">Name</label>
+			<div class="controls">
+				<input type="text" name="name" id="form-name" class="span6"  
+				placeholder="Enter Your Name" maxlength="100" required="required"
+				{% if request.POST.name and warning_form %}value="{{ request.POST.name }}"{% endif %}>
+				{% if warning_form and error_name %}
+				<p class="help-block">{{ error_name_msg }}</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="control-group {% if warning_form and error_email %}error{% endif %}">
+			<label class="control-label" for="form-email">Email</label>
+			<div class="controls">
+				<input type="email" name="email" id="form-email" class="span6"  
+				placeholder="Enter Your E-mail Address" maxlength="100" 
+				{% if request.POST.email and warning_form %}value="{{ request.POST.email }}"{% endif %}>
+				{% if warning_form and error_email %}
+				<p class="help-block">{{ error_email_msg }}</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="control-group {% if warning_form and error_message %}error{% endif %}">
+			<label class="control-label" for="form-message">Message</label>
+			<div class="controls">
+				<textarea name="message" id="form-message" required="required"
+				placeholder="Talk to me with confidence. I'm at your service :)"
+				class="span6" rows="6">{% if request.POST.message and warning_form %}{{ request.POST.message }}{% endif %}</textarea>
+				{% if warning_form and error_message %}
+				<p class="help-block">{{ error_message_msg }}</p>
+				{% endif %}
+			</div>
+		</div>
+		<input type="submit" name="submit" value="Send" class="btn btn-large toUppercase">
+	</form>
+</article>
+{% endblock %}
+
+{% block sidebar %}
+<h3>Just prefer say hello?</h3>
+<p>You can use the below ways to contact me.</p>
+<ul class="unstyled say-hello">
+	<li class="email">
+		<a href="mailto:{{ user.email|default:"hello@adrianceron.com" }}">{{ user.email|default:"hello@adrianceron.com" }}</a>
+	</li>
+	{% if user.get_profile.phone %}
+	<li class="phone">
+		{{ user.get_profile.phone }}
+	</li>
+	{% endif %}
+	<li class="skype">
+		<a href="skype:de_la_cuesta_13?call">Skype</a>
+	</li>
+</ul>
+{% endblock %}
+
+{% block footer %}
+<div class="span10 offset1 social-media">
+{% include "itsme/social.html" with hide_title="True" %}
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+p.available{
+	background: url({{ STATIC_URL }}/img/icon_check_green.png) no-repeat 0 0;
+} p.unavailable{
+	background: url({{ STATIC_URL }}/img/icon_cross_red.png) no-repeat 0 0;
+}
+</style>
+{% endblock %}
