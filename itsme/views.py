@@ -6,10 +6,11 @@ from django.conf import settings
 from django.contrib.auth.models import User 
 from django.core.paginator import Paginator, InvalidPage, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.validators import validate_email
 from django.template import RequestContext
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render_to_response
-from itsme.models import Post, Project
+from django.http import Http404
+from django.shortcuts import redirect, render_to_response
+from itsme.models import Post, Project, Message
 from admin.views import blog_get_or_create
 from itsme.bbcodeparser import BBCodeParser
 
@@ -135,6 +136,87 @@ def about(request):
                                'nav_active': 'about',
                                },
                               context_instance=RequestContext(request))
+
+"""
+Contact
+"""
+
+def contact(request):
+    
+    user = user_get_owner()
+    blog = blog_get_or_create(user)
+    
+    warning_form = False
+    success_form = False
+    error_form, error_form_msg = False, ''
+    
+    error_name, error_name_msg = False, ''
+    error_email, error_email_msg = False, ''
+    error_message, error_message_msg = False, '' 
+    
+    if (request.method == 'POST' and 'name' in request.POST
+        and 'email' in request.POST and 'message' in request.POST):
+        name = request.POST['name']
+        email = request.POST['email']
+        message = request.POST['message']
+        
+        if not re.match('^.+$', name):
+            error_name, error_name_msg = True, 'Please, enter your name.'
+            warning_form = True
+            
+        try:
+            validate_email(email)
+        except ValidationError:
+            error_email, error_email_msg = True, 'Please, enter a valid e-mail address.'      
+            warning_form = True     
+            
+        if len(message) == 0:
+            error_message, error_message_msg = True, 'Please, write a message for i reply you.'      
+            warning_form = True 
+            
+        # get (separated) current year, month and day
+        year, month, day = datetime.now().strftime('%Y %m %d').split(' ')
+        today_start = datetime(int(year), int(month), int(day), 0, 0 , 0)
+        today_end = datetime(int(year), int(month), int(day), 23, 59 , 59)
+        
+        # get number of messages from email address today
+        num_max_messages_for_day = 3
+        # number of messages by email
+        num_messages_today_email = Message.objects.filter(email__iexact=email, 
+                                              date__gte=today_start,
+                                              date__lte=today_end).count()
+        # number of messages by ip address
+        num_messages_today_ip = Message.objects.filter(ip__iexact=request.META['REMOTE_ADDR'], 
+                                              date__gte=today_start,
+                                              date__lte=today_end).count()
+                                              
+        # check if a same email address is sending multiple messages
+        if (num_messages_today_email >= num_max_messages_for_day
+            or num_messages_today_ip >= num_max_messages_for_day):
+            error_form = True
+            error_form_msg = 'You have sent %d messages today, maximum number allowed.' % num_max_messages_for_day
+        
+        if not warning_form and not error_form:
+            msg = Message(user=user, ip=request.META['REMOTE_ADDR'], 
+                          author=name, email=email, content=message)
+            msg.save()
+            success_form = True
+        
+    return render_to_response('itsme/contact.html',
+                              {
+                               'user': user,
+                               'blog': blog,
+                               'request': request,
+                               'warning_form': warning_form,
+                               'success_form': success_form,
+                               'error_form': error_form, 'error_form_msg': error_form_msg,
+                               'error_name': error_name, 'error_name_msg': error_name_msg,
+                               'error_email': error_email, 'error_email_msg': error_email_msg,
+                               'error_message': error_message, 'error_message_msg': error_message_msg,
+                               'nav_active': 'contact',
+                               },
+                              context_instance=RequestContext(request))
+    
 
 """
 get owner user of site
