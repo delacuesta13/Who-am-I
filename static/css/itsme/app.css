@@ -6,6 +6,7 @@
 :: Article Page 
 :: Work Page 
 :: About Page 
+:: Contact Page 
 :: Media Queries
 :: Selections
 */
@@ -169,7 +170,7 @@
    
    #sidebar ul#social li{
    	display: inline;
-   	margin-right: 4px;
+   	margin-right: 0px;
    }
    
    #sidebar ul#social li a, 
@@ -500,7 +501,99 @@
    	opacity : 0.6;
     filter: alpha(opacity=60);
    }
-     
+
+/* -----------------------------------------
+   :: Contact Page
+   ----------------------------------------- */
+   
+   body.contact section article h1{
+   	margin-bottom: 10px;
+   	text-transform: uppercase;
+   }
+   
+   body.contact section article p.available,
+   body.contact section article p.unavailable{
+   	font-size: 15px;
+   	padding-left: 26px;
+   	text-transform: uppercase;
+   	word-spacing: 2px;
+   }
+   
+   body.contact section article form{
+   	margin-top: 30px;
+   }
+   
+   body.contact #sidebar{
+   	margin-top: 45px;
+   	padding: 0;
+   }
+   
+   body.contact #sidebar h3{
+   	margin-bottom: 10px;
+   	text-transform: uppercase;
+   }
+   
+   body.contact #sidebar .say-hello .email{
+   	background: url("../../img/icon-email.png") no-repeat 0 2px;
+   	font-style: italic;
+   	padding-left: 24px;
+   }
+   
+   body.contact #sidebar .say-hello .email a,
+   body.contact #sidebar .say-hello .skype a{
+   	color: #555;
+   	text-decoration: none;
+   }
+   
+   body.contact #sidebar .say-hello .email a:hover,
+   body.contact #sidebar .say-hello .skype a:hover{
+   	color: #333;
+   	text-decoration: none;
+   }
+   
+   body.contact #sidebar .say-hello .phone{
+   	background: url("../../img/icon-phone.png") no-repeat 0 2px;
+   	padding-left: 24px;
+   }
+   
+   body.contact #sidebar .say-hello .skype{
+   	background: url("../../img/icon-skype.png") no-repeat 0 2px;
+   	font-style: italic;
+   	padding-left: 24px;
+   }
+   
+   body.contact #footer{
+   	margin-top: 5.4em;
+   	margin-bottom: 2em;
+   }
+   
+   body.contact #footer .social-media{
+   	text-align: right;
+   }
+   
+   body.contact #footer .social-media ul{
+   	margin-bottom: 0;
+   }
+   
+   body.contact #footer .social-media ul#social{
+   	list-style: none;
+   }
+   
+   body.contact #footer .social-media ul#social li{
+   	display: inline;
+   	margin-right: 0px;
+   }
+   
+   body.contact #footer .social-media ul#social li a, 
+   body.contact #footer .social-media ul#social li a:hover{
+   	text-decoration: none;
+   }
+   
+   body.contact #footer .social-media ul#social li a:hover img{
+   	opacity : 0.6;
+    filter: alpha(opacity=60);
+   }
+
 /* -----------------------------------------
    :: Media Queries
    ----------------------------------------- */
@@ -684,6 +777,26 @@
    	
    	body.about #footer{ margin-top: 1em; }
    	
+   	/* Contact Page */
+   	
+   	body.contact section article h1{
+   		margin-bottom: 0 !important;
+   		text-align: center;
+   	}
+   	
+   	body.contact section article p.available,
+    body.contact section article p.unavailable{
+    	display: none;
+    }
+    
+    body.contact #sidebar{
+   		background: transparent;
+   		margin: 2em 0 0;
+   		padding: 0;
+   	}
+    
+    body.contact #footer{ margin-top: 3em; }
+   	
    }
    
    /* -------------------------------------------------------------------- 
@@ -802,6 +915,26 @@
    	
    	body.about #footer{ margin-top: 1em; }
    	
+   	/* Contact Page */
+   	
+   	body.contact section article h1{
+   		margin-bottom: 0 !important;
+   		text-align: center;
+   	}
+   	
+   	body.contact section article p.available,
+    body.contact section article p.unavailable{
+    	display: none;
+    }
+    
+    body.contact #sidebar{
+   		background: transparent;
+   		margin: 2em 0 0;
+   		padding: 0;
+   	}
+    
+    body.contact #footer{ margin-top: 3em; }
+      	
    }
 
 /* -----------------------------------------
