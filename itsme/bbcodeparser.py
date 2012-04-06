@@ -115,7 +115,7 @@ class BBCodeParser:
         'picture': {
                     'sub': [
                             r'\[img\s+alt=(?:&quot;|")?(.*?)(?:&quot;|")?\](.*?)\[/img\]',
-                            r'<p><img src="\2" alt="\1"></p>',
+                            r'<figure><img src="\2" alt="\1"></figure>',
                             r''
                             ],
                     'findall': r'\[img\s+alt=(?:&quot;|")?(.*?)(?:&quot;|")?\](.*?)\[/img\]',
