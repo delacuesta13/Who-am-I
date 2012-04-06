@@ -104,13 +104,3 @@
 {% include "itsme/social.html" with hide_title="True" %}
 </div>
 {% endblock %}
-
-{% block extrastyle %}
-<style>
-p.available{
-	background: url({{ STATIC_URL }}/img/icon_check_green.png) no-repeat 0 0;
-} p.unavailable{
-	background: url({{ STATIC_URL }}/img/icon_cross_red.png) no-repeat 0 0;
-}
-</style>
-{% endblock %}
