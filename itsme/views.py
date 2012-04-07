@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import User 
 from django.core.paginator import Paginator, InvalidPage, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.mail import send_mail
 from django.core.validators import validate_email
 from django.template import RequestContext
 from django.http import Http404
@@ -196,11 +197,34 @@ def contact(request):
             error_form = True
             error_form_msg = 'You have sent %d messages today, maximum number allowed.' % num_max_messages_for_day
         
+        """ send_email_regularly -> int
+        Send notify email of unread message, depending on number defined.
+        Example:
+            send_email_regularly = 5
+            This would send emails by unread messages (UM) 
+            if UM number is multiple of five.
+        """
+        send_email_regularly = 5
+        
         if not warning_form and not error_form:
             msg = Message(user=user, ip=request.META['REMOTE_ADDR'], 
                           author=name, email=email, content=message)
             msg.save()
             success_form = True
+            # send email if this is a production environment
+            if settings.PRODUCTION_ENVIRONMENT:
+                number_unread_messages = Message.objects.filter(user__id=user.id,
+                                                         is_readed=False).count()
+                if number_unread_messages % send_email_regularly == 0:
+                    try:
+                        subject = 'Unread messages in %s' % (settings.BASE_URL.replace('http://', ''))
+                        message = 'Hello, you have %d unread messages.' % (number_unread_messages)
+                        from_email = settings.ADMINS[0][1]
+                        
+                        send_mail(subject, message, from_email, 
+                                  [user.email], fail_silently=True)
+                    except:
+                        pass
         
     return render_to_response('itsme/contact.html',
                               {
