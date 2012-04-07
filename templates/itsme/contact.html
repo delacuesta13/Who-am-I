@@ -8,16 +8,18 @@
 
 {% block content %}
 <article>
-	<h1>Contact</h1>
-	{% if user.get_profile.available_for_work %}
-	<p class="available">
-		I'm Available For Freelance Works
-	</p>
-	{% else %}
-	<p class="unavailable">
-		I'm Not Available For Work In Projects
-	</p>
-	{% endif %}
+	<header>
+		<h1>Contact</h1>
+		{% if user.get_profile.available_for_work %}
+		<p class="available">
+			I'm Available For Freelance Works
+		</p>
+		{% else %}
+		<p class="unavailable">
+			I'm Not Available For Work In Projects
+		</p>
+		{% endif %}
+	</header>
 	<form class="form-vertical" method="post" action="{{ BASE_URL }}{% url itsme.views.contact %}">
 		{% if warning_form %}
 		<div class="alert alert-block">
