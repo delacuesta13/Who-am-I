@@ -60,7 +60,7 @@
 			<label class="control-label" for="form-email">Email</label>
 			<div class="controls">
 				<input type="email" name="email" id="form-email" class="span6"  
-				placeholder="Enter Your E-mail Address" maxlength="100" 
+				placeholder="Enter Your E-mail Address" maxlength="100" required="required" 
 				{% if request.POST.email and warning_form %}value="{{ request.POST.email }}"{% endif %}>
 				{% if warning_form and error_email %}
 				<p class="help-block">{{ error_email_msg }}</p>
