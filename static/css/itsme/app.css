@@ -36,6 +36,10 @@
    	margin: 0 0 15px;
    }
    
+   ul, ol {
+   	margin: 0 0 15px 25px;
+   }
+   
    button, input,
    select, textarea{
    	font-family: inherit;
