@@ -7,6 +7,7 @@
 :: Work Page 
 :: About Page 
 :: Contact Page 
+:: Error Page 
 :: Media Queries
 :: Selections
 */
@@ -519,13 +520,14 @@
    }
    
    body.contact section article p.available{
-	background: url(../../img/icon_check_green.png) no-repeat 0 0;   	
+	background: url(../../img/icon_check_green.png) no-repeat 0 50%;   	
    }
    
    body.contact section article p.available,
    body.contact section article p.unavailable{
+   	display: inline;
    	font-size: 15px;
-   	padding-left: 26px;
+   	padding: 0 0 0 26px;
    	text-transform: uppercase;
    	word-spacing: 2px;
    }
@@ -584,6 +586,35 @@
    
    body.contact #footer .social-media ul#social{
    	float: right;
+   }
+
+/* -----------------------------------------
+   :: Error Page
+   ----------------------------------------- */
+   
+   body.error_page #content article header{
+   	margin-bottom: 2.5em;
+   }
+
+   body.error_page #content article header h1{
+   	margin-bottom: 10px;
+   	text-transform: uppercase;
+   }
+   
+   body.error_page #content article header h2{
+   	font-size: 17px;
+   	font-style: normal;
+   	font-weight: normal;
+   	text-transform: uppercase;
+   }
+   
+   body.error_page #content article figure{
+   	margin: 20px 0;
+   }
+   
+   body.error_page #content article img{
+   	height: auto !important;
+   	max-width: 100%;
    }
 
 /* -----------------------------------------
@@ -646,6 +677,12 @@
    		-moz-column-gap: 30px; 
    		-o-column-gap: 30px; 
    		-webkit-column-gap: 30px;
+    }
+    
+    /* Error page */
+   	
+    body.error_page #content article header h2{
+   		font-size: 16px;
     }
    	
    }
@@ -760,22 +797,27 @@
    	
    	/* Contact Page */
    	
-   	body.contact section article h1{
-   		margin-bottom: 0 !important;
+   	body.contact section article header{
    		text-align: center;
    	}
    	
-   	body.contact section article p.available,
-    body.contact section article p.unavailable{
-    	display: none;
-    }
-    
     body.contact #sidebar{
    		background: transparent;
    		margin: 2em 0 0;
    		padding: 0;
    	}
-    
+   	
+   	/* Error page */
+   	
+   	body.error_page #content article header h1{
+   		text-align: center;
+    }
+   
+    body.error_page #content article header h2{
+   		font-size: 15px;
+   		text-align: center;
+    }
+   	
    }
    
    /* -------------------------------------------------------------------- 
@@ -900,6 +942,17 @@
    		margin: 2em 0 0;
    		padding: 0;
    	}
+   	
+   	/* Error page */
+   	
+   	body.error_page #content article header h1{
+   		text-align: center;
+    }
+   
+    body.error_page #content article header h2{
+   		font-size: 14px;
+   		text-align: center;
+    } 
     
    }
 
