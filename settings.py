@@ -7,6 +7,8 @@ BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+PRODUCTION_ENVIRONMENT = False
+
 # Main URL for the project
 BASE_URL = 'http://whoami'
 
