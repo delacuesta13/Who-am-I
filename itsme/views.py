@@ -241,8 +241,28 @@ def contact(request):
                                'nav_active': 'contact',
                                },
                               context_instance=RequestContext(request))
-    
 
+"""
+Sitemap
+"""
+
+def sitemap(request):
+    
+    user = user_get_owner()
+    blog = blog_get_or_create(user)
+    
+    post_set_to_publish()
+    posts = Post.objects.filter(status__iexact='publish').order_by('-date', 'title')[:10]
+    
+    return render_to_response('itsme/sitemap.xml',
+                              {
+                               'user': user,
+                               'blog': blog,
+                               'posts': posts,
+                               },
+                              context_instance=RequestContext(request),
+                              mimetype="application/xml")
+    
 """
 get owner user of site
 """
