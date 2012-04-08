@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>{{ BASE_URL }}/</loc>
-		{% if posts %}<lastmod>{{ posts.0.date|date:"c" }}</lastmod>{% endif %}
+		{% if posts %}<lastmod>{{ posts.0.date|date:"Y-m-d" }}</lastmod>{% endif %}
 		<changefreq>weekly</changefreq>
 		<priority>1.0</priority>
 	</url>
@@ -18,7 +18,7 @@
 	{% for post in posts %}
 	<url>
 		<loc>{{ BASE_URL }}{% url itsme.views.post_view post.slug %}</loc>
-		<lastmod>{{ post.date|date:"c" }}</lastmod>
+		<lastmod>{{ post.date|date:"Y-m-d" }}</lastmod>
 	</url>
 	{% endfor %}
 </urlset>
