@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>{{ BASE_URL }}/</loc>
+		{% if posts %}<lastmod>{{ posts.0.date|date:"c" }}</lastmod>{% endif %}
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	{% for post in posts %}
+	<url>
+		<loc>{{ BASE_URL }}{% url itsme.views.post_view post.slug %}</loc>
+		<lastmod>{{ post.date|date:"c" }}</lastmod>
+	</url>
+	{% endfor %}
+	<url>
+		<loc>{{ BASE_URL }}{% url itsme.views.work %}</loc>
+	</url>
+	<url>
+		<loc>{{ BASE_URL }}{% url itsme.views.about %}</loc>
+	</url>
+	<url>
+		<loc>{{ BASE_URL }}{% url itsme.views.contact %}</loc>
+	</url>
+</urlset>
