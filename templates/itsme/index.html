@@ -20,10 +20,10 @@
 	<p>{{ blog.tagline|escape|default:"Personal portfolio of Jhon Adrián Cerón." }}</p>
 </header>
 {% for post in posts.object_list %}
-<article itemscope itemtype="http://schema.org/Article" class="{% if forloop.last %}last-article{% endif %}">
+<article class="{% if forloop.last %}last-article{% endif %}">
 	<header>
-		<h2 itemprop="name">
-			<a href="{% url itsme.views.post_view post.slug %}" itemprop="url" class="alternative">{{ post.title }}</a>
+		<h2>
+			<a href="{% url itsme.views.post_view post.slug %}" class="alternative">{{ post.title }}</a>
 		</h2>
 		<time datetime="{{ post.date|date:"Y-m-d" }}">{{ post.date|date:"N d, Y" }}</time>
 	</header>
