@@ -218,8 +218,14 @@ def contact(request):
                 if number_unread_messages % send_email_regularly == 0:
                     try:
                         subject = 'Unread messages in %s' % (settings.BASE_URL.replace('http://', ''))
-                        message = 'Hello,\n\nYou have %d unread messages.' % (number_unread_messages)
-                        message += '\n\nRegards,\n\n%s.' % settings.ADMINS[0][0]
+                        message = """Hello %s,
+                        
+                        You have %d unread messages. Don't forget to visit site and check the messages.
+                        
+                        Regards,
+                        
+                        %s.
+                        """ % (user.first_name, number_unread_messages, settings.ADMINS[0][0])
                         from_email = settings.ADMINS[0][1]
                         
                         send_mail(subject, message, from_email, 
