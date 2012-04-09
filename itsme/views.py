@@ -217,6 +217,7 @@ def contact(request):
                                                          is_readed=False).count()
                 if number_unread_messages % send_email_regularly == 0:
                     try:
+                        from_email = settings.ADMINS[0][1]
                         subject = 'Unread messages in %s' % (settings.BASE_URL.replace('http://', ''))
                         message = """Hello %s,
                         
@@ -224,9 +225,14 @@ def contact(request):
                         
                         Regards,
                         
-                        %s.
-                        """ % (user.first_name, number_unread_messages, settings.ADMINS[0][0])
-                        from_email = settings.ADMINS[0][1]
+                        %s.""" % (user.first_name, number_unread_messages, 
+                                  settings.ADMINS[0][0])
+                        # remove tabs from message 
+                        s = ''
+                        for line in message.split('\n'):
+                            temp = line.strip()  
+                            s += temp if len(temp) > 0 else '\n\n'
+                        message = s
                         
                         send_mail(subject, message, from_email, 
                                   [user.email], fail_silently=True)
