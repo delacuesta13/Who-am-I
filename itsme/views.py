@@ -4,16 +4,16 @@ from datetime import datetime
 import re
 from django.conf import settings
 from django.contrib.auth.models import User 
-from django.core.paginator import Paginator, InvalidPage, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, InvalidPage, PageNotAnInteger, EmptyPage
 from django.core.validators import validate_email
-from django.template import RequestContext
 from django.http import Http404
 from django.shortcuts import redirect, render_to_response
-from itsme.models import Post, Project, Message
+from django.template import RequestContext
 from admin.views import blog_get_or_create
 from itsme.bbcodeparser import BBCodeParser
+from itsme.models import Post, Project, Message
 
 def index(request, page=1):
     
