@@ -206,7 +206,7 @@ def contact(request):
             if settings.PRODUCTION_ENVIRONMENT:
                 # retrieve all unread message and send them
                 unread_messages = Message.objects.filter(user__id=user.id,
-                                                         is_readed=False)
+                                                         is_readed=False).order_by('-date')
                 for u_m in unread_messages:
                     try:
                         from_email = settings.ADMINS[0][1]
