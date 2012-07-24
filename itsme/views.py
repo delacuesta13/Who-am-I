@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, InvalidPage, PageNotAnInteger, EmptyPage
 from django.core.validators import validate_email
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 from admin.views import blog_get_or_create
@@ -197,15 +197,6 @@ def contact(request):
             error_form = True
             error_form_msg = 'You have sent %d messages today, maximum number allowed.' % num_max_messages_for_day
         
-        """ send_email_regularly -> int
-        Send notify email of unread message, depending on number defined.
-        Example:
-            send_email_regularly = 5
-            This would send emails by unread messages (UM) 
-            if UM number is multiple of five.
-        """
-        send_email_regularly = 5
-        
         if not warning_form and not error_form:
             msg = Message(user=user, ip=request.META['REMOTE_ADDR'], 
                           author=name, email=email, content=message)
@@ -213,20 +204,19 @@ def contact(request):
             success_form = True
             # send email if this is a production environment
             if settings.PRODUCTION_ENVIRONMENT:
-                number_unread_messages = Message.objects.filter(user__id=user.id,
-                                                         is_readed=False).count()
-                if number_unread_messages % send_email_regularly == 0:
+                # retrieve all unread message and send them
+                unread_messages = Message.objects.filter(user__id=user.id,
+                                                         is_readed=False)
+                for u_m in unread_messages:
                     try:
                         from_email = settings.ADMINS[0][1]
-                        subject = 'Unread messages in %s' % (settings.BASE_URL.replace('http://', ''))
-                        message = """Hello %s,
+                        subject = 'New message from %s' % (settings.BASE_URL.replace('http://', ''))
+                        message = """On %s, %s <%s> wrote:
                         
-                        You have %d unread messages. Don't forget to visit site and check the messages.
+                        %s""" % (u_m.date.strftime('%B %d, %Y at %H:%M'),
+                                 u_m.author, u_m.email, 
+                                 u_m.content)
                         
-                        Regards,
-                        
-                        %s.""" % (user.first_name, number_unread_messages, 
-                                  settings.ADMINS[0][0])
                         # remove tabs from message 
                         s = ''
                         for line in message.split('\n'):
@@ -236,9 +226,13 @@ def contact(request):
                         
                         send_mail(subject, message, from_email, 
                                   [user.email], fail_silently=True)
+                        
+                        msg = u_m
+                        msg.is_readed = True
+                        msg.save()
                     except:
                         pass
-        
+                
     return render_to_response('itsme/contact.html',
                               {
                                'user': user,
