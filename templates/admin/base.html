@@ -73,10 +73,12 @@ it sets the current item navigation.
 				{% block navigation %}
 					<ul class="nav">
 					{% block navleft %}
+						{% comment %}
 						<!-- home -->
 						<li {% if not nav_active or nav_active|lower == "home" %}class="active"{% endif %}>
 							<a href="{% url admin.views.index %}">Home</a>
 						</li>
+						{% endcomment %}
 						<!-- posts -->
 						<li
 						{% if nav_active and nav_active|lower == "posts" or nav_active|lower == "categories" or nav_active|lower == "blog" %}
@@ -114,11 +116,13 @@ it sets the current item navigation.
 						<li {% if nav_active and nav_active|lower == "work" %}class="active"{% endif %}>
 							<a href={% url admin.views.project %}>Work</a>
 						</li>
+						{% comment %}
 						<li class="divider-vertical"></li>
 						<!-- messages -->
 						<li {% if nav_active and nav_active|lower == "messages" %}class="active"{% endif %}>
 							<a href="#">Messages</a>
 						</li>
+						{% endcomment %}
 					{% endblock %}
 					</ul>
 					<ul class="nav pull-right">
