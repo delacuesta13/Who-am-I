@@ -29,7 +29,8 @@ depending on item active in bar navigation.
 def index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('admin.views.login'))
-    return render_to_response('admin/index.html', context_instance=RequestContext(request))
+    #return render_to_response('admin/index.html', context_instance=RequestContext(request))
+    return redirect('admin.views.post')
 
 def extra_get_months():
     months = ['January', 'February', 'March', 'April', 'May', 'June',
