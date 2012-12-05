@@ -34,7 +34,7 @@ def index(request):
 
 def extra_get_months():
     months = ['January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'December']
+              'July', 'August', 'September', 'October', 'November', 'December']
     return months
 
 """
